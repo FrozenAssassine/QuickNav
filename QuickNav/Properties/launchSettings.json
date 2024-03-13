@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "QuickNav (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "QuickNav (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
