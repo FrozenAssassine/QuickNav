@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace QuickNavPlugin.UI
 {
+    /// <summary>
+    /// Represents a label or textbox.
+    /// </summary>
     public class TextElement : ContentElement
     {
         private string _Text;

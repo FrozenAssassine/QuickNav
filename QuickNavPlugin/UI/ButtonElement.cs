@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace QuickNavPlugin.UI
 {
+    /// <summary>
+    /// Represents a button.
+    /// </summary>
     public class ButtonElement : ContentElement
     {
         private string _Text;

@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace QuickNavPlugin.UI
 {
+    /// <summary>
+    /// Represents a stackpanel.
+    /// </summary>
     public class ListViewElement : ContentElement
     {
         private Orientation _Orientation;

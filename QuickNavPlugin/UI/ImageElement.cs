@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace QuickNavPlugin.UI
 {
+    /// <summary>
+    /// Represents an image.
+    /// </summary>
     public class ImageElement : ContentElement
     {
         private Uri _Image;
