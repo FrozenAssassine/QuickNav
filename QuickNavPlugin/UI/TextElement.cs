@@ -18,7 +18,7 @@ namespace QuickNavPlugin.UI
                 if(TextChanged != null) TextChanged(this, value);
             }
         }
-        private bool _IsEditable;
+        private bool _IsEditable = true;
         public bool IsEditable
         {
             get => _IsEditable;

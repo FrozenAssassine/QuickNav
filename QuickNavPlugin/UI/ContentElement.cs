@@ -8,6 +8,6 @@ namespace QuickNavPlugin.UI
 {
     public class ContentElement
     {
-        ElementClicked Clicked { get; set; }
+        public ElementClicked Clicked { get; set; }
     }
 }

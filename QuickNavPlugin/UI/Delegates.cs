@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace QuickNavPlugin.UI
 {
     public delegate void ElementClicked(ContentElement sender);
-    public delegate void ElementClickedPosition(ContentElement sender, int X, int Y);
+    public delegate void ElementClickedPosition(ContentElement sender, double X, double Y);
     public delegate void ElementTextChanged(ContentElement sender, string text);
     public delegate void ElementImageChanged(ContentElement sender, Uri uri);
     public delegate void ElementIsEditableChanged(ContentElement sender, bool editable);
