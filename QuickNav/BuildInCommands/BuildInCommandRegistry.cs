@@ -21,8 +21,9 @@ namespace QuickNav.BuildInCommands
             buildInCommands.CollectorCommands.Add(new WebSearchCommand());
             buildInCommands.CollectorCommands.Add(new FileSearchCommand());
             buildInCommands.CollectorCommands.Add(new CMDCommand());
-            buildInCommands.TriggerCommands.Add(new FileInfoCommand());
+            buildInCommands.TriggerCommands.Add(new CountWordsCommand());
             buildInCommands.TriggerCommands.Add(new CMDCommand());
+            buildInCommands.TriggerCommands.Add(new CountWordsCommand());
 
             PluginHelper.Plugins.Add(buildInCommands);
         }
