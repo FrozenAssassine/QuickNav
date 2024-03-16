@@ -127,8 +127,7 @@ namespace QuickNav.Helper
                     textBlock.Text = Text;
                     if (labelElement.AutoScrollBottom)
                     {
-                        //TODO scroll to bottom
-                        sv.ScrollTo(0, sv.ViewportHeight - sv.Height);
+                        sv.ScrollTo(0, sv.ScrollableHeight);
                     }
                 };
 
