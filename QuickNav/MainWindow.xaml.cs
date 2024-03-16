@@ -157,19 +157,26 @@ namespace QuickNav
             }
         }
 
-        private void resultView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (resultView.Items.Count == 0)
-                return;
-
-            RunCommand(searchBox.Text, (ResultListViewItem)resultView.Items[resultView.SelectedIndex]);
-        }
-
         private void searchBox_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
         {
-            if(e.Key == Windows.System.VirtualKey.Enter)
-            {
+            if (resultView.SelectedIndex == -1)
                 resultView.SelectedIndex = 0;
+
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                //click on listviewitems
+                if (resultView.Items.Count == 0)
+                    return;
+
+                RunCommand(searchBox.Text, (ResultListViewItem)resultView.Items[resultView.SelectedIndex]);
+            }
+            else if(e.Key == Windows.System.VirtualKey.Down)
+            {
+                resultView.SelectedIndex = Math.Clamp(resultView.SelectedIndex + 1, 0, resultView.Items.Count - 1);
+            }
+            else if (e.Key == Windows.System.VirtualKey.Up)
+            {
+                resultView.SelectedIndex = Math.Clamp(resultView.SelectedIndex - 1, 0, resultView.Items.Count - 1);
             }
         }
 
@@ -222,6 +229,15 @@ namespace QuickNav
                     //any ideas?
                 }
             }
+        }
+
+        private void resultView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            //click on listviewitems
+            if (resultView.Items.Count == 0)
+                return;
+
+            RunCommand(searchBox.Text, (ResultListViewItem)resultView.Items[resultView.SelectedIndex]);
         }
     }
 }

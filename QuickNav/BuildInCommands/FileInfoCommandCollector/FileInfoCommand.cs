@@ -13,7 +13,7 @@ internal class FileInfoCommand : ITriggerCommand
 
     public Priority Priority => Priority.Low;
 
-    public string CommandTrigger => "finf:";
+    public string CommandTrigger => "finf";
 
     public string[] Keywords => new string[] { "info", "fileinfo"};
 

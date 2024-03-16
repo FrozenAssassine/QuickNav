@@ -16,7 +16,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBox x:Name="searchBox" Grid.Row="0" TextChanged="searchInputBox_TextChanged" Margin="10" Height="40" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="18" KeyDown="searchBox_KeyDown"/>
-        <ListView DragOver="Grid_DragOver" Drop="Grid_Drop" AllowDrop="True"  x:Name="resultView" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="resultView_SelectionChanged">
+        <ListView ItemClick="resultView_ItemClick" IsItemClickEnabled="True" DragOver="Grid_DragOver" Drop="Grid_Drop" AllowDrop="True"  x:Name="resultView" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:ResultListViewItem">
                     <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Horizontal">
