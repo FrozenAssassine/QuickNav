@@ -12,7 +12,7 @@
 
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBox x:Name="searchBox" Grid.Row="0" TextChanged="searchInputBox_TextChanged" Margin="10" Height="40" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="18"/>
@@ -25,7 +25,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Grid x:Name="contentView" Grid.Row="1">
+        <Grid VerticalAlignment="Stretch" Margin="10" x:Name="contentView" Grid.Row="1">
             
         </Grid>
     </Grid>

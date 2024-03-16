@@ -48,7 +48,7 @@ namespace QuickNav
             if (args.WindowActivationState == WindowActivationState.Deactivated)
             {
                 //close the window when it loses focus:
-                this.Close();
+                //this.Close();
                 return;
             }
 
@@ -78,6 +78,9 @@ namespace QuickNav
 
         private void resultView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (resultView.Items.Count == 0)
+                return;
+
             ICommand command = ((ResultListViewItem)resultView.Items[resultView.SelectedIndex]).Command;
             UIElement element = null;
             if (command is IBuildInCommand buildInCommand)

@@ -3,6 +3,8 @@ using QuickNavPlugin;
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Data.OleDb;
+using System.Collections.ObjectModel;
 
 namespace QuickNav.BuildInCommands.WindowsFileSearch;
 
@@ -19,26 +21,44 @@ internal class FileSearchCommand : IUnknownCommandCollector
         return "Search for \"" + query + "\" in your files";
     }
 
-    public bool RunCommand(string parameters, out ContentElement content)
+    public bool RunCommand(string searchTerm, out ContentElement content)
     {
         content = null;
+        var connection = new OleDbConnection(@"Provider=Search.CollatorDSO;Extended Properties=""Application=Windows""");
 
         try
         {
-            dynamic shell = Activator.CreateInstance(Type.GetTypeFromProgID("Shell.Application"));
-            var searchFolder = shell.Namespace("search-ms:");
+            connection.Open();
 
-            var searchResults = searchFolder.Items().Item(parameters);
+            // File name search (case insensitive), also searches sub directories
+            var query = $"SELECT TOP 50 System.ItemName FROM SystemIndex WHERE scope ='file:' AND System.ItemName LIKE '%{searchTerm}%'";
 
-            //TODO implement into UI:
-            foreach (var item in searchResults)
+            var command = new OleDbCommand(query, connection);
+
+            var listViewElement = new ListViewElement();
+            content = listViewElement;
+            listViewElement.Orientation = Orientation.Vertical;
+            listViewElement.Children.Clear();
+            using (var reader = command.ExecuteReader())
             {
-                Debug.WriteLine(item.Path);
+                while (reader.Read())
+                {
+                    //string filePath = reader["System.ItemPathDisplay"].ToString();
+                    string fileName = reader["System.ItemName"].ToString();
+
+                    listViewElement.Children.Add(new LabelElement(fileName));
+                    Debug.WriteLine(fileName);
+                }
             }
         }
-        catch (COMException ex)
+        catch (Exception ex)
         {
-            Debug.WriteLine("An error occurred: " + ex.Message);
+            Debug.WriteLine($"An error occurred: {ex.Message}");
+            return false;
+        }
+        finally
+        {
+            connection.Close();
         }
 
         return true;

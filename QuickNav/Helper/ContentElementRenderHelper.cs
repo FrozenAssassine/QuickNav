@@ -51,19 +51,25 @@ namespace QuickNav.Helper
             }
             if(content is ListViewElement listElement)
             {
+                void SetOrientation(StackPanel sp, QuickNavPlugin.UI.Orientation orientation) =>
+                    sp.Orientation = orientation == QuickNavPlugin.UI.Orientation.Horizontal ?
+                        Microsoft.UI.Xaml.Controls.Orientation.Horizontal :
+                        Microsoft.UI.Xaml.Controls.Orientation.Vertical;
+
+                ScrollViewer scrollviewer = new ScrollViewer();
+                scrollviewer.VerticalAlignment = VerticalAlignment.Top;
+                scrollviewer.VerticalScrollMode = ScrollMode.Enabled;
+                scrollviewer.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
                 StackPanel stack = new StackPanel();
-                if (listElement.Orientation == QuickNavPlugin.UI.Orientation.Horizontal)
-                    stack.Orientation = Microsoft.UI.Xaml.Controls.Orientation.Horizontal;
-                else
-                    stack.Orientation = Microsoft.UI.Xaml.Controls.Orientation.Vertical;
+                scrollviewer.Content = stack;
+                SetOrientation(stack, listElement.Orientation);
+
+
                 for (int i = 0; i < listElement.Children.Count; i++)
                     stack.Children.Add(RenderContentElement(listElement.Children[i]));
                 listElement.OrientationChanged += (ContentElement sender, QuickNavPlugin.UI.Orientation orientation) =>
                 {
-                    if (orientation == QuickNavPlugin.UI.Orientation.Horizontal)
-                        stack.Orientation = Microsoft.UI.Xaml.Controls.Orientation.Horizontal;
-                    else
-                        stack.Orientation = Microsoft.UI.Xaml.Controls.Orientation.Vertical;
+                    SetOrientation(stack, orientation);
                 };
                 listElement.ChildrenChanged += (ContentElement sender, IEnumerable<ContentElement> children) =>
                 {
@@ -71,7 +77,7 @@ namespace QuickNav.Helper
                     foreach (ContentElement child in children)
                         stack.Children.Add(RenderContentElement(child));
                 };
-                return stack;
+                return scrollviewer;
             }
             if(content is TextElement textElement)
             {
@@ -105,6 +111,16 @@ namespace QuickNav.Helper
                     textElement.TextChanged += textChanged;
                 };
                 return textBox;
+            }
+            if (content is LabelElement labelElement)
+            {
+                TextBlock textBlock = new TextBlock();
+                textBlock.Text = labelElement.Text;
+                textBlock.PointerPressed += (object sender, PointerRoutedEventArgs e) =>
+                {
+                    if (labelElement.Clicked != null) labelElement.Clicked(labelElement);
+                };
+                return textBlock;
             }
             return null;
         }
