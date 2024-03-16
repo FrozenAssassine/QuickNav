@@ -1,4 +1,5 @@
-﻿using QuickNav.BuildInCommands.CMDCommandCollector;
+﻿using QuickNav.BuildInCommands.CalculatorCommandCollector;
+using QuickNav.BuildInCommands.CMDCommandCollector;
 using QuickNav.BuildInCommands.WebSearchCommandCollector;
 using QuickNav.BuildInCommands.WindowsFileSearch;
 using QuickNav.Helper;
@@ -19,6 +20,7 @@ namespace QuickNav.BuildInCommands
             buildInCommands.Info = new AboutBuildInCommands();
             buildInCommands.CollectorCommands.Add(new WebSearchCommand());
             buildInCommands.CollectorCommands.Add(new FileSearchCommand());
+            buildInCommands.CollectorCommands.Add(new CalculatorCommand());
             buildInCommands.TriggerCommands.Add(new CMDCommand());
 
             PluginHelper.Plugins.Add(buildInCommands);
