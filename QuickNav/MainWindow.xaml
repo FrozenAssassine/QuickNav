@@ -15,16 +15,18 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBox Grid.Row="0" TextChanged="searchInputBox_TextChanged" Margin="10" Height="40" x:Name="searchInputBox" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="18"/>
-        <ListView Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <TextBox x:Name="searchBox" Grid.Row="0" TextChanged="searchInputBox_TextChanged" Margin="10" Height="40" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="18"/>
+        <ListView x:Name="resultView" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="resultView_SelectionChanged">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:ResultListViewItem">
                     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                        <ContentPresenter Content="{Binding Content}"/>
                         <TextBlock Text="{Binding Text}"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <Grid x:Name="contentView" Grid.Row="1">
+            
+        </Grid>
     </Grid>
 </Window>

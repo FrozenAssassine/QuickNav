@@ -14,6 +14,11 @@ internal class FileSearchCommand : IUnknownCommandCollector
 
     public Priority Priority => Priority.Low;
 
+    public string Name(string query)
+    {
+        return "Search for \"" + query + "\" in your files";
+    }
+
     public bool RunCommand(string parameters, out ContentElement content)
     {
         content = null;
