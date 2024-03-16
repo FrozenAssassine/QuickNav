@@ -16,15 +16,22 @@ using System.Windows.Threading;
 using Microsoft.UI.Dispatching;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
+using WinUIEx;
+using H.NotifyIcon.Core;
+
+//ref systray to:
+//https://github.com/dotMorten/WinUIEx/blob/3aaa34b58c488dba054e80311bfc3aa1cc772950/src/WinUIExSample/MainWindow.xaml.cs
+//https://github.com/dotMorten/WinUIEx/blob/3aaa34b58c488dba054e80311bfc3aa1cc772950/src/WinUIExSample/MainWindow.xaml
 
 namespace QuickNav
 {
-    public sealed partial class MainWindow : Window
+    public sealed partial class MainWindow : WindowEx
     {
         public static AppWindow m_AppWindow;
         private OverlappedPresenter? _presenter;
         public static DispatcherQueue dispatcherQueue;
         public bool PreventSearchboxChangedEvent = false;
+        private TrayIcon trayIcon;
 
         public MainWindow()
         {
@@ -36,12 +43,11 @@ namespace QuickNav
             dispatcherQueue = this.DispatcherQueue;
             _presenter = m_AppWindow.Presenter as OverlappedPresenter;
 
-            //hide the window from taskbar and ALT+Tab:
-            this.AppWindow.IsShownInSwitchers = false;
-
             BuildInCommandRegistry.Register();
 
             searchInputBox_TextChanged(null, null);
+
+            InitSystemTray();
         }
 
         private AppWindow GetAppWindowForCurrentWindow()
@@ -51,12 +57,33 @@ namespace QuickNav
             return AppWindow.GetFromWindowId(wndId);
         }
 
+        private void InitSystemTray()
+        {
+            if(trayIcon is null)
+            {
+                //var icon = Icon.FromFile("Images/WindowIcon.ico");
+                trayIcon = new TrayIcon("QuickNav");
+            }
+            else
+            {
+                trayIcon.Dispose();
+                trayIcon = null;
+            }
+        }
+
+        private void HideWindow()
+        {
+            //trayIcon?.Dispose();
+            //var icon = Icon.FromFile("Images/WindowIcon.ico");
+            //trayIcon = new TrayIcon("QuickNav");
+            this.HideWindow();
+        }
+
         private async void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
         {
             if (args.WindowActivationState == WindowActivationState.Deactivated)
             {
-                //close the window when it loses focus:
-                this.Close();
+                HideWindow();
                 return;
             }
 
@@ -153,7 +180,7 @@ namespace QuickNav
             else
             {
                 //command was executed without showing ui
-                this.Close();
+                //this.Close();
             }
         }
 
