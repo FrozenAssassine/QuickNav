@@ -6,13 +6,17 @@ using System.Threading.Tasks;
 
 namespace QuickNav.BuildInCommands.CMDCommandCollector;
 
-internal class CMDCommand : IUnknownCommandCollector
+internal class CMDCommand : ITriggerCommand
 {
     public string Description => "Run this command to execute in commandline";
 
     public Uri Icon => null;
 
     public Priority Priority => Priority.Low;
+
+    public string CommandTrigger => ">";
+
+    public string[] Keywords => new string[] { "cmd", "command", "run" };
 
     public string Name(string query)
     {
