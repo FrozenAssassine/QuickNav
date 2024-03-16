@@ -56,7 +56,7 @@ namespace QuickNav
             if (args.WindowActivationState == WindowActivationState.Deactivated)
             {
                 //close the window when it loses focus:
-                //this.Close();
+                this.Close();
                 return;
             }
 
@@ -149,6 +149,11 @@ namespace QuickNav
                 contentView.Children.Add(element);
                 resultView.Visibility = Visibility.Collapsed;
                 contentView.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                //command was executed without showing ui
+                this.Close();
             }
         }
 
