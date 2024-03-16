@@ -120,7 +120,6 @@ namespace QuickNav
                 resultView.SelectedIndex = 0;
             }
         }
-    }
 
         private void Grid_DragOver(object sender, DragEventArgs e)
         {
