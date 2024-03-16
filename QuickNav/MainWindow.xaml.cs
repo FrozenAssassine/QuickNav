@@ -65,18 +65,21 @@ namespace QuickNav
             _presenter.SetBorderAndTitleBar(hasBorder: false, hasTitleBar: false);
             _presenter.IsAlwaysOnTop = true;
             _presenter.IsResizable = false;
+
+            searchBox.Focus(FocusState.Keyboard);
         }
 
-        private void searchInputBox_TextChanged(object sender, Microsoft.UI.Xaml.Controls.TextChangedEventArgs e)
+        private void searchInputBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            List<ICommand> commands = PluginHelper.SearchFor(searchBox.Text);
-            List<ResultListViewItem> items = commands.Select((command) => new ResultListViewItem() { Command = command, Text = command.Name(searchBox.Text) }).ToList();
-            resultView.Items.Clear();
-            for (int i = 0; i < items.Count; i++)
-                resultView.Items.Add(items[i]);
             contentView.Children.Clear();
+            resultView.Items.Clear();
             contentView.Visibility = Visibility.Collapsed;
             resultView.Visibility = Visibility.Visible;
+            if (searchBox.Text == "") return;
+            List<ICommand> commands = PluginHelper.SearchFor(searchBox.Text);
+            List<ResultListViewItem> items = commands.Select((command) => new ResultListViewItem() { Command = command, Text = command.Name(searchBox.Text) }).ToList();
+            for (int i = 0; i < items.Count; i++)
+                resultView.Items.Add(items[i]);
         }
 
         private void resultView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -85,15 +88,19 @@ namespace QuickNav
                 return;
 
             ICommand command = ((ResultListViewItem)resultView.Items[resultView.SelectedIndex]).Command;
+            if (command == null) return;
+            string searchText = searchBox.Text.Trim();
+            if (command is ITriggerCommand trigger)
+                searchText = searchText.Substring(trigger.CommandTrigger.Length).TrimStart();
             UIElement element = null;
             if (command is IBuildInCommand buildInCommand)
             {
-                if (buildInCommand.RunCommand(searchBox.Text, out Page page))
+                if (buildInCommand.RunCommand(searchText, out Page page))
                     element = page;
             }
             else
             {
-                if (command.RunCommand(searchBox.Text, out ContentElement content))
+                if (command.RunCommand(searchText, out ContentElement content))
                     element = ContentElementRenderHelper.RenderContentElement(content);
             }
             if (element != null)
@@ -104,5 +111,13 @@ namespace QuickNav
                 contentView.Visibility = Visibility.Visible;
             }
         }
-}
+
+        private void searchBox_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+        {
+            if(e.Key == Windows.System.VirtualKey.Enter)
+            {
+                resultView.SelectedIndex = 0;
+            }
+        }
+    }
 }
