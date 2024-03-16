@@ -1,6 +1,7 @@
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
+using QuickNav.BuildInCommands;
 using QuickNav.Helper;
 using System;
 using System.Threading.Tasks;
@@ -24,6 +25,8 @@ namespace QuickNav
             this.Activated += MainWindow_Activated;
 
             _presenter = m_AppWindow.Presenter as OverlappedPresenter;
+
+            BuildInCommandRegistry.Register();
         }
 
         private AppWindow GetAppWindowForCurrentWindow()

@@ -13,6 +13,28 @@ namespace QuickNav.Helper
     {
         public static List<Plugin> Plugins = new List<Plugin>();
 
+        // TODO: Include priority and amount of command calls into the search order.
+        public static List<ICommand> SearchFor(string query)
+        {
+            List<ICommand> commands = new List<ICommand>();
+            string queryLower = query.ToLower();
+            string[] keywords = queryLower.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            // Do not combine these loops, as this would destroy the order!
+            for (int i = 0; i < Plugins.Count; i++)
+                for (int j = 0; j < Plugins[i].TriggerCommands.Count; j++)
+                    if (queryLower.StartsWith(Plugins[i].TriggerCommands[j].CommandTrigger.ToLower() + " "))
+                        commands.Add(Plugins[i].TriggerCommands[j]);
+            for (int i = 0; i < Plugins.Count; i++)
+                for (int j = 0; j < Plugins[i].TriggerCommands.Count; j++)
+                    for (int k = 0; k < Plugins[i].TriggerCommands[j].Keywords.Length; k++)
+                        if (keywords.Contains(Plugins[i].TriggerCommands[j].Keywords[k].ToLower()))
+                            commands.Add(Plugins[i].TriggerCommands[j]);
+            for (int i = 0; i < Plugins.Count; i++)
+                for (int j = 0; j < Plugins[i].CollectorCommands.Count; j++)
+                    commands.Add(Plugins[i].CollectorCommands[j]);
+            return commands;
+        }
+
         public void InitFromDir(string path)
         {
             string[] files = Directory.GetFiles(path);
