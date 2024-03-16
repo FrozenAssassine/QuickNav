@@ -1,10 +1,16 @@
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using QuickNav.BuildInCommands;
 using QuickNav.Helper;
+using QuickNav.Models;
+using QuickNavPlugin;
+using QuickNavPlugin.UI;
 using System;
 using System.Diagnostics;
+using System.Collections.Generic;
+using System.Linq;
 using WinRT.Interop;
 
 namespace QuickNav
@@ -60,7 +66,37 @@ namespace QuickNav
 
         private void searchInputBox_TextChanged(object sender, Microsoft.UI.Xaml.Controls.TextChangedEventArgs e)
         {
+            List<ICommand> commands = PluginHelper.SearchFor(searchBox.Text);
+            List<ResultListViewItem> items = commands.Select((command) => new ResultListViewItem() { Command = command, Text = command.Name(searchBox.Text) }).ToList();
+            resultView.Items.Clear();
+            for (int i = 0; i < items.Count; i++)
+                resultView.Items.Add(items[i]);
+            contentView.Children.Clear();
+            contentView.Visibility = Visibility.Collapsed;
+            resultView.Visibility = Visibility.Visible;
+        }
 
+        private void resultView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ICommand command = ((ResultListViewItem)resultView.Items[resultView.SelectedIndex]).Command;
+            UIElement element = null;
+            if (command is IBuildInCommand buildInCommand)
+            {
+                if (buildInCommand.RunCommand(searchBox.Text, out Page page))
+                    element = page;
+            }
+            else
+            {
+                if (command.RunCommand(searchBox.Text, out ContentElement content))
+                    element = ContentElementRenderHelper.RenderContentElement(content);
+            }
+            if (element != null)
+            {
+                contentView.Children.Clear();
+                contentView.Children.Add(element);
+                resultView.Visibility = Visibility.Collapsed;
+                contentView.Visibility = Visibility.Visible;
+            }
         }
     }
 }

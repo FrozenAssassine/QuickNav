@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -18,10 +19,15 @@ namespace QuickNav.BuildInCommands.WebSearchCommandCollector
 
         public Priority Priority => Priority.Low;
 
+        public string Name(string query)
+        {
+            return "Search for \"" + query + "\" in browser";
+        }
+
         public bool RunCommand(string parameters, out ContentElement content) // Extend that with: https://stackoverflow.com/a/17599201 for Icon of the standard browser and standard search engine
         {
             content = null;
-            Process.Start("https://www.google.com/search?q=" + UrlEncoder.Default.Encode(parameters));
+            Windows.System.Launcher.LaunchUriAsync(new Uri("https://www.google.com/search?q=" + UrlEncoder.Default.Encode(parameters)));
             return true;
         }
     }
