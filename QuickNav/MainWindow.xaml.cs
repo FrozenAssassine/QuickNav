@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml;
 using QuickNav.BuildInCommands;
 using QuickNav.Helper;
 using System;
+using System.Diagnostics;
 using WinRT.Interop;
 
 namespace QuickNav
@@ -23,6 +24,9 @@ namespace QuickNav
 
             _presenter = m_AppWindow.Presenter as OverlappedPresenter;
 
+            //hide the window from taskbar and ALT+Tab:
+            this.AppWindow.IsShownInSwitchers = false;
+
             BuildInCommandRegistry.Register();
         }
 
@@ -35,6 +39,13 @@ namespace QuickNav
 
         private async void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
         {
+            if (args.WindowActivationState == WindowActivationState.Deactivated)
+            {
+                //close the window when it loses focus:
+                this.Close();
+                return;
+            }
+
             if (_presenter is null)
             {
                 return;
