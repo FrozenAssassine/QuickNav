@@ -237,7 +237,7 @@ namespace QuickNav
             if (resultView.Items.Count == 0)
                 return;
 
-            RunCommand(searchBox.Text, (ResultListViewItem)resultView.Items[resultView.SelectedIndex]);
+            RunCommand(searchBox.Text, (ResultListViewItem)resultView.Items[resultView.SelectedIndex == -1 ? 0 : resultView.SelectedIndex]);
         }
     }
 }

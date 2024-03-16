@@ -9,13 +9,17 @@ using System.Threading.Tasks;
 
 namespace QuickNav.BuildInCommands.CalculatorCommandCollector
 {
-    internal class CalculatorCommand : IUnknownCommandCollector
+    internal class CalculatorCommand : IUnknownCommandCollector, ITriggerCommand
     {
         public string Description => "Calculate terms.";
 
         public Uri Icon => null;
 
-        public QuickNavPlugin.Priority Priority => QuickNavPlugin.Priority.High;
+        public QuickNavPlugin.Priority Priority => QuickNavPlugin.Priority.Low;
+
+        public string CommandTrigger => "=";
+
+        public string[] Keywords => new string[] { "calc", "calculator" };
 
         public string Name(string query)
         {
