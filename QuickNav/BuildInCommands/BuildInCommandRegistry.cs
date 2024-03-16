@@ -1,4 +1,5 @@
-﻿using QuickNav.BuildInCommands.FileSearchCommandCollector;
+﻿using QuickNav.BuildInCommands.CMDCommandCollector;
+using QuickNav.BuildInCommands.FileSearchCommandCollector;
 using QuickNav.BuildInCommands.WebSearchCommandCollector;
 using QuickNav.BuildInCommands.WindowsFileSearch;
 using QuickNav.Helper;
@@ -23,9 +24,12 @@ namespace QuickNav.BuildInCommands
             fileSearch.Info = new AboutFileSearch();
             fileSearch.CollectorCommands.Add(new FileSearchCommand());
 
+            Plugin cmdExecutor = new Plugin();
+            cmdExecutor.CollectorCommands.Add(new CMDCommand());
 
             PluginHelper.Plugins.Add(webSearch);
             PluginHelper.Plugins.Add(fileSearch);
+            PluginHelper.Plugins.Add(cmdExecutor);
         }
     }
 }

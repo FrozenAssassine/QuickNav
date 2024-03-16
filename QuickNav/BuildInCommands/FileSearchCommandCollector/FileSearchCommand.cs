@@ -47,7 +47,6 @@ internal class FileSearchCommand : IUnknownCommandCollector
                     string fileName = reader["System.ItemName"].ToString();
 
                     listViewElement.Children.Add(new LabelElement(fileName));
-                    Debug.WriteLine(fileName);
                 }
             }
         }
