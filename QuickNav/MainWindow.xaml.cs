@@ -12,13 +12,16 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using WinRT.Interop;
+using System.Windows.Threading;
+using Microsoft.UI.Dispatching;
 
 namespace QuickNav
 {
     public sealed partial class MainWindow : Window
     {
-        private AppWindow m_AppWindow;
+        public static AppWindow m_AppWindow;
         private OverlappedPresenter? _presenter;
+        public static DispatcherQueue dispatcherQueue;
 
         public MainWindow()
         {
@@ -27,7 +30,7 @@ namespace QuickNav
             m_AppWindow = GetAppWindowForCurrentWindow();
 
             this.Activated += MainWindow_Activated;
-
+            dispatcherQueue = this.DispatcherQueue;
             _presenter = m_AppWindow.Presenter as OverlappedPresenter;
 
             //hide the window from taskbar and ALT+Tab:
@@ -57,7 +60,7 @@ namespace QuickNav
                 return;
             }
 
-            await WindowHelper.CenterWindow(this.m_AppWindow);
+            await WindowHelper.CenterWindow(m_AppWindow);
 
             _presenter.SetBorderAndTitleBar(hasBorder: false, hasTitleBar: false);
             _presenter.IsAlwaysOnTop = true;
@@ -101,5 +104,5 @@ namespace QuickNav
                 contentView.Visibility = Visibility.Visible;
             }
         }
-    }
+}
 }

@@ -114,12 +114,30 @@ namespace QuickNav.Helper
             }
             if (content is LabelElement labelElement)
             {
+                ScrollView sv = new ScrollView();
                 TextBlock textBlock = new TextBlock();
                 textBlock.Text = labelElement.Text;
+
                 textBlock.PointerPressed += (object sender, PointerRoutedEventArgs e) =>
                 {
                     if (labelElement.Clicked != null) labelElement.Clicked(labelElement);
                 };
+                labelElement.TextChanged += (ContentElement sender, string Text) =>
+                {
+                    textBlock.Text = Text;
+                    if (labelElement.AutoScrollBottom)
+                    {
+                        //TODO scroll to bottom
+                        sv.ScrollTo(0, sv.ViewportHeight - sv.Height);
+                    }
+                };
+
+                if (labelElement.Scrollable)
+                {
+                    sv.Content = textBlock;
+                    return sv;
+                }
+
                 return textBlock;
             }
             return null;

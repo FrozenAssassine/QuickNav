@@ -2,6 +2,7 @@
 using QuickNavPlugin;
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace QuickNav.BuildInCommands.CMDCommandCollector;
 
@@ -18,12 +19,12 @@ internal class CMDCommand : IUnknownCommandCollector
         return "Run \"" + query + "\"";
     }
 
-    private LabelElement outputLabel = new LabelElement();
-    
-
-    public bool RunCommand(string command, out ContentElement content)
+    public bool RunCommand(string command, out ContentElement output)
     {
-        content = outputLabel;
+        LabelElement outputLabel = new LabelElement();
+        output = outputLabel;
+        outputLabel.FontSize = 16;
+        outputLabel.Scrollable = outputLabel.AutoScrollBottom = true;
 
         Process process = new Process();
         ProcessStartInfo startInfo = new ProcessStartInfo
@@ -34,7 +35,6 @@ internal class CMDCommand : IUnknownCommandCollector
             RedirectStandardError = true,
             UseShellExecute = false,
             CreateNoWindow = true,
-
             Arguments = $"/C {command}"
         };
 
@@ -42,21 +42,30 @@ internal class CMDCommand : IUnknownCommandCollector
         process.StartInfo = startInfo;
 
         // Set up event handlers for output and error
-        process.OutputDataReceived += (sender, e) => outputLabel.Text += e.Data;
-        process.ErrorDataReceived += (sender, e) => outputLabel.Text += e.Data;
-
-        // Start the process
+        process.OutputDataReceived += (sender, e) =>
+        {
+            if (!string.IsNullOrEmpty(e.Data))
+            {
+                MainWindow.dispatcherQueue.TryEnqueue(() => outputLabel.Text += e.Data + Environment.NewLine);
+            }
+        };
+        process.ErrorDataReceived += (sender, e) =>
+        {
+            if (!string.IsNullOrEmpty(e.Data))
+            {
+                MainWindow.dispatcherQueue.TryEnqueue(() => outputLabel.Text += e.Data + Environment.NewLine);
+            }
+        };
         process.Start();
 
-        string output = process.StandardOutput.ReadLine();
+        Task.Run(() =>
+        {
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
 
-        // Wait for the process to exit
-        process.WaitForExit();
-
-        // Close the process
-        process.Close();
-
-        Debug.WriteLine("Command executed successfully.");
+            process.WaitForExit();
+            process.Close();
+        });
 
         return true;
     }

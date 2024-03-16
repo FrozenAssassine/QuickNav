@@ -1,4 +1,6 @@
-﻿namespace QuickNavPlugin.UI;
+﻿using ABI.Microsoft.UI.Xaml;
+
+namespace QuickNavPlugin.UI;
 
 /// <summary>
 /// Represents a label.
@@ -9,7 +11,9 @@ public class LabelElement : ContentElement
     {
         this.Text = text;
     }
-
+    public bool Scrollable { get; set; } = false;
+    public bool AutoScrollBottom { get; set; } = false;
+    public int FontSize { get; set; }
     private string _Text;
     public string Text
     {
