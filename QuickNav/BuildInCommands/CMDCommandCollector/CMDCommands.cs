@@ -18,9 +18,12 @@ internal class CMDCommand : IUnknownCommandCollector
         return "Run \"" + query + "\"";
     }
 
+    private LabelElement outputLabel = new LabelElement();
+    
+
     public bool RunCommand(string command, out ContentElement content)
     {
-        var outputLabel = new LabelElement();
+        content = outputLabel;
 
         Process process = new Process();
         ProcessStartInfo startInfo = new ProcessStartInfo
@@ -45,15 +48,7 @@ internal class CMDCommand : IUnknownCommandCollector
         // Start the process
         process.Start();
 
-        // Asynchronously read the output stream
-        await Task.Run(() =>
-        {
-            while (!process.StandardOutput.EndOfStream)
-            {
-                string output = process.StandardOutput.ReadLine();
-                Dispatcher.Invoke(() => updateUI(output));
-            }
-        });
+        string output = process.StandardOutput.ReadLine();
 
         // Wait for the process to exit
         process.WaitForExit();
@@ -62,8 +57,6 @@ internal class CMDCommand : IUnknownCommandCollector
         process.Close();
 
         Debug.WriteLine("Command executed successfully.");
-
-        content = outputLabel;
 
         return true;
     }
