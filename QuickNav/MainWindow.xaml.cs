@@ -4,9 +4,6 @@ using Microsoft.UI.Xaml;
 using QuickNav.BuildInCommands;
 using QuickNav.Helper;
 using System;
-using System.Threading.Tasks;
-using Windows.Devices.Display;
-using Windows.Devices.Enumeration;
 using WinRT.Interop;
 
 namespace QuickNav
@@ -48,6 +45,11 @@ namespace QuickNav
             _presenter.SetBorderAndTitleBar(hasBorder: false, hasTitleBar: false);
             _presenter.IsAlwaysOnTop = true;
             _presenter.IsResizable = false;
+        }
+
+        private void searchInputBox_TextChanged(object sender, Microsoft.UI.Xaml.Controls.TextChangedEventArgs e)
+        {
+
         }
     }
 }
