@@ -12,7 +12,7 @@ internal class FileSearchCommand : IUnknownCommandCollector
 {
     public string Description => "Run this command to search files on windows";
 
-    public Uri Icon => null;
+    public Uri Icon => new Uri("ms-appx://App/Assets/commands/filesearch.png");
 
     public Priority Priority => Priority.Low;
 

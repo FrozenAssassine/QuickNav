@@ -10,7 +10,7 @@ internal class CMDCommand : ITriggerCommand, IUnknownCommandCollector
 {
     public string Description => "Run this command to execute in commandline";
 
-    public Uri Icon => null;
+    public Uri Icon => new Uri("ms-appx://App/Assets/commands/cmd.png");
 
     public Priority Priority => Priority.Low;
 
