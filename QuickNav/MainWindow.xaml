@@ -19,9 +19,10 @@
         <ListView x:Name="resultView" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="resultView_SelectionChanged">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:ResultListViewItem">
-                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                        <TextBlock Text="{Binding Text}"/>
-                    </Grid>
+                    <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Horizontal">
+                        <Image Source="{Binding Command.Icon}" Width="30" Margin="5" />
+                        <TextBlock Text="{Binding Text}" ToolTipService.ToolTip="{Binding Command.Description}" VerticalAlignment="Center" Margin="5,0,0,0" />
+                    </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

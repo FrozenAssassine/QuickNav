@@ -15,20 +15,25 @@ namespace QuickNav.BuildInCommands.WebSearchCommandCollector
     {
         public string Description => "Run this command to search for your query in web.";
 
-        public Uri Icon => null;
+        public Uri Icon => BrowserInfo.BrowserIcon;
 
         public Priority Priority => Priority.Low;
 
         public string Name(string query)
         {
-            return "Search for \"" + query + "\" in browser";
+            return "Search for \"" + query + "\" in " + BrowserInfo.BrowserName;
         }
 
-        public bool RunCommand(string parameters, out ContentElement content) // Extend that with: https://stackoverflow.com/a/17599201 for Icon of the standard browser and standard search engine
+        public bool RunCommand(string parameters, out ContentElement content)
         {
             content = null;
             Windows.System.Launcher.LaunchUriAsync(new Uri("https://www.google.com/search?q=" + UrlEncoder.Default.Encode(parameters)));
             return true;
+        }
+
+        public WebSearchCommand()
+        {
+            BrowserInfo.Init();
         }
     }
 }
