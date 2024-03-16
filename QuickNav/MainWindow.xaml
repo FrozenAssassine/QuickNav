@@ -10,13 +10,13 @@
         <DesktopAcrylicBackdrop />
     </Window.SystemBackdrop>
 
-    <Grid DragOver="Grid_DragOver" Drop="Grid_Drop" AllowDrop="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBox x:Name="searchBox" Grid.Row="0" TextChanged="searchInputBox_TextChanged" Margin="10" Height="40" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="18" KeyDown="searchBox_KeyDown"/>
-        <ListView x:Name="resultView" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="resultView_SelectionChanged">
+        <ListView DragOver="Grid_DragOver" Drop="Grid_Drop" AllowDrop="True"  x:Name="resultView" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="resultView_SelectionChanged">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:ResultListViewItem">
                     <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Horizontal">

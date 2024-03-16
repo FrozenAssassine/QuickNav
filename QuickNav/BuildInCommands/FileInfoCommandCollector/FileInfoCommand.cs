@@ -7,19 +7,19 @@ namespace QuickNav.BuildInCommands.FileInfoCommandCollector;
 
 internal class FileInfoCommand : ITriggerCommand
 {
-    public string Description => "Run this command to get infos about a file";
+    public string Description => "Get infos about a file";
 
     public Uri Icon => null;
 
     public Priority Priority => Priority.Low;
 
-    public string CommandTrigger => "finf";
+    public string CommandTrigger => "finf:";
 
     public string[] Keywords => new string[] { "info", "fileinfo"};
 
     public string Name(string query)
     {
-        return "Search for \"" + query + "\" in your files";
+        return "Informations about \"" + query + "\"";
     }
 
     public bool RunCommand(string file, out ContentElement content)
@@ -27,6 +27,11 @@ internal class FileInfoCommand : ITriggerCommand
         var textLabel = new LabelElement();
         content = textLabel;
 
+        if (!File.Exists(file))
+        {
+            //TODO show error that file does not exist
+            return false;
+        }
         FileInfo fileInfo = new FileInfo(file);
 
         string fileInfoString = $"File Name: {fileInfo.Name}\n" +
