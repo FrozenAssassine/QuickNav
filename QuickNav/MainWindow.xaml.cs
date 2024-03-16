@@ -14,6 +14,7 @@ using System.Linq;
 using WinRT.Interop;
 using System.Windows.Threading;
 using Microsoft.UI.Dispatching;
+using Windows.ApplicationModel.DataTransfer;
 
 namespace QuickNav
 {
@@ -104,5 +105,19 @@ namespace QuickNav
                 contentView.Visibility = Visibility.Visible;
             }
         }
-}
+
+        private void Grid_DragOver(object sender, DragEventArgs e)
+        {
+            e.AcceptedOperation = Windows.ApplicationModel.DataTransfer.DataPackageOperation.Copy;
+        }
+
+        private async void Grid_Drop(object sender, DragEventArgs e)
+        {
+            if(e.DataView.Contains(StandardDataFormats.StorageItems)){
+                var files = await e.DataView.GetStorageItemsAsync();
+                //files[i]
+
+            }
+        }
+    }
 }

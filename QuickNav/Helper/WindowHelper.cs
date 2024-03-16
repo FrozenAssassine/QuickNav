@@ -13,7 +13,8 @@ namespace QuickNav.Helper
 
             var displayList = await DeviceInformation.FindAllAsync
                      (DisplayMonitor.GetDeviceSelector());
-
+            
+            //TODO: does not work with multiple screens
             var monitorInfo = await DisplayMonitor.FromInterfaceIdAsync(displayList[0].Id);
 
             var screenHeight = monitorInfo.NativeResolutionInRawPixels.Height;
