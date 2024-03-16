@@ -39,12 +39,23 @@ internal class CountWordsCommand : ITriggerCommand
         return text.Split("\n").Length;
     }
 
-    public bool RunCommand(string file, out ContentElement content)
+    public bool RunCommand(string param, out ContentElement content)
     {
         var textLabel = new LabelElement();
         content = textLabel;
 
-        string text = File.ReadAllText(file);
+        string text;
+        //no file, count the clipboard
+        if(param.Length == 0)
+        {
+            text = System.Windows.Clipboard.GetText();
+        }
+        else
+        {
+            if(!File.Exists(param))
+                return false;
+            text = File.ReadAllText(param);
+        }
 
         textLabel.Text = "Words: " + CountWords(text) + "\nCharacter: " + text.Length + "\nLines: " + CountLines(text);
 
