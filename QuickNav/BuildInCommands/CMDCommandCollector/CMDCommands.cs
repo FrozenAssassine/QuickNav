@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace QuickNav.BuildInCommands.CMDCommandCollector;
 
-internal class CMDCommand : ITriggerCommand
+internal class CMDCommand : ITriggerCommand, IUnknownCommandCollector
 {
     public string Description => "Run this command to execute in commandline";
 
@@ -27,7 +27,6 @@ internal class CMDCommand : ITriggerCommand
     {
         LabelElement outputLabel = new LabelElement();
         output = outputLabel;
-        outputLabel.FontSize = 16;
         outputLabel.Scrollable = outputLabel.AutoScrollBottom = true;
 
         Process process = new Process();

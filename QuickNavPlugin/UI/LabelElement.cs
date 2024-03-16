@@ -13,7 +13,6 @@ public class LabelElement : ContentElement
     }
     public bool Scrollable { get; set; } = false;
     public bool AutoScrollBottom { get; set; } = false;
-    public int FontSize { get; set; }
     private string _Text;
     public string Text
     {

@@ -117,7 +117,6 @@ namespace QuickNav.Helper
                 ScrollView sv = new ScrollView();
                 TextBlock textBlock = new TextBlock();
                 textBlock.Text = labelElement.Text;
-
                 textBlock.PointerPressed += (object sender, PointerRoutedEventArgs e) =>
                 {
                     if (labelElement.Clicked != null) labelElement.Clicked(labelElement);
