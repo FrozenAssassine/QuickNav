@@ -18,10 +18,8 @@ using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using WinUIEx;
 using H.NotifyIcon.Core;
-
-//ref systray to:
-//https://github.com/dotMorten/WinUIEx/blob/3aaa34b58c488dba054e80311bfc3aa1cc772950/src/WinUIExSample/MainWindow.xaml.cs
-//https://github.com/dotMorten/WinUIEx/blob/3aaa34b58c488dba054e80311bfc3aa1cc772950/src/WinUIExSample/MainWindow.xaml
+using H.NotifyIcon;
+using System.Runtime.InteropServices;
 
 namespace QuickNav
 {
@@ -32,30 +30,76 @@ namespace QuickNav
         public static DispatcherQueue dispatcherQueue;
         public bool PreventSearchboxChangedEvent = false;
         private TrayIcon trayIcon;
+        private IntPtr hWnd;
+
+        private const int GWLP_WNDPROC = -4;
+        private const int MOD_ALT = 0x0001;
+        private const int MOD_CONTROL = 0x0002;
+        private const int MOD_SHIFT = 0x0004;
+        private const int WM_HOTKEY = 0x0312;
+
+        private const int HOTKEY_ID = 1;
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vk);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr GetModuleHandle(string lpModuleName);
+
+        [DllImport("user32.dll", EntryPoint = "SetWindowLongPtr")]
+        public static extern IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
+        [DllImport("user32.dll", EntryPoint = "SetWindowLong")] //32-bit
+        public static extern IntPtr SetWindowLong(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
+        public delegate IntPtr WndProcDelegate(IntPtr hwnd, uint message, IntPtr wParam, IntPtr lParam);
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam);
+        private IntPtr _oldWndProc;
 
         public MainWindow()
         {
             this.InitializeComponent();
 
-            m_AppWindow = GetAppWindowForCurrentWindow();
+            //appwindow stuff:
+            hWnd = WindowNative.GetWindowHandle(this);
+            WindowId wndId = Win32Interop.GetWindowIdFromWindow(hWnd);
+            m_AppWindow = AppWindow.GetFromWindowId(wndId);
+            _oldWndProc = SetWndProc(WindowProcess);
+
+            RegisterHotKey(hWnd, HOTKEY_ID, MOD_CONTROL | MOD_SHIFT, (int)System.Windows.Forms.Keys.Space);
+
 
             this.Activated += MainWindow_Activated;
             dispatcherQueue = this.DispatcherQueue;
             _presenter = m_AppWindow.Presenter as OverlappedPresenter;
 
             BuildInCommandRegistry.Register();
-
             searchInputBox_TextChanged(null, null);
 
             InitSystemTray();
         }
 
-        private AppWindow GetAppWindowForCurrentWindow()
+        public IntPtr SetWndProc(WndProcDelegate newProc)
         {
-            IntPtr hWnd = WindowNative.GetWindowHandle(this);
-            WindowId wndId = Win32Interop.GetWindowIdFromWindow(hWnd);
-            return AppWindow.GetFromWindowId(wndId);
+            IntPtr functionPointer = Marshal.GetFunctionPointerForDelegate(newProc);
+            if (IntPtr.Size == 8)
+                return SetWindowLongPtr(hWnd, GWLP_WNDPROC, functionPointer);
+            else
+                return SetWindowLong(hWnd, GWLP_WNDPROC, functionPointer);
         }
+
+        private IntPtr WindowProcess(IntPtr hwnd, uint message, IntPtr wParam, IntPtr lParam)
+        {
+            if (message == WM_HOTKEY && (int)wParam == HOTKEY_ID)
+            {
+                this.Show();
+            }
+
+            return CallWindowProc(_oldWndProc, hwnd, message, wParam, lParam);
+        }
+
 
         private void InitSystemTray()
         {
@@ -71,19 +115,14 @@ namespace QuickNav
             }
         }
 
-        private void HideWindow()
-        {
-            //trayIcon?.Dispose();
-            //var icon = Icon.FromFile("Images/WindowIcon.ico");
-            //trayIcon = new TrayIcon("QuickNav");
-            this.HideWindow();
-        }
-
         private async void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
         {
             if (args.WindowActivationState == WindowActivationState.Deactivated)
             {
-                HideWindow();
+                this.Hide();
+                trayIcon.Create();
+                trayIcon.Show();
+                trayIcon.UpdateVisibility(IconVisibility.Visible);
                 return;
             }
 
@@ -95,8 +134,6 @@ namespace QuickNav
             await WindowHelper.CenterWindow(m_AppWindow);
 
             _presenter.SetBorderAndTitleBar(hasBorder: false, hasTitleBar: false);
-            _presenter.IsAlwaysOnTop = true;
-            _presenter.IsResizable = false;
 
             searchBox.Focus(FocusState.Keyboard);
         }
