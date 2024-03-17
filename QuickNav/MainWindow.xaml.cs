@@ -16,12 +16,14 @@ using System.Windows.Threading;
 using Microsoft.UI.Dispatching;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
+using System.Windows.Interop;
 
 namespace QuickNav
 {
     public sealed partial class MainWindow : Window
     {
         public static AppWindow m_AppWindow;
+        public static IntPtr WindowHandle;
         private OverlappedPresenter? _presenter;
         public static DispatcherQueue dispatcherQueue;
         public bool PreventSearchboxChangedEvent = false;
@@ -41,13 +43,18 @@ namespace QuickNav
 
             BuildInCommandRegistry.Register();
 
+            GlobalHotkeyHelper.RegisterHotkey(Windows.System.VirtualKeyModifiers.Windows, Windows.System.VirtualKey.Y, (object sender, EventArgs e) =>
+            {
+                m_AppWindow.Show();
+            });
+
             searchInputBox_TextChanged(null, null);
         }
 
         private AppWindow GetAppWindowForCurrentWindow()
         {
-            IntPtr hWnd = WindowNative.GetWindowHandle(this);
-            WindowId wndId = Win32Interop.GetWindowIdFromWindow(hWnd);
+            WindowHandle = WindowNative.GetWindowHandle(this);
+            WindowId wndId = Win32Interop.GetWindowIdFromWindow(WindowHandle);
             return AppWindow.GetFromWindowId(wndId);
         }
 
@@ -56,7 +63,7 @@ namespace QuickNav
             if (args.WindowActivationState == WindowActivationState.Deactivated)
             {
                 //close the window when it loses focus:
-                this.Close();
+                m_AppWindow.Hide();
                 return;
             }
 
@@ -238,6 +245,11 @@ namespace QuickNav
                 return;
 
             RunCommand(searchBox.Text, (ResultListViewItem)resultView.Items[resultView.SelectedIndex == -1 ? 0 : resultView.SelectedIndex]);
+        }
+
+        private void Window_Closed(object sender, WindowEventArgs args)
+        {
+            GlobalHotkeyHelper.UnregisterAllHotkeys();
         }
     }
 }
