@@ -1,30 +1,29 @@
 ﻿using System;
-using Microsoft.UI.Windowing;
-using System.Threading.Tasks;
-using Windows.Devices.Display;
-using Windows.Devices.Enumeration;
 
 namespace QuickNav.Helper
 {
     internal class WindowHelper
     {
-        public static async Task CenterWindow(AppWindow window)
+        public static void CenterWindow(IntPtr hWnd)
         {
+            Microsoft.UI.WindowId windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hWnd);
+            Microsoft.UI.Windowing.AppWindow appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(windowId);
+            if (appWindow is not null)
+            {
+                Microsoft.UI.Windowing.DisplayArea displayArea = Microsoft.UI.Windowing.DisplayArea.GetFromWindowId(windowId, Microsoft.UI.Windowing.DisplayAreaFallback.Nearest);
+                if (displayArea is not null)
+                {
 
-            var displayList = await DeviceInformation.FindAllAsync
-                     (DisplayMonitor.GetDeviceSelector());
-            
-            //TODO: does not work with multiple screens
-            var monitorInfo = await DisplayMonitor.FromInterfaceIdAsync(displayList[0].Id);
+                    var width = Math.Clamp(displayArea.WorkArea.Width / 4, 400, 800);
+                    var height = Math.Clamp(displayArea.WorkArea.Height / 4, 200, 600);
+                    int x = ((displayArea.WorkArea.Width - width) / 2);
+                    int y = ((displayArea.WorkArea.Height - height) / 2);
 
-            var screenHeight = monitorInfo.NativeResolutionInRawPixels.Height;
-            var screenWidth = monitorInfo.NativeResolutionInRawPixels.Width;
+                    var center = new Windows.Graphics.RectInt32(x, y, width, height);
 
-            var width = Math.Clamp(screenWidth / 4, 400, 800);
-            var height = Math.Clamp(screenHeight / 4, 200, 600);
-
-            var windowSize = new Windows.Graphics.RectInt32(screenWidth / 2 - (width / 2), (screenHeight / 2 - (height / 2)), width, height);
-            window.MoveAndResize(windowSize);
+                    appWindow.MoveAndResize(center);
+                }
+            }
         }
     }
 }

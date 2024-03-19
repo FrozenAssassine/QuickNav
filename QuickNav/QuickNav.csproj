@@ -11,6 +11,9 @@
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Views\SearchPage.xaml" />
+  </ItemGroup>
 
   <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -41,6 +44,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\QuickNavPlugin\QuickNavPlugin.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\SearchPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <!-- 

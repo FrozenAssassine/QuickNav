@@ -19,6 +19,8 @@ internal class FileInfoCommand : ITriggerCommand
 
     public string Name(string query)
     {
+        if (query.Length == 0)
+            return "Informations about a file";
         return "Informations about \"" + query + "\"";
     }
 

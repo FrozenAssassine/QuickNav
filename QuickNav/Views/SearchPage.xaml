@@ -1,0 +1,29 @@
+<Page
+    x:Class="QuickNav.Views.SearchPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:QuickNav.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:QuickNav.Models"
+    mc:Ignorable="d">
+
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBox x:Name="searchBox" Grid.Row="0" TextChanged="searchInputBox_TextChanged" Margin="10" Height="40" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="18" KeyDown="searchBox_KeyDown"/>
+        <ListView ItemClick="resultView_ItemClick" IsItemClickEnabled="True" DragOver="Grid_DragOver" Drop="Grid_Drop" AllowDrop="True"  x:Name="resultView" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:ResultListViewItem">
+                    <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Horizontal">
+                        <Image Source="{Binding Command.Icon}" Width="30" Margin="5" />
+                        <TextBlock Text="{Binding Text}" ToolTipService.ToolTip="{Binding Command.Description}" VerticalAlignment="Center" Margin="5,0,0,0" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Grid VerticalAlignment="Stretch" Margin="10" x:Name="contentView" Grid.Row="1"/>
+    </Grid>
+</Page>
