@@ -23,11 +23,7 @@ internal class CountWordsCommand : ITriggerCommand
     }
     private static int CountWords(string str)
     {
-        int index = -1;
-        int count = 0;
-        while (-1 != (index = str.IndexOf('\n', index + 1)))
-            count++;
-        return count + 1;
+        return str.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length;
     }
 
     static int CountLines(string text)
@@ -52,9 +48,10 @@ internal class CountWordsCommand : ITriggerCommand
         }
         else
         {
-            if(!File.Exists(param))
-                return false;
-            text = File.ReadAllText(param);
+            if (!File.Exists(param))
+                text = param;
+            else
+                text = File.ReadAllText(param);
         }
 
         textLabel.Text = "Words: " + CountWords(text) + "\nCharacter: " + text.Length + "\nLines: " + CountLines(text);

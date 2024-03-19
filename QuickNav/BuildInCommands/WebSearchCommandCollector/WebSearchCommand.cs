@@ -1,17 +1,11 @@
 ﻿using QuickNavPlugin;
 using QuickNavPlugin.UI;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
 using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 
 namespace QuickNav.BuildInCommands.WebSearchCommandCollector
 {
-    internal class WebSearchCommand : IUnknownCommandCollector
+    internal class WebSearchCommand : IUnknownCommandCollector, ITriggerCommand
     {
         public string Description => "Run this command to search for your query in web.";
 
@@ -19,8 +13,15 @@ namespace QuickNav.BuildInCommands.WebSearchCommandCollector
 
         public Priority Priority => Priority.Low;
 
+        public string CommandTrigger => "net";
+
+        public string[] Keywords => new string[] { "web", "search web", "internet" };
+
         public string Name(string query)
         {
+            if (query.Length == 0)
+                return "Search the web";
+
             return "Search for \"" + query + "\" in " + BrowserInfo.BrowserName;
         }
 
