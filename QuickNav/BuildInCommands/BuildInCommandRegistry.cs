@@ -22,6 +22,7 @@ namespace QuickNav.BuildInCommands
             buildInCommands.TriggerCommands.Add(new CountWordsCommand());
             buildInCommands.TriggerCommands.Add(new CMDCommand());
             buildInCommands.TriggerCommands.Add(new CountWordsCommand());
+            buildInCommands.TriggerCommands.Add(new FileInfoCommand());
             buildInCommands.TriggerCommands.Add(new PlainTextConverterCommand());
             buildInCommands.TriggerCommands.Add(new CalculatorCommand());
 

@@ -21,13 +21,13 @@ public sealed partial class SearchPage : Page
     {
         this.InitializeComponent();
 
-        searchInputBox_TextChanged(null, null);
     }
 
     public void InitialiseOnShowWindow()
     {
         searchBox.Text = "";
         searchBox.Focus(FocusState.Programmatic);
+        searchInputBox_TextChanged(null, null);
     }
 
     private void searchInputBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -58,6 +58,7 @@ public sealed partial class SearchPage : Page
                     resultView.Items.Add(new ResultListViewItem() { Command = command, Text = command.Name(searchBox.Text) });
                 }
             }
+
             return;
         }
         else
