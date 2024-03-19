@@ -110,7 +110,7 @@ public sealed partial class SearchPage : Page
         else
         {
             //command was executed without showing ui
-            //this.Hide();
+            MainWindow.m_AppWindow.Hide();
         }
     }
 
@@ -186,6 +186,18 @@ public sealed partial class SearchPage : Page
                 //any ideas?
             }
         }
+        //handle text:
+        else if (e.DataView.Contains(StandardDataFormats.Text))
+        {
+            searchBox.Text += await e.DataView.GetTextAsync();
+            var resultlistViewitem = resultView.Items[droppedItemIndex] as ResultListViewItem;
+            if (resultlistViewitem.Command is ITriggerCommand triggerCommand)
+            {
+                PreventSearchboxChangedEvent = true;
+                searchBox.Text = triggerCommand.CommandTrigger + searchBox.Text;
+                RunCommand(triggerCommand.CommandTrigger + searchBox.Text, resultlistViewitem);
+            }
+        }
     }
 
     private void resultView_ItemClick(object sender, ItemClickEventArgs e)
@@ -194,5 +206,21 @@ public sealed partial class SearchPage : Page
             return;
 
         RunCommand(searchBox.Text, (ResultListViewItem)e.ClickedItem);
+    }
+
+    private async void searchBox_Drop(object sender, DragEventArgs e)
+    {
+        if (e.DataView.Contains(StandardDataFormats.StorageItems))
+        {
+            var files = await e.DataView.GetStorageItemsAsync();
+            if (files.Count == 0)
+                return;
+
+            searchBox.Text += files[0].Path;
+        }
+        else if (e.DataView.Contains(StandardDataFormats.Text))
+        {
+            searchBox.Text += await e.DataView.GetTextAsync();
+        }
     }
 }
