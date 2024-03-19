@@ -20,6 +20,7 @@ internal class CMDCommand : ITriggerCommand, IUnknownCommandCollector
 
     public string Name(string query)
     {
+        if (query == "") return "Run";
         return "Run \"" + query + "\"";
     }
 

@@ -18,6 +18,7 @@ internal class FileSearchCommand : IUnknownCommandCollector
 
     public string Name(string query)
     {
+        if (query == "") return "Search in your files";
         return "Search for \"" + query + "\" in your files";
     }
 

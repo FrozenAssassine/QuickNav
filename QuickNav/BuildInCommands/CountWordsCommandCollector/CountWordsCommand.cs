@@ -5,7 +5,7 @@ using System.IO;
 
 namespace QuickNav.BuildInCommands.FileInfoCommandCollector;
 
-internal class CountWordsCommand : ITriggerCommand
+internal class CountWordsCommand : ITriggerCommand, IUnknownCommandCollector
 {
     public string Description => "Count the words in a file or clipboard";
 

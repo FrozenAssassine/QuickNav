@@ -23,6 +23,7 @@ namespace QuickNav.BuildInCommands.CalculatorCommandCollector
 
         public string Name(string query)
         {
+            if (query == "") return "Calculate";
             try
             {
                 return "= " + Parser.Parse(query).Calc().ToString();
