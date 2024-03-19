@@ -189,11 +189,9 @@ public sealed partial class SearchPage : Page
 
     private void resultView_ItemClick(object sender, ItemClickEventArgs e)
     {
-        //click on listviewitems
-        if (resultView.Items.Count == 0)
+        if (e.ClickedItem == null)
             return;
 
-        RunCommand(searchBox.Text, (ResultListViewItem)resultView.Items[resultView.SelectedIndex == -1 ? 0 : resultView.SelectedIndex]);
+        RunCommand(searchBox.Text, (ResultListViewItem)e.ClickedItem);
     }
-
 }
