@@ -23,7 +23,14 @@ namespace QuickNav.BuildInCommands.CalculatorCommandCollector
 
         public string Name(string query)
         {
-            return "Calculate \"" + query + "\"";
+            try
+            {
+                return "= " + Parser.Parse(query).Calc().ToString();
+            }
+            catch
+            {
+                return "Calculate \"" + query + "\"";
+            }
         }
 
         public bool RunCommand(string parameters, out ContentElement content)
@@ -35,8 +42,8 @@ namespace QuickNav.BuildInCommands.CalculatorCommandCollector
             }
             catch
             {
-                content = null;
-                return false;
+                content = new LabelElement("Parsing error!");
+                return true;
             }
         }
     }
