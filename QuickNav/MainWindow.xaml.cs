@@ -7,6 +7,9 @@ using WinRT.Interop;
 using Microsoft.UI.Dispatching;
 using QuickNav.BuildInCommands;
 using H.NotifyIcon;
+using System.Diagnostics;
+using Microsoft.UI.Xaml.Input;
+using System.Runtime.InteropServices;
 
 namespace QuickNav;
 
@@ -16,6 +19,9 @@ public sealed partial class MainWindow : Window
     public static IntPtr hWnd;
     private OverlappedPresenter? _presenter;
     public static DispatcherQueue dispatcherQueue;
+    
+    [DllImport("user32.dll")]
+    private static extern bool SetForegroundWindow(IntPtr hWnd);
 
     public MainWindow()
     {
@@ -37,13 +43,13 @@ public sealed partial class MainWindow : Window
         GlobalHotkeyHelper.RegisterHotkey(Windows.System.VirtualKeyModifiers.Windows, Windows.System.VirtualKey.Y, (object sender, EventArgs e) =>
         {
             this.Show();
+            SetForegroundWindow(hWnd);
         });
 
         if (_presenter is null)
         {
             return;
         }
-
         _presenter.SetBorderAndTitleBar(hasBorder: false, hasTitleBar: false);
         _presenter.IsAlwaysOnTop = true;
         _presenter.IsResizable = false;
