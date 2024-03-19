@@ -4,11 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Interop;
 using Windows.System;
-using WinRT.Interop;
 
 namespace QuickNav.Helper
 {
@@ -16,25 +12,20 @@ namespace QuickNav.Helper
     {
         [DllImport("user32.dll")]
         private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
-
         [DllImport("user32.dll")]
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
-
         [DllImport("kernel32.dll")]
         private static extern IntPtr GetModuleHandle(string lpModuleName);
-
         [DllImport("user32.dll", EntryPoint = "SetWindowLongPtr")]
         public static extern IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
-
         [DllImport("user32.dll", EntryPoint = "SetWindowLong")] //32-bit
-        public static extern IntPtr SetWindowLong(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
-
-        public delegate IntPtr WndProcDelegate(IntPtr hwnd, uint message, IntPtr wParam, IntPtr lParam);
-        
+        public static extern IntPtr SetWindowLong(IntPtr hWnd, int nIndex, IntPtr dwNewLong);        
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam);
         
         private static IntPtr _oldWndProc = IntPtr.Zero;
+        public delegate IntPtr WndProcDelegate(IntPtr hwnd, uint message, IntPtr wParam, IntPtr lParam);
+        private static WndProcDelegate _wndProcDelegate;
 
         private static int HOTKEY_ID = 9001;
         private const int WM_HOTKEY = 0x0312;
@@ -45,9 +36,12 @@ namespace QuickNav.Helper
         public static bool RegisterHotkey(VirtualKeyModifiers modifier, VirtualKey key, EventHandler hotkeyPressed)
         {
             if (_oldWndProc == IntPtr.Zero)
-                _oldWndProc = SetWndProc(HwndHook);
-            
-            bool success = RegisterHotKey(MainWindow.WindowHandle, HOTKEY_ID, (uint)modifier, (uint)key);
+            {
+                _wndProcDelegate = HwndHook;
+                _oldWndProc = SetWndProc(_wndProcDelegate);
+            }
+
+            bool success = RegisterHotKey(MainWindow.hWnd, HOTKEY_ID, (uint)modifier, (uint)key);
             if (success)
                 hotkeyRegistry.Add((HOTKEY_ID++, modifier, key, hotkeyPressed));
             return success;
@@ -57,7 +51,7 @@ namespace QuickNav.Helper
         {
             for(int i = 0; i < hotkeyRegistry.Count; i++)
             {
-                UnregisterHotKey(MainWindow.WindowHandle, hotkeyRegistry[i].HotKeyID);
+                UnregisterHotKey(MainWindow.hWnd, hotkeyRegistry[i].HotKeyID);
             }
         }
 
@@ -65,9 +59,9 @@ namespace QuickNav.Helper
         {
             IntPtr functionPointer = Marshal.GetFunctionPointerForDelegate(newProc);
             if (IntPtr.Size == 8)
-                return SetWindowLongPtr(MainWindow.WindowHandle, GWLP_WNDPROC, functionPointer);
+                return SetWindowLongPtr(MainWindow.hWnd, GWLP_WNDPROC, functionPointer);
             else
-                return SetWindowLong(MainWindow.WindowHandle, GWLP_WNDPROC, functionPointer);
+                return SetWindowLong(MainWindow.hWnd, GWLP_WNDPROC, functionPointer);
         }
 
         private static IntPtr HwndHook(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam)
