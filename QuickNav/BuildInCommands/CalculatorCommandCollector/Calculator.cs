@@ -1450,6 +1450,7 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
                                     subFormula += cc;
                                 }
                                 i++;
+                                if (i > formula.Length + 3) throw new InvalidOperationException("Missing bracket!");
                                 if (i < formula.Length) cc = formula[i];
                             } while (bracket >= bracketOld);
 
@@ -1501,6 +1502,7 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
                                 }
                                 subFormula += cc;
                                 i++;
+                                if (i > formula.Length + 3) throw new InvalidOperationException("Missing bracket!");
                                 if (i < formula.Length) cc = formula[i];
                             } while (bracket >= bracketOld);
 
