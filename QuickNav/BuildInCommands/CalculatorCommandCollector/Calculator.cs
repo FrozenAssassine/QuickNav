@@ -1386,8 +1386,8 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
                 formula = formula.ToLower();
                 formula = formula.Replace(" ", "");
                 formula = formula.Replace("\r", "").Replace("\n", "").Replace("\t", "");
-                formula = formula.Replace("π", "(" + Math.PI + ")").Replace("\\pi", "(" + Math.PI + ")");
-                formula = formula.Replace("\\e", "(" + Math.E + ")");
+                formula = formula.Replace("π", ("(" + Math.PI + ")").Replace(',', '.')).Replace("\\pi", ("(" + Math.PI + ")").Replace(',', '.'));
+                formula = formula.Replace("\\e", ("(" + Math.E + ")").Replace(',', '.'));
                 formula = formula.Replace("\\", "/");
                 formula = formula.Replace("÷", "/").Replace("×", "*");
                 Random r = new Random();
@@ -1395,7 +1395,7 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
                 while (index != -1)
                 {
                     formula = formula.Remove(index, 1);
-                    formula = formula.Insert(index, "(" + r.NextDouble() + ")");
+                    formula = formula.Insert(index, ("(" + r.NextDouble() + ")").Replace(',', '.'));
                     index = formula.IndexOf('?');
                 }
 
