@@ -18,12 +18,16 @@ namespace QuickNav.Helper
 {
     internal class ContentElementRenderHelper
     {
-        public static FlyoutBase CreateFlyout()
+        public static FlyoutBase CreateFlyout(FlyoutElement flyout)
         {
-            return new Flyout()
-            {
+            ListViewElement lv = new ListViewElement();
+            lv.Orientation = QuickNavPlugin.UI.Orientation.Vertical;
+            foreach (ContentElement ce in flyout.Items)
+                lv.Children.Add(ce);
 
-            }
+            Flyout f = new Flyout();
+            f.Content = RenderContentElement(lv);
+            return f;
         }
 
         public static UIElement RenderContentElement(ContentElement content)
@@ -32,7 +36,7 @@ namespace QuickNav.Helper
             {
                 Button btn = new Button();
                 btn.Content = buttonElement.Text;
-                btn.ContextFlyout = content.ContextFlyout;
+                if (content.Flyout != null) btn.ContextFlyout = CreateFlyout(content.Flyout);
                 btn.Click += (object sender, RoutedEventArgs e) =>
                 {
                     if (buttonElement.Clicked != null) buttonElement.Clicked(buttonElement);
@@ -46,7 +50,6 @@ namespace QuickNav.Helper
             if(content is ImageElement imageElement)
             {
                 Image img = new Image();
-                imageElement.ContextFlyout = content.ContextFlyout;
                 img.Source = new BitmapImage(imageElement.Image);
                 img.PointerPressed += (object sender, PointerRoutedEventArgs e) =>
                 {
@@ -94,7 +97,7 @@ namespace QuickNav.Helper
             if(content is TextElement textElement)
             {
                 TextBox textBox = new TextBox();
-                textBox.ContextFlyout = content.ContextFlyout;
+                if (content.Flyout != null) textBox.ContextFlyout = CreateFlyout(content.Flyout);
                 textBox.Text = textElement.Text;
                 textBox.IsReadOnly = !textElement.IsEditable;
                 textBox.BorderThickness = new Thickness(0);
@@ -130,7 +133,7 @@ namespace QuickNav.Helper
                 ScrollView sv = new ScrollView();
                 TextBlock textBlock = new TextBlock();
                 textBlock.Text = labelElement.Text;
-                textBlock.ContextFlyout = content.Flyout;
+                if (content.Flyout != null) textBlock.ContextFlyout = CreateFlyout(content.Flyout);
                 textBlock.PointerPressed += (object sender, PointerRoutedEventArgs e) =>
                 {
                     if (labelElement.Clicked != null) labelElement.Clicked(labelElement);
