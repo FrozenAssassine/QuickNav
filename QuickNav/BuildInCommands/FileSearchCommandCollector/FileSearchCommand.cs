@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Data.OleDb;
 using System.Collections.ObjectModel;
+using Microsoft.UI.Xaml.Controls;
+using QuickNav.Extensions;
 
 namespace QuickNav.BuildInCommands.WindowsFileSearch;
 
@@ -38,8 +40,15 @@ internal class FileSearchCommand : IUnknownCommandCollector
 
             var listViewElement = new ListViewElement();
             content = listViewElement;
-            listViewElement.Orientation = Orientation.Vertical;
+            listViewElement.Orientation = QuickNavPlugin.UI.Orientation.Vertical;
             listViewElement.Children.Clear();
+
+            var flyout = new MenuFlyout();
+            flyout.Add("", "", () =>
+            {
+                //
+            });
+            flyout.Items.Add(new MenuFlyoutItem());
             using (var reader = command.ExecuteReader())
             {
                 while (reader.Read())

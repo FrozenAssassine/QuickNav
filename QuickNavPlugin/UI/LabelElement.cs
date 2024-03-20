@@ -1,4 +1,5 @@
 ﻿using ABI.Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls.Primitives;
 
 namespace QuickNavPlugin.UI;
 
@@ -7,10 +8,12 @@ namespace QuickNavPlugin.UI;
 /// </summary>
 public class LabelElement : ContentElement
 {
-    public LabelElement(string text = "")
+    public LabelElement(string text = "", FlyoutBase flyout = null)
     {
         this.Text = text;
+        //implement context flyout baum:
     }
+
     public bool Scrollable { get; set; } = false;
     public bool AutoScrollBottom { get; set; } = false;
     private string _Text;

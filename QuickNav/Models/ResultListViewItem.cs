@@ -1,5 +1,4 @@
-﻿using Microsoft.UI.Xaml;
-using QuickNavPlugin;
+﻿using QuickNavPlugin;
 
 namespace QuickNav.Models
 {
