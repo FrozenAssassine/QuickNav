@@ -17,7 +17,7 @@ namespace QuickNav.BuildInCommands.WebSearchCommandCollector
 
         public string CommandTrigger => "net";
 
-        public string[] Keywords => new string[] { "web", "search web", "internet" };
+        public string[] Keywords => new string[] { "web", "search", "inter", "net" };
 
         public string Name(string query)
         {

@@ -15,20 +15,27 @@ namespace QuickNav.BuildInCommands
     {
         public static void Register()
         {
+            // Don't create two instances of the same command:
+            var webcmd = new WebSearchCommand();
+            var filecmd = new FileSearchCommand();
+            var calccmd = new CalculatorCommand();
+            var cmdcmd = new CMDCommand();
+            var wordcmd = new CountWordsCommand();
+
             Plugin buildInCommands = new Plugin();
             buildInCommands.Info = new AboutBuildInCommands();
-            buildInCommands.CollectorCommands.Add(new WebSearchCommand());
-            buildInCommands.CollectorCommands.Add(new FileSearchCommand());
-            buildInCommands.CollectorCommands.Add(new CalculatorCommand());
-            buildInCommands.CollectorCommands.Add(new CMDCommand());
-            buildInCommands.CollectorCommands.Add(new CountWordsCommand());
-            buildInCommands.TriggerCommands.Add(new FileSearchCommand());
-            buildInCommands.TriggerCommands.Add(new WebSearchCommand());
-            buildInCommands.TriggerCommands.Add(new CMDCommand());
-            buildInCommands.TriggerCommands.Add(new CountWordsCommand());
+            buildInCommands.CollectorCommands.Add(webcmd);
+            buildInCommands.CollectorCommands.Add(filecmd);
+            buildInCommands.CollectorCommands.Add(calccmd);
+            buildInCommands.CollectorCommands.Add(cmdcmd);
+            buildInCommands.CollectorCommands.Add(wordcmd);
+            buildInCommands.TriggerCommands.Add(webcmd);
+            buildInCommands.TriggerCommands.Add(filecmd);
+            buildInCommands.TriggerCommands.Add(cmdcmd);
+            buildInCommands.TriggerCommands.Add(wordcmd);
             buildInCommands.TriggerCommands.Add(new FileInfoCommand());
             buildInCommands.TriggerCommands.Add(new PlainTextConverterCommand());
-            buildInCommands.TriggerCommands.Add(new CalculatorCommand());
+            buildInCommands.TriggerCommands.Add(calccmd);
             buildInCommands.TriggerCommands.Add(new ColorPickerCommand());
             buildInCommands.TriggerCommands.Add(new LockScreenCommand());
 

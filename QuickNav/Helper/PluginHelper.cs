@@ -22,16 +22,17 @@ namespace QuickNav.Helper
             // Do not combine these loops, as this would destroy the order!
             for (int i = 0; i < Plugins.Count; i++)
                 for (int j = 0; j < Plugins[i].TriggerCommands.Count; j++)
-                    if (queryLower.StartsWith(Plugins[i].TriggerCommands[j].CommandTrigger.ToLower()) && Plugins[i].TriggerCommands[j].CommandTrigger != "")
+                    if (queryLower.StartsWith(Plugins[i].TriggerCommands[j].CommandTrigger.ToLower()) && Plugins[i].TriggerCommands[j].CommandTrigger != "" && !commands.Contains(Plugins[i].TriggerCommands[j]))
                         commands.Add(Plugins[i].TriggerCommands[j]);
             for (int i = 0; i < Plugins.Count; i++)
                 for (int j = 0; j < Plugins[i].TriggerCommands.Count; j++)
                     for (int k = 0; k < Plugins[i].TriggerCommands[j].Keywords.Length; k++)
-                        if (keywords.Contains(Plugins[i].TriggerCommands[j].Keywords[k].ToLower()))
+                        if (keywords.Contains(Plugins[i].TriggerCommands[j].Keywords[k].ToLower()) && !commands.Contains(Plugins[i].TriggerCommands[j]))
                             commands.Add(Plugins[i].TriggerCommands[j]);
             for (int i = 0; i < Plugins.Count; i++)
                 for (int j = 0; j < Plugins[i].CollectorCommands.Count; j++)
-                    commands.Add(Plugins[i].CollectorCommands[j]);
+                    if (!commands.Contains(Plugins[i].CollectorCommands[j]))
+                        commands.Add(Plugins[i].CollectorCommands[j]);
             return commands;
         }
 

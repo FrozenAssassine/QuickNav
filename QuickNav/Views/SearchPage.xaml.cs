@@ -17,6 +17,8 @@ public sealed partial class SearchPage : Page
 {
     public bool PreventSearchboxChangedEvent = false;
 
+    public ICommand lastCommand = null;
+
     public SearchPage()
     {
         this.InitializeComponent();
@@ -37,6 +39,9 @@ public sealed partial class SearchPage : Page
             PreventSearchboxChangedEvent = false;
             return;
         }
+
+        if (lastCommand != null && lastCommand is IAbort)
+            ((IAbort)lastCommand).Abort();
 
         //show items on hovering over
         contentView.Children.Clear();
@@ -78,9 +83,14 @@ public sealed partial class SearchPage : Page
         if (resultView.Items.Count == 0)
             return;
 
+        if (lastCommand != null && lastCommand is IAbort)
+            ((IAbort)lastCommand).Abort();
+
         var command = item.Command;
         if (command == null)
             return;
+
+        lastCommand = command;
 
         query = query.Trim();
 
