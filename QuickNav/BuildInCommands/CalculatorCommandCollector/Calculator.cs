@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Calculator // DO NOT CHANGE ANYTHING!!!
+namespace Calculator // DO NOT CHANGE ANYTHING!!! (If it works, don't touch it xD)
 {
     public static class Settings
     {
