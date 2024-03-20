@@ -2,6 +2,7 @@ using QuickNav.BuildInCommands.CalculatorCommandCollector;
 using QuickNav.BuildInCommands.CMDCommandCollector;
 using QuickNav.BuildInCommands.ColorPickerCommandTrigger;
 using QuickNav.BuildInCommands.FileInfoCommandCollector;
+using QuickNav.BuildInCommands.LockScreenCommandCollector;
 using QuickNav.BuildInCommands.PlainTextConverterCommandCollector;
 using QuickNav.BuildInCommands.WebSearchCommandCollector;
 using QuickNav.BuildInCommands.WindowsFileSearch;
@@ -21,14 +22,15 @@ namespace QuickNav.BuildInCommands
             buildInCommands.CollectorCommands.Add(new CalculatorCommand());
             buildInCommands.CollectorCommands.Add(new CMDCommand());
             buildInCommands.CollectorCommands.Add(new CountWordsCommand());
-            buildInCommands.TriggerCommands.Add(new WebSearchCommand());
             buildInCommands.TriggerCommands.Add(new FileSearchCommand());
+            buildInCommands.TriggerCommands.Add(new WebSearchCommand());
             buildInCommands.TriggerCommands.Add(new CMDCommand());
             buildInCommands.TriggerCommands.Add(new CountWordsCommand());
             buildInCommands.TriggerCommands.Add(new FileInfoCommand());
             buildInCommands.TriggerCommands.Add(new PlainTextConverterCommand());
             buildInCommands.TriggerCommands.Add(new CalculatorCommand());
             buildInCommands.TriggerCommands.Add(new ColorPickerCommand());
+            buildInCommands.TriggerCommands.Add(new LockScreenCommand());
 
             PluginHelper.Plugins.Add(buildInCommands);
         }
