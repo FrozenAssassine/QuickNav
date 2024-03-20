@@ -11,6 +11,6 @@ namespace QuickNav.Models
 {
     internal interface IBuildInCommand : ICommand
     {
-        bool RunCommand(string parameters, out Page content);
+        bool RunCommand(string parameters, out Page content, out double addWidth, out double addHeight);
     }
 }

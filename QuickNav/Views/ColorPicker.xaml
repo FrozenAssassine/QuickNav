@@ -18,7 +18,8 @@
             IsHexInputVisible="True"
             IsAlphaEnabled="True"
             IsAlphaSliderVisible="True"
-            IsAlphaTextInputVisible="True">
+            IsAlphaTextInputVisible="True"
+            Margin="10">
         </ColorPicker>
     </ScrollViewer>
 </Page>

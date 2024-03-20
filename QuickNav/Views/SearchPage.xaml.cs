@@ -38,15 +38,17 @@ public sealed partial class SearchPage : Page
             return;
         }
 
+        //show items on hovering over
+        contentView.Children.Clear();
+        resultView.Items.Clear();
+        contentView.Visibility = Visibility.Collapsed;
+        resultView.Visibility = Visibility.Visible;
+
+        WindowHelper.CenterWindow(MainWindow.hWnd);
+
         //home screen with nothing entered
         if (searchBox.Text.Length == 0)
         {
-            //show items on hovering over
-            contentView.Children.Clear();
-            resultView.Items.Clear();
-            contentView.Visibility = Visibility.Collapsed;
-            resultView.Visibility = Visibility.Visible;
-
             //Todo simpler approach to add the items
             var commands = PluginHelper.Plugins.Select(x => x.CollectorCommands);
             var triggerCommands = PluginHelper.Plugins.Select(x => x.TriggerCommands);
@@ -63,10 +65,6 @@ public sealed partial class SearchPage : Page
         }
         else
         {
-            contentView.Children.Clear();
-            resultView.Items.Clear();
-            contentView.Visibility = Visibility.Collapsed;
-            resultView.Visibility = Visibility.Visible;
             if (searchBox.Text == "") return;
             List<ICommand> commands = PluginHelper.SearchFor(searchBox.Text);
             List<ResultListViewItem> items = commands.Select((command) => new ResultListViewItem() { Command = command, Text = command.Name(searchBox.Text) }).ToList();
@@ -94,8 +92,11 @@ public sealed partial class SearchPage : Page
         UIElement element = null;
         if (command is IBuildInCommand buildInCommand)
         {
-            if (buildInCommand.RunCommand(query, out Page page))
+            if (buildInCommand.RunCommand(query, out Page page, out double width, out double height))
+            {
                 element = page;
+                WindowHelper.CenterWindow(MainWindow.hWnd, (int)width, (int)height);
+            }
         }
         else
         {

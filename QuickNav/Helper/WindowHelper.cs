@@ -4,7 +4,7 @@ namespace QuickNav.Helper
 {
     internal class WindowHelper
     {
-        public static void CenterWindow(IntPtr hWnd)
+        public static void CenterWindow(IntPtr hWnd, int addWidth = 0, int addHeight = 0)
         {
             Microsoft.UI.WindowId windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hWnd);
             Microsoft.UI.Windowing.AppWindow appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(windowId);
@@ -14,8 +14,8 @@ namespace QuickNav.Helper
                 if (displayArea is not null)
                 {
 
-                    var width = Math.Clamp(displayArea.WorkArea.Width / 4, 600, 800);
-                    var height = Math.Clamp(displayArea.WorkArea.Height / 4, 400, 600);
+                    var width = Math.Clamp(displayArea.WorkArea.Width / 4, 600, 800) + addWidth;
+                    var height = Math.Clamp(displayArea.WorkArea.Height / 4, 400, 600) + addHeight;
                     int x = ((displayArea.WorkArea.Width - width) / 2);
                     int y = ((displayArea.WorkArea.Height - height) / 2);
 
