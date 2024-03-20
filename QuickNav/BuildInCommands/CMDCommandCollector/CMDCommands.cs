@@ -26,6 +26,12 @@ internal class CMDCommand : ITriggerCommand, IUnknownCommandCollector
 
     public bool RunCommand(string command, out ContentElement output)
     {
+        if(command == "")
+        {
+            output = null;
+            return false;
+        }
+
         LabelElement outputLabel = new LabelElement();
         output = outputLabel;
         outputLabel.Scrollable = outputLabel.AutoScrollBottom = true;

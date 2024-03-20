@@ -36,6 +36,12 @@ namespace QuickNav.BuildInCommands.CalculatorCommandCollector
 
         public bool RunCommand(string parameters, out ContentElement content)
         {
+            if(parameters == "")
+            {
+                content = null;
+                return false;
+            }
+
             try
             {
                 content = new LabelElement(Parser.Parse(parameters).Calc().ToString());
