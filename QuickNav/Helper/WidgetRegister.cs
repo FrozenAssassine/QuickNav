@@ -1,7 +1,6 @@
 ﻿using H.NotifyIcon;
 using QuickNav.Widgets;
 using System.Collections.Generic;
-using System.Windows.Documents;
 
 namespace QuickNav.Helper
 {
@@ -10,7 +9,7 @@ namespace QuickNav.Helper
         public static List<QuickNavWidget> Widgets = new ();
         public static void StartWidgets()
         {
-            RegisterWidget(new DesktopSearchWidget());
+            RegisterWidget(new CountWordsWidget());
         }
 
         private static void RegisterWidget(QuickNavWidget widget)

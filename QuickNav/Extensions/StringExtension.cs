@@ -12,4 +12,18 @@ public static class StringExtension
     {
         return IsUrl(input, out Uri uri);
     }
+
+    public static int CountWords(this string text)
+    {
+        return text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length;
+    }
+
+    public static int CountLines(this string text)
+    {
+        if (text.Contains("\r\n"))
+        {
+            return text.Split("\r\n").Length;
+        }
+        return text.Split("\n").Length;
+    }
 }

@@ -7,10 +7,8 @@ using WinRT.Interop;
 using Microsoft.UI.Dispatching;
 using QuickNav.BuildInCommands;
 using H.NotifyIcon;
-using System.Diagnostics;
 using Microsoft.UI.Xaml.Input;
 using System.Runtime.InteropServices;
-using Microsoft.Win32;
 using System.IO;
 using Windows.ApplicationModel;
 

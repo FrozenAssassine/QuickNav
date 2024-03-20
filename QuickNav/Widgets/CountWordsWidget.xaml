@@ -1,0 +1,15 @@
+<local:QuickNavWidget
+    x:Class="QuickNav.Widgets.CountWordsWidget"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:QuickNav.Widgets"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Width="200" Height="150">
+
+    <Grid Background="Transparent" DoubleTapped="Grid_DoubleTapped" AllowDrop="True" Drop="Grid_Drop" DragOver="Grid_DragOver">
+        <TextBlock TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="infoText" Text="Count words by dragging a file here"/>
+        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="infoDisplay"/>
+    </Grid>
+</local:QuickNavWidget>

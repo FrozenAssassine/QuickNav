@@ -2,6 +2,7 @@
 using QuickNavPlugin;
 using System;
 using System.IO;
+using QuickNav.Extensions;
 
 namespace QuickNav.BuildInCommands.FileInfoCommandCollector;
 
@@ -20,19 +21,6 @@ internal class CountWordsCommand : ITriggerCommand, IUnknownCommandCollector
     public string Name(string query)
     {
         return "Count Words";
-    }
-    private static int CountWords(string str)
-    {
-        return str.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length;
-    }
-
-    static int CountLines(string text)
-    {
-        if (text.Contains("\r\n"))
-        {
-            return text.Split("\r\n").Length;
-        }
-        return text.Split("\n").Length;
     }
 
     public bool RunCommand(string param, out ContentElement content)
@@ -57,7 +45,7 @@ internal class CountWordsCommand : ITriggerCommand, IUnknownCommandCollector
                 text = File.ReadAllText(param);
         }
 
-        textLabel.Text = "Words: " + CountWords(text) + "\nCharacter: " + text.Length + "\nLines: " + CountLines(text);
+        textLabel.Text = "Words: " + text.CountWords() + "\nCharacter: " + text.Length + "\nLines: " + text.CountLines();
 
         return true;
     }
