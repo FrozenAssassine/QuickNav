@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace QuickNav.BuildInCommands.CMDCommandCollector;
 
-internal class CMDCommand : ITriggerCommand, IUnknownCommandCollector
+internal class CMDCommand : ITriggerCommand, IUnknownCommandCollector, IAbort
 {
     public string Description => "Run this command to execute in commandline";
 
@@ -17,6 +17,8 @@ internal class CMDCommand : ITriggerCommand, IUnknownCommandCollector
     public string CommandTrigger => ">";
 
     public string[] Keywords => new string[] { "cmd", "command", "run" };
+
+    Process process = null;
 
     public string Name(string query)
     {
@@ -36,7 +38,9 @@ internal class CMDCommand : ITriggerCommand, IUnknownCommandCollector
         output = outputLabel;
         outputLabel.Scrollable = outputLabel.AutoScrollBottom = true;
 
-        Process process = new Process();
+        Abort();
+
+        process = new Process();
         ProcessStartInfo startInfo = new ProcessStartInfo
         {
             FileName = "cmd.exe",
@@ -78,5 +82,18 @@ internal class CMDCommand : ITriggerCommand, IUnknownCommandCollector
         });
 
         return true;
+    }
+
+    public void Abort()
+    {
+        if (process != null)
+        {
+            try
+            {
+                process.Kill();
+                process.Dispose();
+            }
+            catch { }
+        }
     }
 }
