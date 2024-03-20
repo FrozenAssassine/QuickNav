@@ -34,4 +34,4 @@ QuickNav is under active development. Expect frequent updates and improvements a
 4. Build and run QuickNav in Visual Studio.
 
 ## 📸 Screenshots (Coming Soon)
-Stay tuned for screenshots showcasing the functionality and user interface of QuickNav.
+<img src="images/screen1.png"/>
