@@ -5,10 +5,561 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:QuickNav.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:primitives="using:Microsoft.UI.Xaml.Controls.Primitives"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
+    <Page.Resources>
+        <Style TargetType="ColorPicker" BasedOn="{StaticResource DefaultColorPickerStyle}" />
+        <Style x:Key="ColorPickerStyle" TargetType="ColorPicker">
+            <Setter Property="IsTabStop" Value="False" />
+            <Setter Property="CornerRadius" Value="{ThemeResource ControlCornerRadius}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ColorPicker">
+                        <Grid x:Name="RootGrid" Background="{TemplateBinding Background}" Padding="0,4" MaxWidth="{StaticResource ColorPickerVerticalOrientationMaxWidth}" MinWidth="{StaticResource ColorPickerVerticalOrientationMinWidth}">
+
+                            <Grid.Resources>
+                                <SolidColorBrush x:Name="CheckerColorBrush" Color="{ThemeResource SystemListLowColor}" />
+                            </Grid.Resources>
+
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="ColorSpectrumVisibility">
+                                    <VisualState x:Name="ColorSpectrumVisible" />
+                                    <VisualState x:Name="ColorSpectrumCollapsed">
+                                        <VisualState.Setters>
+                                            <Setter Target="ColorSpectrum.Visibility" Value="Collapsed" />
+                                            <Setter Target="ColorPreviewRectangleGrid.Width" Value="NaN" />
+                                            <Setter Target="ColorPreviewRectangleGrid.Height" Value="44" />
+                                            <Setter Target="ColorPreviewRectangleGrid.Margin" Value="0" />
+                                            <Setter Target="ColorPreviewRectangleGrid.(Grid.Column)" Value="0" />
+                                            <Setter Target="ColorPreviewRectangleGrid.(Grid.ColumnSpan)" Value="2" />
+
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="ColorPreviewVisibility">
+                                    <VisualState x:Name="ColorPreviewVisible" />
+                                    <VisualState x:Name="ColorPreviewCollapsed">
+                                        <VisualState.Setters>
+                                            <Setter Target="ColorPreviewRectangleGrid.Visibility" Value="Collapsed" />
+
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="PreviousColorVisibility">
+                                    <VisualState x:Name="PreviousColorCollapsedVertical" />
+                                    <VisualState x:Name="PreviousColorVisibleVertical">
+                                        <VisualState.Setters>
+                                            <Setter Target="ColorPreviewRectangle.(Grid.RowSpan)" Value="1" />
+                                            <Setter Target="PreviousColorRectangle.Visibility" Value="Visible" />
+
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="PreviousColorCollapsedHorizontal">
+                                        <VisualState.Setters>
+                                            <Setter Target="PreviousColorRectangle.(Grid.Row)" Value="0" />
+                                            <Setter Target="PreviousColorRectangle.(Grid.Column)" Value="1" />
+                                            <Setter Target="PreviousColorRectangle.(Grid.RowSpan)" Value="2" />
+                                            <Setter Target="PreviousColorRectangle.(Grid.ColumnSpan)" Value="1" />
+
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="PreviousColorVisibleHorizontal">
+                                        <VisualState.Setters>
+                                            <Setter Target="ColorPreviewRectangle.(Grid.ColumnSpan)" Value="1" />
+                                            <Setter Target="PreviousColorRectangle.Visibility" Value="Visible" />
+                                            <Setter Target="PreviousColorRectangle.(Grid.Row)" Value="0" />
+                                            <Setter Target="PreviousColorRectangle.(Grid.Column)" Value="1" />
+                                            <Setter Target="PreviousColorRectangle.(Grid.RowSpan)" Value="2" />
+                                            <Setter Target="PreviousColorRectangle.(Grid.ColumnSpan)" Value="1" />
+
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="ThirdDimensionSliderVisibility">
+                                    <VisualState x:Name="ThirdDimensionSliderVisible" />
+                                    <VisualState x:Name="ThirdDimensionSliderCollapsed">
+                                        <VisualState.Setters>
+                                            <Setter Target="ThirdDimensionSliderGrid.Visibility" Value="Collapsed" />
+
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="AlphaSliderVisibility">
+                                    <VisualState x:Name="AlphaSliderVisible" />
+                                    <VisualState x:Name="AlphaSliderCollapsed">
+                                        <VisualState.Setters>
+                                            <Setter Target="AlphaSliderGrid.Visibility" Value="Collapsed" />
+
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="MoreButtonVisibility">
+                                    <VisualState x:Name="MoreButtonVisible" />
+                                    <VisualState x:Name="MoreButtonCollapsed">
+                                        <VisualState.Setters>
+                                            <Setter Target="MoreButton.Visibility" Value="Collapsed" />
+
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="TextEntryGridVisibility">
+                                    <VisualState x:Name="TextEntryGridCollapsed" />
+                                    <VisualState x:Name="TextEntryGridVisible">
+                                        <VisualState.Setters>
+                                            <Setter Target="TextEntryGrid.Visibility" Value="Visible" />
+                                            <Setter Target="MoreGlyph.Glyph" Value="&#xE70E;" />
+
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="ColorChannelTextInputVisibility">
+                                    <VisualState x:Name="ColorChannelTextInputVisible" />
+                                    <VisualState x:Name="ColorChannelTextInputCollapsed">
+                                        <VisualState.Setters>
+                                            <Setter Target="ColorRepresentationComboBox.Visibility" Value="Collapsed" />
+                                            <Setter Target="ColorChannelTextInputPanel.Visibility" Value="Collapsed" />
+                                            <Setter Target="HexTextBox.(Grid.Column)" Value="0" />
+                                            <Setter Target="HexTextBox.HorizontalAlignment" Value="Left" />
+
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="AlphaTextInputVisibility">
+                                    <VisualState x:Name="AlphaTextInputVisible" />
+                                    <VisualState x:Name="AlphaTextInputCollapsed">
+                                        <VisualState.Setters>
+                                            <Setter Target="AlphaPanel.Visibility" Value="Collapsed" />
+
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="ColorRepresentationSelected">
+                                    <VisualState x:Name="RgbSelected" />
+                                    <VisualState x:Name="HsvSelected">
+                                        <VisualState.Setters>
+                                            <Setter Target="RgbPanel.Visibility" Value="Collapsed" />
+                                            <Setter Target="HsvPanel.Visibility" Value="Visible" />
+
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="HexInputVisibility">
+                                    <VisualState x:Name="HexInputVisible" />
+                                    <VisualState x:Name="HexInputCollapsed">
+                                        <VisualState.Setters>
+                                            <Setter Target="HexTextBox.Visibility" Value="Collapsed" />
+
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="AlphaEnabledState">
+                                    <VisualState x:Name="AlphaDisabled" />
+                                    <VisualState x:Name="AlphaEnabled">
+                                        <VisualState.Setters>
+                                            <Setter Target="HexTextBox.MaxLength" Value="9" />
+
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="Orientation">
+                                    <VisualState x:Name="Vertical" />
+                                    <VisualState x:Name="Horizontal">
+                                        <VisualState.Setters>
+                                            <Setter Target="RootGrid.MinHeight" Value="{StaticResource ColorPickerVerticalOrientationMinHeight}" />
+                                            <Setter Target="RootGrid.MaxHeight" Value="{StaticResource ColorPickerVerticalOrientationMaxHeight}" />
+                                            <Setter Target="RootGrid.MinWidth" Value="0" />
+                                            <Setter Target="RootGrid.MaxWidth" Value="10000" />
+                                            <Setter Target="ColorSpectrumGrid.Margin" Value="0" />
+                                            <Setter Target="ColorPreviewRectangleGrid.Margin" Value="12,0,16,0" />
+                                            <Setter Target="ThirdDimensionSliderGrid.(Grid.Column)" Value="1" />
+                                            <Setter Target="ThirdDimensionSliderGrid.(Grid.Row)" Value="0" />
+                                            <Setter Target="ThirdDimensionSliderGrid.Margin" Value="0,0,6,0" />
+                                            <Setter Target="ThirdDimensionSlider.Orientation" Value="Vertical" />
+                                            <Setter Target="ThirdDimensionBackgroundRectangle.Height" Value="Auto" />
+                                            <Setter Target="ThirdDimensionBackgroundRectangle.Width" Value="12" />
+                                            <Setter Target="ThirdDimensionBackgroundRectangle.HorizontalAlignment" Value="Center" />
+                                            <Setter Target="ThirdDimensionBackgroundRectangle.VerticalAlignment" Value="Stretch" />
+                                            <Setter Target="ThirdDimensionBackgroundRectangle.RenderTransform">
+                                                <Setter.Value>
+                                                    <RotateTransform Angle="180" />
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Target="AlphaSliderGrid.(Grid.Column)" Value="2" />
+                                            <Setter Target="AlphaSliderGrid.(Grid.Row)" Value="0" />
+                                            <Setter Target="AlphaSliderGrid.Margin" Value="0,0,16,0" />
+                                            <Setter Target="AlphaSlider.Orientation" Value="Vertical" />
+                                            <Setter Target="AlphaSliderCheckeredBackgroundRectangle.Height" Value="Auto" />
+                                            <Setter Target="AlphaSliderCheckeredBackgroundRectangle.Width" Value="12" />
+                                            <Setter Target="AlphaSliderCheckeredBackgroundRectangle.HorizontalAlignment" Value="Center" />
+                                            <Setter Target="AlphaSliderCheckeredBackgroundRectangle.VerticalAlignment" Value="Stretch" />
+                                            <Setter Target="AlphaSliderBackgroundRectangle.Height" Value="Auto" />
+                                            <Setter Target="AlphaSliderBackgroundRectangle.Width" Value="12" />
+                                            <Setter Target="AlphaSliderBackgroundRectangle.HorizontalAlignment" Value="Center" />
+                                            <Setter Target="AlphaSliderBackgroundRectangle.VerticalAlignment" Value="Stretch" />
+                                            <Setter Target="AlphaSliderBackgroundRectangle.RenderTransform">
+                                                <Setter.Value>
+                                                    <RotateTransform Angle="180" />
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Target="MoreEntriesPanel.(Grid.Column)" Value="3" />
+                                            <Setter Target="MoreEntriesPanel.(Grid.Row)" Value="0" />
+                                            <Setter Target="MoreEntriesPanel.Margin" Value="0" />
+                                            <Setter Target="MoreButton.Margin" Value="0" />
+                                            <Setter Target="ColorRepresentationComboBox.(Grid.Row)" Value="1" />
+                                            <Setter Target="ColorTextInputPanels.(Grid.Row)" Value="2" />
+                                            <Setter Target="HexTextBox.TabIndex" Value="3" />
+                                            <Setter Target="HexTextBox.(Grid.Row)" Value="0" />
+                                            <Setter Target="HexTextBox.(Grid.Column)" Value="0" />
+                                            <Setter Target="HexTextBox.(Grid.ColumnSpan)" Value="3" />
+                                            <Setter Target="HexTextBox.Margin" Value="0,0,0,12" />
+                                            <Setter Target="HexTextBox.HorizontalAlignment" Value="Left" />
+                                            <Setter Target="HexTextBox.Width" Value="120" />
+                                            <Setter Target="RgbTextLabelColumn.Width" Value="{ThemeResource ColorPickerTextInputHorizontalOrientationMargin}" />
+                                            <Setter Target="HsvTextLabelColumn.Width" Value="{ThemeResource ColorPickerTextInputHorizontalOrientationMargin}" />
+                                            <Setter Target="AlphaTextLabelColumn.Width" Value="{ThemeResource ColorPickerTextInputHorizontalOrientationMargin}" />
+
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                </VisualStateGroup>
+
+                            </VisualStateManager.VisualStateGroups>
+
+                            <Grid>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0" x:Name="ColorSpectrumGrid" Width="220">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <primitives:ColorSpectrum Margin="0,20,0,0" x:Name="ColorSpectrum" Grid.Row="1" MinHue="{TemplateBinding MinHue}" MaxHue="{TemplateBinding MaxHue}" MinSaturation="{TemplateBinding MinSaturation}" MaxSaturation="{TemplateBinding MaxSaturation}" MinValue="{TemplateBinding MinValue}" MaxValue="{TemplateBinding MaxValue}" Shape="{TemplateBinding ColorSpectrumShape}" Components="{TemplateBinding ColorSpectrumComponents}" CornerRadius="{TemplateBinding CornerRadius}" TabIndex="0" />
+                                    <StackPanel HorizontalAlignment="Stretch" Grid.Row="0">
+                                        <Grid x:Name="ColorPreviewRectangleGrid" Height="25" HorizontalAlignment="Stretch">
+                                            <Rectangle VerticalAlignment="Stretch" RadiusX="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource TopLeftCornerRadiusDoubleValueConverter}}" RadiusY="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BottomRightCornerRadiusDoubleValueConverter}}">
+                                                <Rectangle.Fill>
+                                                    <ImageBrush x:Name="ColorPreviewRectangleCheckeredBackgroundImageBrush" />
+                                                </Rectangle.Fill>
+                                            </Rectangle>
+                                            <Rectangle x:Name="ColorPreviewRectangle" VerticalAlignment="Stretch" RadiusX="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource TopLeftCornerRadiusDoubleValueConverter}}" RadiusY="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BottomRightCornerRadiusDoubleValueConverter}}" />
+                                            <Rectangle x:Name="BorderRectangle" Style="{StaticResource ColorPickerBorderStyle}" RadiusX="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource TopLeftCornerRadiusDoubleValueConverter}}" RadiusY="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BottomRightCornerRadiusDoubleValueConverter}}" />
+                                        </Grid>
+                                        <Grid Margin="0,10,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Stretch" x:Name="HexTextBox" MaxLength="7" Text="#FFFFFF" />
+                                            <DropDownButton Margin="10,0,0,0" Grid.Column="1" Height="33" VerticalAlignment="Center" Width="70" Content="&#xE8C8;" FontFamily="{ThemeResource SymbolThemeFontFamily}">
+                                                <DropDownButton.Flyout>
+                                                    <MenuFlyout Placement="Bottom">
+                                                        <MenuFlyoutItem Text="Copy RGB" Click="CopyRGB_Click"/>
+                                                        <MenuFlyoutItem Text="Copy HEX" Click="CopyHEX_Click"/>
+                                                        <MenuFlyoutItem Text="Copy HSV" Click="CopyHSV_Click"/>
+                                                    </MenuFlyout>
+                                                </DropDownButton.Flyout>
+                                            </DropDownButton>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid VerticalAlignment="Bottom" Height="220" Margin="0,20,0,0" x:Name="ThirdDimensionSliderGrid" Grid.Column="1">
+                                    <Rectangle x:Name="ThirdDimensionBackgroundRectangle" Width="12" VerticalAlignment="Stretch"  RadiusX="{Binding Source={ThemeResource ColorPickerSliderCornerRadius}, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource TopLeftCornerRadiusDoubleValueConverter}}" RadiusY="{Binding Source={ThemeResource ColorPickerSliderCornerRadius}, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BottomRightCornerRadiusDoubleValueConverter}}">
+                                        <Rectangle.Fill>
+                                            <LinearGradientBrush x:Name="ThirdDimensionSliderGradientBrush" />
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                    <primitives:ColorPickerSlider VerticalAlignment="Stretch" x:Name="ThirdDimensionSlider" Minimum="0" Maximum="100" ColorChannel="Value" Orientation="Vertical" Style="{StaticResource ColorPickerSliderStyle}" IsThumbToolTipEnabled="False" TabIndex="1" />
+                                </Grid>
+                                <Grid VerticalAlignment="Bottom" Height="220" Margin="0,20,0,0" x:Name="AlphaSliderGrid" Grid.Column="2">
+                                    <Rectangle x:Name="AlphaSliderCheckeredBackgroundRectangle" Width="12" RadiusX="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource TopLeftCornerRadiusDoubleValueConverter}}" RadiusY="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BottomRightCornerRadiusDoubleValueConverter}}">
+                                        <Rectangle.Fill>
+                                            <ImageBrush x:Name="AlphaSliderCheckeredBackgroundImageBrush" />
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                    <Rectangle x:Name="AlphaSliderBackgroundRectangle"  Width="12" RadiusX="{Binding Source={ThemeResource ColorPickerSliderCornerRadius}, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource TopLeftCornerRadiusDoubleValueConverter}}" RadiusY="{Binding Source={ThemeResource ColorPickerSliderCornerRadius}, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BottomRightCornerRadiusDoubleValueConverter}}">
+                                        <Rectangle.Fill>
+                                            <LinearGradientBrush x:Name="AlphaSliderGradientBrush" />
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                    <primitives:ColorPickerSlider x:Name="AlphaSlider" Minimum="0" Maximum="100" ColorChannel="Alpha" Orientation="Vertical" Style="{StaticResource ColorPickerSliderStyle}" IsThumbToolTipEnabled="False" TabIndex="2" />
+                                </Grid>
+                                <StackPanel Visibility="Visible" Grid.Row="1" Margin="0,15,0,0">
+                                    <StackPanel Orientation="Horizontal" x:Name="ColorChannelTextInputPanel" HorizontalAlignment="Stretch">
+                                        <StackPanel Orientation="Horizontal" x:Name="RgbPanel">
+                                            <TextBox Header="Red" x:Name="RedTextBox" Width="60" MaxLength="3" Text="255"/>
+                                            <TextBox Header="Green" x:Name="GreenTextBox" Width="60" MaxLength="3" Text="255" Margin="12,0,0,0" />
+                                            <TextBox Header="Blue" x:Name="BlueTextBox" Width="60" MaxLength="3" Text="255" Margin="12,0,0,0" />
+                                        </StackPanel>
+                                        <StackPanel x:Name="HsvPanel" Visibility="Collapsed" Orientation="Horizontal">
+                                            <TextBox Header="Hue" x:Name="HueTextBox" Width="60" MaxLength="3" Text="0"/>
+                                            <TextBox Header="Sat" x:Name="SaturationTextBox" Width="60" MaxLength="3" Text="0" Margin="12,0,0,0" />
+                                            <TextBox Header="Val" x:Name="ValueTextBox" Width="60" MaxLength="3" Text="100" Margin="12,0,0,0" />
+                                        </StackPanel>
+                                        <TextBox Margin="12,0,0,0" Header="Alpha" x:Name="AlphaTextBox" Width="60" MaxLength="4" Text="100%" />
+                                    </StackPanel>
+                                    <ComboBox Margin="0,15,0,0" Grid.Row="0" x:Name="ColorRepresentationComboBox" Width="120" TabIndex="4">
+                                        <ComboBoxItem x:Name="RGBComboBoxItem" Content="RGB" IsSelected="True" />
+                                        <ComboBoxItem x:Name="HSVComboBoxItem" Content="HSV" />
+                                    </ComboBox>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ColorPickerSliderStyle" TargetType="primitives:ColorPickerSlider">
+            <Setter Property="CornerRadius" Value="{StaticResource ControlCornerRadius}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Slider">
+                        <Grid>
+
+                            <Grid.Resources>
+                                <Style x:Key="SliderThumbStyle" TargetType="Thumb">
+                                    <Setter Property="BorderThickness" Value="1" />
+                                    <Setter Property="Background" Value="{ThemeResource ColorPickerSliderThumbBackground}" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Border BorderBrush="{ThemeResource SliderThumbBorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{ThemeResource SliderOuterThumbBackground}" CornerRadius="{ThemeResource SliderThumbCornerRadius}">
+                                                    <Ellipse x:Name="SliderInnerThumb" Fill="{TemplateBinding Background}" Width="{ThemeResource ColorPickerSliderInnerThumbWidth}" Height="{ThemeResource ColorPickerSliderInnerThumbHeight}" />
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Grid.Resources>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+
+                                    <VisualState x:Name="Pressed">
+                                        <VisualState.Setters>
+                                            <Setter Target="HorizontalThumb.Background" Value="{ThemeResource ColorPickerSliderThumbBackgroundPressed}" />
+
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                    <VisualState x:Name="Disabled">
+                                        <VisualState.Setters>
+                                            <Setter Target="HeaderContentPresenter.Foreground" Value="{ThemeResource ColorPickerHeaderContentDisabled}" />
+                                            <Setter Target="HorizontalThumb.Background" Value="{ThemeResource ColorPickerSliderThumbBackgroundDisabled}" />
+                                            <Setter Target="HorizontalTrackRect.Fill" Value="{ThemeResource ColorPickerSliderTrackFillDisabled}" />
+                                            <Setter Target="HorizontalDecreaseRect.Fill" Value="{ThemeResource ColorPickerSliderTrackFillDisabled}" />
+
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                    <VisualState x:Name="PointerOver">
+                                        <VisualState.Setters>
+                                            <Setter Target="HorizontalThumb.Background" Value="{ThemeResource ColorPickerSliderThumbBackgroundPointerOver}" />
+
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="FocusEngagementStates">
+                                    <VisualState x:Name="FocusDisengaged" />
+                                    <VisualState x:Name="FocusEngagedHorizontal">
+                                        <VisualState.Setters>
+                                            <Setter Target="SliderContainer.(Control.IsTemplateFocusTarget)" Value="False" />
+                                            <Setter Target="HorizontalThumb.(Control.IsTemplateFocusTarget)" Value="True" />
+
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="FocusEngagedVertical">
+                                        <VisualState.Setters>
+                                            <Setter Target="SliderContainer.(Control.IsTemplateFocusTarget)" Value="False" />
+                                            <Setter Target="VerticalThumb.(Control.IsTemplateFocusTarget)" Value="True" />
+
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                </VisualStateGroup>
+
+                            </VisualStateManager.VisualStateGroups>
+                            <ContentPresenter x:Name="HeaderContentPresenter" ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" Foreground="{ThemeResource SliderHeaderForeground}" FontWeight="{ThemeResource SliderHeaderThemeFontWeight}" Margin="{ThemeResource SliderHeaderThemeMargin}" TextWrapping="Wrap" Visibility="Collapsed" x:DeferLoadStrategy="Lazy" />
+                            <Grid x:Name="SliderContainer" Background="Transparent" Control.IsTemplateFocusTarget="True" Grid.Row="1" CornerRadius="{TemplateBinding CornerRadius}">
+                                <Grid x:Name="HorizontalTemplate" MinHeight="32">
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="{ThemeResource SliderPreContentMargin}" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="{ThemeResource SliderPostContentMargin}" />
+                                    </Grid.RowDefinitions>
+                                    <Rectangle x:Name="HorizontalTrackRect" Grid.ColumnSpan="3" Fill="Transparent" Height="{ThemeResource SliderTrackThemeHeight}" Grid.Row="1" Opacity="0" RadiusX="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource TopLeftCornerRadiusDoubleValueConverter}}" RadiusY="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BottomRightCornerRadiusDoubleValueConverter}}" />
+                                    <Rectangle x:Name="HorizontalDecreaseRect" Fill="Transparent" Grid.Row="1" Opacity="0" />
+                                    <Thumb x:Name="HorizontalThumb" AutomationProperties.AccessibilityView="Raw" Grid.Column="1" DataContext="{TemplateBinding Value}" Height="{ThemeResource SliderHorizontalThumbHeight}" Grid.Row="0" Grid.RowSpan="3" Style="{StaticResource SliderThumbStyle}" Width="{ThemeResource SliderHorizontalThumbWidth}">
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip x:Name="ToolTip" VerticalOffset="20" />
+                                        </ToolTipService.ToolTip>
+                                    </Thumb>
+                                </Grid>
+                                <Grid x:Name="VerticalTemplate" MinWidth="32">
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="{ThemeResource SliderPreContentMargin}" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="{ThemeResource SliderPostContentMargin}" />
+                                    </Grid.ColumnDefinitions>
+                                    <Rectangle x:Name="VerticalTrackRect" Grid.RowSpan="3" Fill="Transparent" Width="{ThemeResource SliderTrackThemeHeight}" Grid.Column="1" Opacity="0" RadiusX="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource TopLeftCornerRadiusDoubleValueConverter}}" RadiusY="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BottomRightCornerRadiusDoubleValueConverter}}" />
+                                    <Rectangle x:Name="VerticalDecreaseRect" Fill="Transparent" Grid.Column="1" Grid.Row="2" Opacity="0" />
+                                    <Thumb x:Name="VerticalThumb" AutomationProperties.AccessibilityView="Raw" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" DataContext="{TemplateBinding Value}" Height="{ThemeResource SliderHorizontalThumbHeight}" Style="{StaticResource SliderThumbStyle}" Width="{ThemeResource SliderHorizontalThumbWidth}">
+                                        <ToolTipService.ToolTip>
+                                            <ToolTip x:Name="VerticalToolTip" VerticalOffset="20" />
+                                        </ToolTipService.ToolTip>
+                                    </Thumb>
+                                </Grid>
+
+                            </Grid>
+
+                        </Grid>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="primitives:ColorSpectrum">
+            <Setter Property="ManipulationMode" Value="None" />
+            <Setter Property="UseSystemFocusVisuals" Value="False" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="primitives:ColorSpectrum">
+                        <Grid x:Name="LayoutRoot">
+
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+
+                                    <VisualState x:Name="PointerOver">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionEllipse.Opacity" Value="0.8" />
+
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed" />
+                                    <VisualState x:Name="PressedLarge">
+                                        <VisualState.Setters>
+                                            <Setter Target="SelectionEllipsePanel.Width" Value="48" />
+                                            <Setter Target="SelectionEllipsePanel.Height" Value="48" />
+
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="SelectionEllipseColor">
+                                    <VisualState x:Name="SelectionEllipseLight" />
+                                    <VisualState x:Name="SelectionEllipseDark">
+                                        <VisualState.Setters>
+                                            <Setter Target="FocusEllipse.Stroke" Value="{ThemeResource SystemControlBackgroundChromeWhiteBrush}" />
+                                            <Setter Target="SelectionEllipse.Stroke" Value="{ThemeResource SystemControlBackgroundChromeBlackHighBrush}" />
+
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="ShapeSelected">
+                                    <VisualState x:Name="BoxSelected" />
+                                    <VisualState x:Name="RingSelected">
+                                        <VisualState.Setters>
+                                            <Setter Target="SpectrumRectangle.Visibility" Value="Collapsed" />
+                                            <Setter Target="SpectrumOverlayRectangle.Visibility" Value="Collapsed" />
+                                            <Setter Target="RectangleBorder.Visibility" Value="Collapsed" />
+                                            <Setter Target="SpectrumEllipse.Visibility" Value="Visible" />
+                                            <Setter Target="SpectrumOverlayEllipse.Visibility" Value="Visible" />
+                                            <Setter Target="EllipseBorder.Visibility" Value="Visible" />
+
+                                        </VisualState.Setters>
+                                    </VisualState>
+
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="FocusStates">
+                                    <VisualState x:Name="Unfocused" />
+                                    <VisualState x:Name="Focused">
+                                        <VisualState.Setters>
+                                            <Setter Target="FocusEllipse.Visibility" Value="Visible" />
+
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="PointerFocused" />
+
+                                </VisualStateGroup>
+
+                            </VisualStateManager.VisualStateGroups>
+                            <Grid x:Name="SizingGrid" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Grid.Clip>
+                                    <RectangleGeometry />
+                                </Grid.Clip>
+                                <Rectangle x:Name="SpectrumRectangle" IsHitTestVisible="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RadiusX="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource TopLeftCornerRadiusDoubleValueConverter}}" RadiusY="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BottomRightCornerRadiusDoubleValueConverter}}" />
+                                <Rectangle x:Name="SpectrumOverlayRectangle" IsHitTestVisible="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RadiusX="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource TopLeftCornerRadiusDoubleValueConverter}}" RadiusY="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BottomRightCornerRadiusDoubleValueConverter}}" />
+                                <Ellipse x:Name="SpectrumEllipse" IsHitTestVisible="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Collapsed" />
+                                <Ellipse x:Name="SpectrumOverlayEllipse" IsHitTestVisible="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Collapsed" />
+                                <Canvas x:Name="InputTarget" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Control.IsTemplateFocusTarget="True">
+                                    <Grid x:Name="SelectionEllipsePanel" Width="16" Height="16">
+                                        <Ellipse x:Name="FocusEllipse" Stroke="{ThemeResource SystemControlBackgroundChromeBlackHighBrush}" Margin="-2" StrokeThickness="2" IsHitTestVisible="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Collapsed" />
+                                        <Ellipse x:Name="SelectionEllipse" Stroke="{ThemeResource SystemControlBackgroundChromeWhiteBrush}" StrokeThickness="2" IsHitTestVisible="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                            <ToolTipService.ToolTip>
+                                                <ToolTip x:Name="ColorNameToolTip" VerticalOffset="20" />
+                                            </ToolTipService.ToolTip>
+                                        </Ellipse>
+
+                                    </Grid>
+                                </Canvas>
+                                <Rectangle x:Name="RectangleBorder" Style="{StaticResource ColorPickerBorderStyle}" IsHitTestVisible="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RadiusX="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource TopLeftCornerRadiusDoubleValueConverter}}" RadiusY="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BottomRightCornerRadiusDoubleValueConverter}}" />
+                                <Ellipse x:Name="EllipseBorder" Style="{StaticResource ColorPickerBorderStyle}" IsHitTestVisible="False" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+
+                            </Grid>
+
+                        </Grid>
+
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
     <ScrollViewer HorizontalScrollMode="Disabled" VerticalScrollMode="Auto">
-        <ColorPicker
+        <ColorPicker HorizontalAlignment="Center" Style="{StaticResource ColorPickerStyle}"
             ColorSpectrumShape="Ring"
             IsMoreButtonVisible="True"
             IsColorSliderVisible="True"
@@ -17,7 +568,7 @@
             IsAlphaEnabled="True"
             IsAlphaSliderVisible="True"
             IsAlphaTextInputVisible="True"
-            Margin="10">
+            Margin="10" x:Name="colorPicker">
         </ColorPicker>
     </ScrollViewer>
 </Page>
