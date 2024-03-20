@@ -1,17 +1,14 @@
-﻿using ABI.Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls.Primitives;
-
-namespace QuickNavPlugin.UI;
+﻿namespace QuickNavPlugin.UI;
 
 /// <summary>
 /// Represents a label.
 /// </summary>
 public class LabelElement : ContentElement
 {
-    public LabelElement(string text = "", FlyoutBase flyout = null)
+    public LabelElement(string text = "", FlyoutElement flyout = null)
     {
         this.Text = text;
-        //implement context flyout baum:
+        base.Flyout = flyout;
     }
 
     public bool Scrollable { get; set; } = false;
