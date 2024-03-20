@@ -14,7 +14,7 @@
   <Properties>
     <DisplayName>QuickNav</DisplayName>
     <PublisherDisplayName>juliu</PublisherDisplayName>
-    <Logo>Assets\StoreLogo.png</Logo>
+    <Logo>Assets\AppIcon\Generated\StoreLogo.png</Logo>
   </Properties>
 
   <Dependencies>
@@ -34,10 +34,9 @@
         DisplayName="QuickNav"
         Description="QuickNav"
         BackgroundColor="transparent"
-        Square150x150Logo="Assets\Square150x150Logo.png"
-        Square44x44Logo="Assets\Square44x44Logo.png">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" />
-        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        Square150x150Logo="Assets\AppIcon\Generated\Square150x150Logo.png"
+        Square44x44Logo="Assets\AppIcon\Generated\Square44x44Logo.png">
+        <uap:DefaultTile Wide310x150Logo="Assets\AppIcon\Generated\Wide310x150Logo.png"  Square71x71Logo="Assets\AppIcon\Generated\SmallTile.png" Square310x310Logo="Assets\AppIcon\Generated\LargeTile.png"/>
       </uap:VisualElements>
     </Application>
   </Applications>

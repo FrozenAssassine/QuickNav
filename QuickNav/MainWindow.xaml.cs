@@ -11,6 +11,8 @@ using System.Diagnostics;
 using Microsoft.UI.Xaml.Input;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
+using System.IO;
+using Windows.ApplicationModel;
 
 namespace QuickNav;
 
@@ -31,11 +33,14 @@ public sealed partial class MainWindow : Window
         hWnd = WindowNative.GetWindowHandle(this);
         WindowId wndId = Win32Interop.GetWindowIdFromWindow(hWnd);
 
+
         m_AppWindow = AppWindow.GetFromWindowId(wndId);
 
         this.Activated += MainWindow_Activated;
             dispatcherQueue = this.DispatcherQueue;
         _presenter = m_AppWindow.Presenter as OverlappedPresenter;
+
+        this.AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets\\AppIcon\\appicon.ico"));
 
         this.AppWindow.IsShownInSwitchers = false;
 
