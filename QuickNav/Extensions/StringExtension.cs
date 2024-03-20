@@ -4,12 +4,12 @@ namespace QuickNav.Extensions;
 
 public static class StringExtension
 {
-    public static bool IsUrl(this string input, out Uri uri)
+    public static bool IsUrl(this string input, out Uri uriResult)
     {
-        return Uri.TryCreate(input, UriKind.Absolute, out uri);
+        return Uri.TryCreate(input, UriKind.Absolute, out uriResult);
     }
     public static bool IsUrl(this string input)
     {
-        return Uri.TryCreate(input, UriKind.Absolute, out Uri uri);
+        return IsUrl(input, out Uri uri);
     }
 }
