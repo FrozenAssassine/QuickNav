@@ -14,7 +14,6 @@
   <ItemGroup>
     <None Remove="Views\ColorPicker.xaml" />
     <None Remove="Views\SearchPage.xaml" />
-    <None Remove="Widgets\DesktopSearchWidget.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -50,7 +49,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\ColorPicker.xaml">
-    <Page Update="Widgets\DesktopSearchWidget.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
