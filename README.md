@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="QuickNav/Assets/AppIcon/Icon.png" height="150px" width="auto" alt="QuickNav Logo">
+    <img src="QuickNav/Assets/AppIcon/appicon.svg" height="150px" width="auto" alt="QuickNav Logo">
  </p>
  <h1  align="center">QuickNav</h1>
 <div align="center">
