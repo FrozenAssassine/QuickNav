@@ -120,6 +120,10 @@ public sealed partial class SearchPage : Page
             resultView.Visibility = Visibility.Collapsed;
             contentView.Visibility = Visibility.Visible;
         }
+        else
+        {
+            searchBox.Focus(FocusState.Keyboard);
+        }
     }
 
     private void searchBox_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
