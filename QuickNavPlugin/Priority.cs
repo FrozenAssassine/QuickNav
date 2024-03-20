@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace QuickNavPlugin
 {
+    /// <summary>
+    /// Priority of your command.
+    /// </summary>
     public enum Priority : int
     {
         High = 2,
