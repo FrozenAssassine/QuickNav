@@ -10,5 +10,5 @@
     <Window.SystemBackdrop>
         <DesktopAcrylicBackdrop />
     </Window.SystemBackdrop>
-    <views:SearchPage x:Name="searchPage"/>
+    <views:SearchPage x:Name="searchPage" KeyDown="searchPage_KeyDown"/>
 </Window>

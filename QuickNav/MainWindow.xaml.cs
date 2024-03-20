@@ -77,4 +77,12 @@ public sealed partial class MainWindow : Window
     {
         GlobalHotkeyHelper.UnregisterAllHotkeys();
     }
+
+    private void searchPage_KeyDown(object sender, KeyRoutedEventArgs e)
+    {
+        if(e.Key == Windows.System.VirtualKey.Escape)
+        {
+            this.Hide();
+        }
+    }
 }

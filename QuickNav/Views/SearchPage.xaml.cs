@@ -133,10 +133,6 @@ public sealed partial class SearchPage : Page
         {
             resultView.SelectedIndex = Math.Clamp(resultView.SelectedIndex - 1, 0, resultView.Items.Count - 1);
         }
-        else if (e.Key == Windows.System.VirtualKey.Escape)
-        {
-            MainWindow.m_AppWindow.Hide();
-        }
     }
 
     private void Grid_DragOver(object sender, DragEventArgs e)
