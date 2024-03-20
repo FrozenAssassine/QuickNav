@@ -33,5 +33,5 @@ QuickNav is under active development. Expect frequent updates and improvements a
 3. Open the .sln file in the root folder.
 4. Build and run QuickNav in Visual Studio.
 
-## 📸 Screenshots (Coming Soon)
+## 📸 Screenshots
 <img src="images/screen1.png"/>
