@@ -40,6 +40,9 @@ internal class CountWordsCommand : ITriggerCommand, IUnknownCommandCollector
         var textLabel = new LabelElement();
         content = textLabel;
 
+        if (!File.Exists(param))
+            return false;
+
         string text;
         //no file, count the clipboard
         if(param.Length == 0)

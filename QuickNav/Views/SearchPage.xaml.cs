@@ -109,11 +109,6 @@ public sealed partial class SearchPage : Page
             resultView.Visibility = Visibility.Collapsed;
             contentView.Visibility = Visibility.Visible;
         }
-        else
-        {
-            //command was executed without showing ui
-            MainWindow.m_AppWindow.Hide();
-        }
     }
 
     private void searchBox_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
@@ -136,6 +131,10 @@ public sealed partial class SearchPage : Page
         else if (e.Key == Windows.System.VirtualKey.Up)
         {
             resultView.SelectedIndex = Math.Clamp(resultView.SelectedIndex - 1, 0, resultView.Items.Count - 1);
+        }
+        else if (e.Key == Windows.System.VirtualKey.Escape)
+        {
+            MainWindow.m_AppWindow.Hide();
         }
     }
 
