@@ -15,11 +15,14 @@ QuickNav is a powerful Windows tool that simplifies multitasking with just a key
 QuickNav is under active development. Expect frequent updates and improvements as we strive to make working on Windows more efficient and intuitive.
 
 ## 🛠️ Features (Work in Progress)
-- Instant search window with customizable shortcut key
-- Search the web directly from the tool
-- Quickly find files and folders on your system
-- Run commands and scripts with ease
-- Customize shortcuts and actions to suit your workflow
+- Live advanced calculator with functions such as sin, cos, tan, e, pi, and support for repeated calculations like 10 + 10 * 50 - 20 *(5 + 10)
+- File search
+- Word counter
+- Color chooser (more like a color selector than a picker)
+- In app commandline executor (run and display commands)
+- File info
+- Lock screen
+- Web search
 
 ## 👨‍💻 Contribute to QuickNav
 - **Code Contributions:** Fork the repository, make enhancements, and submit pull requests on GitHub.

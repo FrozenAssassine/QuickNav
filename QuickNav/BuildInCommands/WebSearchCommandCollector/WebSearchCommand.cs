@@ -34,6 +34,9 @@ namespace QuickNav.BuildInCommands.WebSearchCommandCollector
         {
             content = null;
 
+            if (parameters == "")
+                return false;
+
             if (parameters.IsUrl(out Uri uri))
             {
                 Windows.System.Launcher.LaunchUriAsync(uri);
