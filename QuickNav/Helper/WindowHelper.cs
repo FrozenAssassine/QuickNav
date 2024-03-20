@@ -14,8 +14,8 @@ namespace QuickNav.Helper
                 if (displayArea is not null)
                 {
 
-                    var width = Math.Clamp(displayArea.WorkArea.Width / 4, 400, 800);
-                    var height = Math.Clamp(displayArea.WorkArea.Height / 4, 200, 600);
+                    var width = Math.Clamp(displayArea.WorkArea.Width / 4, 600, 800);
+                    var height = Math.Clamp(displayArea.WorkArea.Height / 4, 400, 600);
                     int x = ((displayArea.WorkArea.Width - width) / 2);
                     int y = ((displayArea.WorkArea.Height - height) / 2);
 
