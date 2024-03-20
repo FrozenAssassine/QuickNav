@@ -5,16 +5,17 @@ namespace QuickNav.Extensions;
 
 public static class MenuFlyoutExtension
 {
-    public static MenuFlyoutItem Add(this MenuFlyout menuFlyout, string text, string icon, Action clicked)
+    public static MenuFlyoutItem Add(this MenuFlyout menuFlyout, string text, string icon, object tag, Action<MenuFlyoutItem> clicked)
     {
         var menuItem = new MenuFlyoutItem
         {
             Text = text,
             Icon = new FontIcon { Glyph = icon },
+            Tag = tag,
         };
         menuItem.Click += delegate
         {
-            clicked();
+            clicked(menuItem);
         };
         menuFlyout.Items.Add(menuItem);
         return menuItem;

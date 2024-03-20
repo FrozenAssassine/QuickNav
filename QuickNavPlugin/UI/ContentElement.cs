@@ -13,6 +13,6 @@ namespace QuickNavPlugin.UI
     public class ContentElement
     {
         public ElementClicked Clicked { get; set; }
-        public FlyoutElement Flyout { get; set; } = null;
+        public FlyoutBaseElement Flyout { get; set; } = null;
     }
 }

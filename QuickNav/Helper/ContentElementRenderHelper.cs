@@ -5,38 +5,50 @@ using Microsoft.UI.Xaml.Input;
 using QuickNavPlugin.UI;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.UI.Input;
 using Microsoft.UI.Xaml.Media;
 using Windows.UI;
-using System.Net.Mime;
 using Microsoft.UI.Xaml.Controls.Primitives;
+using QuickNav.Extensions;
 
 namespace QuickNav.Helper
 {
     internal class ContentElementRenderHelper
     {
-        public static FlyoutBase CreateFlyout(FlyoutElement flyout)
+        public static FlyoutBase CreateFlyout(FlyoutBaseElement baseFlyout)
         {
-            ListViewElement lv = new ListViewElement();
-            lv.Orientation = QuickNavPlugin.UI.Orientation.Vertical;
-            foreach (ContentElement ce in flyout.Items)
-                lv.Children.Add(ce);
+            if (baseFlyout is MenuFlyoutElement menuFlyoutElement)
+            {
+                MenuFlyout flyout = new MenuFlyout();
+                foreach (var item in menuFlyoutElement.Items)
+                {
+                    flyout.Add(item.Text, item.Glyph, item.Tag, (sender) =>
+                    {
+                        item.Clicked(item);
+                    });
+                }
+                return flyout;
+            }
+            else if (baseFlyout is FlyoutElement flyoutElement)
+            {
+                ListViewElement lv = new ListViewElement();
+                lv.Orientation = QuickNavPlugin.UI.Orientation.Vertical;
+                foreach (ContentElement ce in flyoutElement.Items)
+                    lv.Children.Add(ce);
 
-            Flyout f = new Flyout();
-            f.Content = RenderContentElement(lv);
-            return f;
+                Flyout flyout = new Flyout();
+                flyout.Content = RenderContentElement(lv);
+                return flyout;
+            }
+            return null;
         }
-
         public static UIElement RenderContentElement(ContentElement content)
         {
             if(content is ButtonElement buttonElement)
             {
                 Button btn = new Button();
                 btn.Content = buttonElement.Text;
-                if (content.Flyout != null) btn.ContextFlyout = CreateFlyout(content.Flyout);
+                btn.ContextFlyout = CreateFlyout(content.Flyout);
                 btn.Click += (object sender, RoutedEventArgs e) =>
                 {
                     if (buttonElement.Clicked != null) buttonElement.Clicked(buttonElement);
@@ -97,7 +109,7 @@ namespace QuickNav.Helper
             if(content is TextElement textElement)
             {
                 TextBox textBox = new TextBox();
-                if (content.Flyout != null) textBox.ContextFlyout = CreateFlyout(content.Flyout);
+                textBox.ContextFlyout = CreateFlyout(content.Flyout);
                 textBox.Text = textElement.Text;
                 textBox.IsReadOnly = !textElement.IsEditable;
                 textBox.BorderThickness = new Thickness(0);
@@ -133,7 +145,8 @@ namespace QuickNav.Helper
                 ScrollView sv = new ScrollView();
                 TextBlock textBlock = new TextBlock();
                 textBlock.Text = labelElement.Text;
-                if (content.Flyout != null) textBlock.ContextFlyout = CreateFlyout(content.Flyout);
+                textBlock.ContextFlyout = CreateFlyout(content.Flyout);
+                textBlock.Tag = labelElement.Tag;
                 textBlock.PointerPressed += (object sender, PointerRoutedEventArgs e) =>
                 {
                     if (labelElement.Clicked != null) labelElement.Clicked(labelElement);

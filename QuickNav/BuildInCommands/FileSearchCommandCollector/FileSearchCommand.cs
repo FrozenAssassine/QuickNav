@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Data.OleDb;
 using QuickNav.Helper;
 using System.Windows;
+using QuickNav.Models;
 
 namespace QuickNav.BuildInCommands.WindowsFileSearch;
 
@@ -51,27 +52,24 @@ internal class FileSearchCommand : IUnknownCommandCollector, ITriggerCommand
 
             using (var reader = command.ExecuteReader())
             {
+                MenuFlyoutElement flyout = new MenuFlyoutElement();
+                flyout.AddItem("Copy Path", "", (sender) =>
+                {
+                    Clipboard.SetText((sender.Tag as FileSearchResultItem).FilePath);
+                });
+                flyout.AddItem("Copy FileName", "", (sender) =>
+                {
+                    Clipboard.SetText((sender.Tag as FileSearchResultItem).FileName);
+                });
+                flyout.AddItem("Show in explorer", "", (sender) =>
+                {
+                    FileExplorerHelper.OpenExplorer((sender.Tag as FileSearchResultItem).FilePath);
+                });
+
                 while (reader.Read())
                 {
-                    //string filePath = reader["System.ItemPathDisplay"].ToString();
-                    string fileName = reader["System.ItemName"].ToString();
-                    string filePath = reader["System.ItemPathDisplay"].ToString();
-
-                    FlyoutElement flyout = new FlyoutElement();
-                    flyout.AddButton("Copy Path", (sender) =>
-                    {
-                        Clipboard.SetText(filePath);
-                    });
-                    flyout.AddButton("Copy FileName", (sender) =>
-                    {
-                        Clipboard.SetText(fileName);
-                    });
-                    flyout.AddButton("Show in explorer", (sender) =>
-                    {
-                        FileExplorerHelper.OpenExplorer(filePath);
-                    });
-
-                    listViewElement.Children.Add(new LabelElement(fileName, flyout));
+                    string fileName =reader["System.ItemName"].ToString();
+                    listViewElement.Children.Add(new LabelElement(fileName, flyout, new FileSearchResultItem(fileName, reader["System.ItemPathDisplay"].ToString())));
                 }
             }
         }

@@ -5,10 +5,11 @@
 /// </summary>
 public class LabelElement : ContentElement
 {
-    public LabelElement(string text = "", FlyoutElement flyout = null)
+    public LabelElement(string text = "", FlyoutBaseElement flyout = null, object tag = null)
     {
         this.Text = text;
         base.Flyout = flyout;
+        Tag = tag;
     }
 
     public bool Scrollable { get; set; } = false;
@@ -23,6 +24,7 @@ public class LabelElement : ContentElement
             if (TextChanged != null) TextChanged(this, value);
         }
     }
+    public object Tag { get; set; }
 
     public ElementTextChanged TextChanged;
     public ElementIsEditableChanged IsEditableChanged;
