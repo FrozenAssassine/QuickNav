@@ -9,7 +9,7 @@ internal class FileInfoCommand : ITriggerCommand
 {
     public string Description => "Get infos about a file";
 
-    public Uri Icon => null;
+    public Uri Icon => new Uri("ms-appx://App/Assets/commands/fileinfo.png");
 
     public Priority Priority => Priority.Low;
 

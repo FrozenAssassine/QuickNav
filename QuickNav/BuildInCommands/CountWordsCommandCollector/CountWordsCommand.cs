@@ -9,7 +9,7 @@ internal class CountWordsCommand : ITriggerCommand, IUnknownCommandCollector
 {
     public string Description => "Count the words in a file or clipboard";
 
-    public Uri Icon => null;
+    public Uri Icon => new Uri("ms-appx://App/Assets/commands/wordcounter.png");
 
     public Priority Priority => Priority.Low;
 

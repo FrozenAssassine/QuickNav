@@ -8,7 +8,7 @@ internal class PlainTextConverterCommand : ITriggerCommand
 {
     public string Description => "Convert text in your clipboard to plain text";
 
-    public Uri Icon => null;
+    public Uri Icon => new Uri("ms-appx://App/Assets/commands/clipboardtext.png");
 
     public Priority Priority => Priority.Low;
 
