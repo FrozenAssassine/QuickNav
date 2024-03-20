@@ -10,6 +10,7 @@ using H.NotifyIcon;
 using System.Diagnostics;
 using Microsoft.UI.Xaml.Input;
 using System.Runtime.InteropServices;
+using Microsoft.Win32;
 
 namespace QuickNav;
 
@@ -54,6 +55,7 @@ public sealed partial class MainWindow : Window
         _presenter.IsAlwaysOnTop = true;
         _presenter.IsResizable = false;
     }
+
     private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
     {
         if (args.WindowActivationState == WindowActivationState.Deactivated)

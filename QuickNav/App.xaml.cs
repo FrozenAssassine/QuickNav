@@ -9,6 +9,8 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Microsoft.UI.Xaml.Shapes;
+using Microsoft.Win32;
+using QuickNav.Helper;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -46,6 +48,9 @@ namespace QuickNav
         {
             m_window = new MainWindow();
             m_window.Activate();
+
+            //start widgets
+            //WidgetRegister.StartWidgets();
         }
 
         private Window m_window;
