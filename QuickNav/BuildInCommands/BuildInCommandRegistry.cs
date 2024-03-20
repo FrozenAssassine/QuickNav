@@ -1,5 +1,6 @@
 using QuickNav.BuildInCommands.CalculatorCommandCollector;
 using QuickNav.BuildInCommands.CMDCommandCollector;
+using QuickNav.BuildInCommands.ColorPickerCommandTrigger;
 using QuickNav.BuildInCommands.FileInfoCommandCollector;
 using QuickNav.BuildInCommands.PlainTextConverterCommandCollector;
 using QuickNav.BuildInCommands.WebSearchCommandCollector;
@@ -26,6 +27,7 @@ namespace QuickNav.BuildInCommands
             buildInCommands.TriggerCommands.Add(new FileInfoCommand());
             buildInCommands.TriggerCommands.Add(new PlainTextConverterCommand());
             buildInCommands.TriggerCommands.Add(new CalculatorCommand());
+            buildInCommands.TriggerCommands.Add(new ColorPickerCommand());
 
             PluginHelper.Plugins.Add(buildInCommands);
         }

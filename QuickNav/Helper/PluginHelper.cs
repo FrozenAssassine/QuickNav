@@ -22,7 +22,7 @@ namespace QuickNav.Helper
             // Do not combine these loops, as this would destroy the order!
             for (int i = 0; i < Plugins.Count; i++)
                 for (int j = 0; j < Plugins[i].TriggerCommands.Count; j++)
-                    if (queryLower.StartsWith(Plugins[i].TriggerCommands[j].CommandTrigger.ToLower()))
+                    if (queryLower.StartsWith(Plugins[i].TriggerCommands[j].CommandTrigger.ToLower()) && Plugins[i].TriggerCommands[j].CommandTrigger != "")
                         commands.Add(Plugins[i].TriggerCommands[j]);
             for (int i = 0; i < Plugins.Count; i++)
                 for (int j = 0; j < Plugins[i].TriggerCommands.Count; j++)

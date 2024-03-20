@@ -14,17 +14,17 @@ namespace QuickNav.Widgets
         private IntPtr hWnd;
         public string WidgetName { get; set; }
 
-    // Helper class for Win32 interop
-    public const int WS_EX_TOOLWINDOW = 0x00000080;
-    public const int WS_EX_NOACTIVATE = 0x08000000;
+        // Helper class for Win32 interop
+        public const int WS_EX_TOOLWINDOW = 0x00000080;
+        public const int WS_EX_NOACTIVATE = 0x08000000;
 
-    [DllImport("user32.dll", CharSet = CharSet.Auto)]
-    public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
 
-    [DllImport("user32.dll", SetLastError = true)]
-    public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
-    public QuickNavWidget()
+        public QuickNavWidget()
         {
             this.Title = WidgetName;
             this.IsShownInSwitchers = false;
