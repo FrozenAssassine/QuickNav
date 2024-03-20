@@ -8,13 +8,17 @@ using System.Windows;
 
 namespace QuickNav.BuildInCommands.WindowsFileSearch;
 
-internal class FileSearchCommand : IUnknownCommandCollector
+internal class FileSearchCommand : IUnknownCommandCollector, ITriggerCommand
 {
     public string Description => "Run this command to search files on windows";
 
     public Uri Icon => new Uri("ms-appx://App/Assets/commands/filesearch.png");
 
     public Priority Priority => Priority.Low;
+
+    public string CommandTrigger => "file:";
+
+    public string[] Keywords => new string[] { "file", "explorer", "search" };
 
     public string Name(string query)
     {
@@ -25,6 +29,10 @@ internal class FileSearchCommand : IUnknownCommandCollector
     public bool RunCommand(string searchTerm, out QuickNavPlugin.UI.ContentElement content)
     {
         content = null;
+
+        if (searchTerm == "")
+            return false;
+
         var connection = new OleDbConnection(@"Provider=Search.CollatorDSO;Extended Properties=""Application=Windows""");
 
         try
