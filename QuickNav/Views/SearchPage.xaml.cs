@@ -77,7 +77,7 @@ public sealed partial class SearchPage : Page
 
     private void RunCommand(string query, ResultListViewItem item)
     {
-        if (resultView.Items.Count == 0 || query.Length == 0)
+        if (resultView.Items.Count == 0)
             return;
 
         var command = item.Command;
