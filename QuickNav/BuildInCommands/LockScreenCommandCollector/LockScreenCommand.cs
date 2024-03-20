@@ -14,7 +14,7 @@ internal class LockScreenCommand : IUnknownCommandCollector, ITriggerCommand
 
     public string CommandTrigger => "lock";
 
-    public string[] Keywords => new string[] { "lock", "lock screen"};
+    public string[] Keywords => new string[] { "lock", "screen"};
 
     public string Name(string query)
     {

@@ -14,7 +14,7 @@ internal class PlainTextConverterCommand : ITriggerCommand
 
     public string CommandTrigger => "pt"; //plain text
 
-    public string[] Keywords => new string[] { "plain text", "text" };
+    public string[] Keywords => new string[] { "plain", "text" };
 
     public string Name(string query)
     {

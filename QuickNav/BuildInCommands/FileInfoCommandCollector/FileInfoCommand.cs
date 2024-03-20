@@ -15,7 +15,7 @@ internal class FileInfoCommand : ITriggerCommand
 
     public string CommandTrigger => "finf";
 
-    public string[] Keywords => new string[] { "info", "fileinfo"};
+    public string[] Keywords => new string[] { "info", "file"};
 
     public string Name(string query)
     {

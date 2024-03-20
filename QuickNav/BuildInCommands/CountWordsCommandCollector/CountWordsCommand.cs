@@ -15,7 +15,7 @@ internal class CountWordsCommand : ITriggerCommand, IUnknownCommandCollector
 
     public string CommandTrigger => "cnt:";
 
-    public string[] Keywords => new string[] { "count", "words"};
+    public string[] Keywords => new string[] { "count", "word"};
 
     public string Name(string query)
     {
