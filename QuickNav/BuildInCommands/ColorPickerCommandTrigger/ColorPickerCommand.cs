@@ -36,7 +36,7 @@ namespace QuickNav.BuildInCommands.ColorPickerCommandTrigger
         public bool RunCommand(string parameters, out Page content, out double width, out double height)
         {
             content = new QuickNav.Views.ColorPicker();
-            width = -150;
+            width = 0;
             height = 280;
             return true;
         }

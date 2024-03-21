@@ -65,9 +65,11 @@
     <Content Remove="Assets\AppIcon\Generated\Wide310x150Logo.scale-400.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="AppWindows\AboutWindow.xaml" />
     <None Remove="Views\ColorPicker.xaml" />
     <None Remove="Views\SearchPage.xaml" />
     <None Remove="Widgets\CountWordsWidget.xaml" />
+    <None Remove="AppWindows\SettingsWindow.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -92,6 +94,11 @@
     <ProjectReference Include="..\QuickNavPlugin\QuickNavPlugin.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Page Update="AppWindows\AboutWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="Widgets\CountWordsWidget.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -103,6 +110,11 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\SearchPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Windows\SettingsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
