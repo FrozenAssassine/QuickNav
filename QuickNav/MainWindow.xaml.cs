@@ -11,6 +11,8 @@ using Microsoft.UI.Xaml.Input;
 using System.Runtime.InteropServices;
 using System.IO;
 using Windows.ApplicationModel;
+using H.NotifyIcon.Core;
+using WinUIEx;
 
 namespace QuickNav;
 
@@ -20,7 +22,7 @@ public sealed partial class MainWindow : Window
     public static IntPtr hWnd;
     private OverlappedPresenter? _presenter;
     public static DispatcherQueue dispatcherQueue;
-    
+
     public MainWindow()
     {
         this.InitializeComponent();
@@ -79,5 +81,20 @@ public sealed partial class MainWindow : Window
         {
             this.Hide();
         }
+    }
+
+    private void ShowSettings_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void ShowAbout_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void Exit_Click(object sender, RoutedEventArgs e)
+    {
+        this.Close();
     }
 }

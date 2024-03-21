@@ -4,11 +4,29 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:QuickNav"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:views="using:QuickNav.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:views="using:QuickNav.Views" xmlns:tb="using:H.NotifyIcon"
     mc:Ignorable="d"
     Closed="Window_Closed">
     <Window.SystemBackdrop>
         <DesktopAcrylicBackdrop />
     </Window.SystemBackdrop>
-    <views:SearchPage x:Name="searchPage" KeyDown="searchPage_KeyDown"/>
+    <Grid>
+        <tb:TaskbarIcon
+            x:Name="systrayHandle"
+            ToolTipText="ToolTip"
+            MenuActivation="LeftOrRightClick"
+            PopupActivation="DoubleClick"
+            ContextMenuMode="SecondWindow"
+        >
+            <tb:TaskbarIcon.ContextFlyout>
+                <MenuFlyout>
+                    <MenuFlyoutItem Text="Settings" Click="ShowSettings_Click"/>
+                    <MenuFlyoutItem Text="About" Click="ShowAbout_Click"/>
+                    <MenuFlyoutSeparator/>
+                    <MenuFlyoutItem Text="Exit" Click="Exit_Click"/>
+                </MenuFlyout>
+            </tb:TaskbarIcon.ContextFlyout>
+        </tb:TaskbarIcon>
+        <views:SearchPage x:Name="searchPage" KeyDown="searchPage_KeyDown"/>
+    </Grid>
 </Window>
