@@ -21,9 +21,6 @@ public sealed partial class MainWindow : Window
     private OverlappedPresenter? _presenter;
     public static DispatcherQueue dispatcherQueue;
     
-    [DllImport("user32.dll")]
-    private static extern bool SetForegroundWindow(IntPtr hWnd);
-
     public MainWindow()
     {
         this.InitializeComponent();
@@ -47,7 +44,7 @@ public sealed partial class MainWindow : Window
         GlobalHotkeyHelper.RegisterHotkey(Windows.System.VirtualKeyModifiers.Windows, Windows.System.VirtualKey.Y, (object sender, EventArgs e) =>
         {
             this.Show();
-            SetForegroundWindow(hWnd);
+            Win32Apis.SetForegroundWindow(hWnd);
         });
 
         if (_presenter is null)
