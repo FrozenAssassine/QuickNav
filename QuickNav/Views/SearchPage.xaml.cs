@@ -95,7 +95,7 @@ public sealed partial class SearchPage : Page
         query = query.Trim();
 
         if (command is ITriggerCommand trigger && query.StartsWith(trigger.CommandTrigger))
-            query = query.Substring(trigger.CommandTrigger.Length).TrimStart();
+            query = query.Substring(trigger.CommandTrigger.Length);
 
         query = query.Trim();
 

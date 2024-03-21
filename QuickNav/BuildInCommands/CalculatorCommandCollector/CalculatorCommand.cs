@@ -26,7 +26,7 @@ namespace QuickNav.BuildInCommands.CalculatorCommandCollector
             if (query == "") return "Calculate";
             try
             {
-                return "= " + Parser.Parse(query).Calc().ToString();
+                return "= " + Parser.Parse(query.StartsWith(CommandTrigger) ? query.Substring(CommandTrigger.Length).TrimStart() : query).Calc().ToString().Replace(',', '.');
             }
             catch
             {
@@ -44,10 +44,10 @@ namespace QuickNav.BuildInCommands.CalculatorCommandCollector
 
             try
             {
-                content = new LabelElement(Parser.Parse(parameters).Calc().ToString());
+                content = new LabelElement(Parser.Parse(parameters).Calc().ToString().Replace(',', '.'));
                 return true;
             }
-            catch
+            catch (Exception e)
             {
                 content = new LabelElement("Parsing error!");
                 return true;
