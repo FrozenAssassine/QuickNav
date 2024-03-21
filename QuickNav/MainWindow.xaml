@@ -13,7 +13,7 @@
     <Grid>
         <tb:TaskbarIcon
             x:Name="systrayHandle"
-            ToolTipText="ToolTip"
+            ToolTipText="QuickNav"
             MenuActivation="LeftOrRightClick"
             PopupActivation="DoubleClick"
             ContextMenuMode="SecondWindow"

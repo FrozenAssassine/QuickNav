@@ -13,6 +13,8 @@ using System.IO;
 using Windows.ApplicationModel;
 using H.NotifyIcon.Core;
 using WinUIEx;
+using Microsoft.UI.Xaml.Media.Imaging;
+using System.Drawing;
 
 namespace QuickNav;
 
@@ -39,6 +41,8 @@ public sealed partial class MainWindow : Window
 
         this.AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets\\AppIcon\\appicon.ico"));
 
+        systrayHandle.Icon = new System.Drawing.Icon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets\\AppIcon\\appicon.ico"));
+        
         this.AppWindow.IsShownInSwitchers = false;
 
         BuildInCommandRegistry.Register();
