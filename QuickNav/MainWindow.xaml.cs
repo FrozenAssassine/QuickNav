@@ -15,6 +15,9 @@ using H.NotifyIcon.Core;
 using WinUIEx;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System.Drawing;
+using QuickNav.AppWindows;
+using System.Windows.Documents;
+using System.Collections.Generic;
 
 namespace QuickNav;
 
@@ -24,6 +27,7 @@ public sealed partial class MainWindow : Window
     public static IntPtr hWnd;
     private OverlappedPresenter? _presenter;
     public static DispatcherQueue dispatcherQueue;
+    public List<Window> OpenWindows = new();
 
     public MainWindow()
     {
@@ -40,10 +44,8 @@ public sealed partial class MainWindow : Window
         _presenter = m_AppWindow.Presenter as OverlappedPresenter;
 
         this.AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets\\AppIcon\\appicon.ico"));
-
         systrayHandle.Icon = new System.Drawing.Icon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets\\AppIcon\\appicon.ico"));
         
-        this.AppWindow.IsShownInSwitchers = false;
 
         BuildInCommandRegistry.Register();
 
@@ -60,6 +62,7 @@ public sealed partial class MainWindow : Window
         _presenter.SetBorderAndTitleBar(hasBorder: false, hasTitleBar: false);
         _presenter.IsAlwaysOnTop = true;
         _presenter.IsResizable = false;
+        this.AppWindow.IsShownInSwitchers = false;
     }
 
     private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
@@ -89,16 +92,25 @@ public sealed partial class MainWindow : Window
 
     private void ShowSettings_Click(object sender, RoutedEventArgs e)
     {
-
+        SettingsWindow settingsWindow = new SettingsWindow(OpenWindows);
+        settingsWindow.Activate();
+        OpenWindows.Add(settingsWindow);
     }
 
     private void ShowAbout_Click(object sender, RoutedEventArgs e)
     {
-
+        AboutWindow aboutWindow = new AboutWindow(OpenWindows);
+        aboutWindow.Activate();
+        OpenWindows.Add(aboutWindow);
     }
 
     private void Exit_Click(object sender, RoutedEventArgs e)
     {
+        while(OpenWindows.Count > 0)
+        {
+            OpenWindows[0].Close();
+        }
         this.Close();
+        systrayHandle.Dispose();
     }
 }

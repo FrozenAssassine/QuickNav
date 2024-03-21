@@ -4,8 +4,8 @@ using QuickNav.Helper;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows.Navigation;
 using Windows.ApplicationModel;
+using WinUIEx;
 
 namespace QuickNav.AppWindows;
 
@@ -14,10 +14,14 @@ public sealed partial class AboutWindow : Window
 
     public string AppVersion => AppVersionHelper.GetAppVersion();
     public string DeveloperName => Package.Current.PublisherDisplayName;
-    public AboutWindow()
+    public AboutWindow(List<Window> openWindows)
     {
         this.InitializeComponent();
-
+        this.SetWindowSize(600, 750);
+        this.Closed += delegate
+        {
+            openWindows.Remove(this);
+        };
         this.AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets\\AppIcon\\appicon.ico"));
     }
 
