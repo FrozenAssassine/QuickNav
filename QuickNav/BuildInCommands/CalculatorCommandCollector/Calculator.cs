@@ -5,12 +5,15 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Calculator // DO NOT CHANGE ANYTHING!!! (If it works, don't touch it xD)
+namespace Calculator // DO NOT CHANGE ANYTHING!!!
 {
     public static class Settings
     {
         public static bool InsertLostTimesSymbols = true;
         public static bool Radians = true;
+        //public static double DeviationValue = 0.00000000000000010;
+        public static bool FixApproximationErrors = true;
+        public static int RoundToDigits = 14;
     }
 
     public interface IFormula
@@ -186,7 +189,7 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!! (If it works, don't touch it x
 
         public double Calc()
         {
-            return Formula1.Calc() - Formula2.Calc();
+            return CalculationHelper.FixApproximation(Formula1.Calc() - Formula2.Calc());
         }
 
         public override string ToString()
@@ -242,7 +245,7 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!! (If it works, don't touch it x
 
         public double Calc()
         {
-            return Formula1.Calc() + Formula2.Calc();
+            return CalculationHelper.FixApproximation(Formula1.Calc() + Formula2.Calc());
         }
 
         public override string ToString()
@@ -298,7 +301,7 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!! (If it works, don't touch it x
 
         public double Calc()
         {
-            return Formula1.Calc() * Formula2.Calc();
+            return CalculationHelper.FixApproximation(Formula1.Calc() * Formula2.Calc());
         }
 
         public override string ToString()
@@ -354,7 +357,7 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!! (If it works, don't touch it x
 
         public double Calc()
         {
-            return Formula1.Calc() / Formula2.Calc();
+            return CalculationHelper.FixApproximation(Formula1.Calc() / Formula2.Calc());
         }
 
         public override string ToString()
@@ -410,7 +413,7 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!! (If it works, don't touch it x
 
         public double Calc()
         {
-            return Formula1.Calc() % Formula2.Calc();
+            return CalculationHelper.FixApproximation(Formula1.Calc() % Formula2.Calc());
         }
 
         public override string ToString()
@@ -530,7 +533,7 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!! (If it works, don't touch it x
                 var fnum = new FNumber();
                 fnum.Num = counter;
                 Formula.OverwriteVariable(Symbol, fnum);
-                res += Formula.Calc();
+                res = CalculationHelper.FixApproximation(res + Formula.Calc());
             }
             return res;
         }
@@ -601,7 +604,7 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!! (If it works, don't touch it x
                 var fnum = new FNumber();
                 fnum.Num = counter;
                 Formula.OverwriteVariable(Symbol, fnum);
-                res *= Formula.Calc();
+                res = CalculationHelper.FixApproximation(res * Formula.Calc());
             }
             return res;
         }
@@ -1374,6 +1377,17 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!! (If it works, don't touch it x
         };
     }
 
+    public static class CalculationHelper
+    {
+        public static double FixApproximation(double value)
+        {
+            if (!Settings.FixApproximationErrors)
+                return value;
+            return Math.Round(value, Settings.RoundToDigits);
+            //return Math.Round(value / Settings.DeviationValue) * Settings.DeviationValue;
+        }
+    }
+
     public static class Parser
     {
         public static IFormula Parse(string formula)
@@ -1382,6 +1396,7 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!! (If it works, don't touch it x
             {
                 string abc = "abcdefghijklmnopqrstuvwxyz";
                 string nums = "1234567890";
+                string unallowedChars = "!\"§$&={}\\´`'~#_:;|<>^°"; // Just to prevent some errors
 
                 formula = formula.ToLower();
                 formula = formula.Replace(" ", "");
@@ -1402,6 +1417,12 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!! (If it works, don't touch it x
                 if (formula.StartsWith("-"))
                 {
                     formula = "0" + formula;
+                }
+
+                for(int i = 0; i < formula.Length; i++)
+                {
+                    if (unallowedChars.Contains(formula[i]))
+                        throw new InvalidOperationException("Unallowed character!");
                 }
 
                 string opStr = Registry.Operators.Select(op => op.OperatorName + "").Aggregate((acc, op) => acc + op);

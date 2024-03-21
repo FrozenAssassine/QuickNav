@@ -133,6 +133,7 @@ namespace QuickNav.Helper
                 ScrollView sv = new ScrollView();
                 TextBlock textBlock = new TextBlock();
                 textBlock.Text = labelElement.Text;
+                textBlock.IsTextSelectionEnabled = true;
                 if (content.Flyout != null) textBlock.ContextFlyout = CreateFlyout(content.Flyout);
                 textBlock.PointerPressed += (object sender, PointerRoutedEventArgs e) =>
                 {
