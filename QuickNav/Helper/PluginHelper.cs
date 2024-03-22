@@ -67,5 +67,20 @@ namespace QuickNav.Helper
                 return plugin;
             return null;
         }
+
+        public static List<IFileCommand> GetFilePlugins()
+        {
+            List<IFileCommand> commands = new List<IFileCommand>();
+            for(int i = 0; i < Plugins.Count; i++)
+            {
+                for (int j = 0; j < Plugins[i].TriggerCommands.Count; j++)
+                    if (Plugins[i].TriggerCommands[j] is IFileCommand && !commands.Contains((IFileCommand)Plugins[i].TriggerCommands[j]))
+                        commands.Add((IFileCommand)Plugins[i].TriggerCommands[j]);
+                for (int j = 0; j < Plugins[i].CollectorCommands.Count; j++)
+                    if (Plugins[i].CollectorCommands[j] is IFileCommand && !commands.Contains((IFileCommand)Plugins[i].CollectorCommands[j]))
+                        commands.Add((IFileCommand)Plugins[i].CollectorCommands[j]);
+            }
+            return commands;
+        }
     }
 }

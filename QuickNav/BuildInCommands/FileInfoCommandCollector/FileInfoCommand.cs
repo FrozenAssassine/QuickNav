@@ -5,7 +5,7 @@ using System.IO;
 
 namespace QuickNav.BuildInCommands.FileInfoCommandCollector;
 
-internal class FileInfoCommand : ITriggerCommand
+internal class FileInfoCommand : ITriggerCommand, IFileCommand
 {
     public string Description => "Get infos about a file";
 
@@ -13,9 +13,11 @@ internal class FileInfoCommand : ITriggerCommand
 
     public Priority Priority => Priority.Low;
 
-    public string CommandTrigger => "finf";
+    public string CommandTrigger => "fileinfo:";
 
     public string[] Keywords => new string[] { "info", "file"};
+
+    public string[] ExtensionFilter => new string[0];
 
     public string Name(string query)
     {

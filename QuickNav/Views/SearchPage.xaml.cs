@@ -7,6 +7,7 @@ using QuickNavPlugin;
 using QuickNavPlugin.UI;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
@@ -16,6 +17,7 @@ namespace QuickNav.Views;
 public sealed partial class SearchPage : Page
 {
     public bool PreventSearchboxChangedEvent = false;
+    public bool ReloadDropList = true;
 
     public ICommand lastCommand = null;
 
@@ -76,6 +78,8 @@ public sealed partial class SearchPage : Page
             for (int i = 0; i < items.Count; i++)
                 resultView.Items.Add(items[i]);
         }
+
+        ReloadDropList = true;
     }
 
     private void RunCommand(string query, ResultListViewItem item)
@@ -124,6 +128,8 @@ public sealed partial class SearchPage : Page
         {
             searchBox.Focus(FocusState.Keyboard);
         }
+
+        ReloadDropList = true;
     }
 
     private void searchBox_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
@@ -147,11 +153,31 @@ public sealed partial class SearchPage : Page
         {
             resultView.SelectedIndex = Math.Clamp(resultView.SelectedIndex - 1, 0, resultView.Items.Count - 1);
         }
+
+        ReloadDropList = true;
     }
 
-    private void Grid_DragOver(object sender, DragEventArgs e)
+    private async void Grid_DragOver(object sender, DragEventArgs e)
     {
         e.AcceptedOperation = DataPackageOperation.Copy;
+
+        if (e.DataView.Contains(StandardDataFormats.StorageItems))
+        {
+            if (!ReloadDropList)
+                return;
+
+            string extension = Path.GetExtension((await e.DataView.GetStorageItemsAsync())[0].Path).Substring(1).ToLower();
+
+            List<IFileCommand> commands = PluginHelper.GetFilePlugins();
+            resultView.Items.Clear();
+            List<ResultListViewItem> items = commands
+                .Where((IFileCommand cmd) => { return cmd.ExtensionFilter.Length == 0 || cmd.ExtensionFilter.Contains(extension); })
+                .Select((command) => new ResultListViewItem() { Command = command, Text = command.Name(searchBox.Text) }).ToList();
+            for (int i = 0; i < items.Count; i++)
+                resultView.Items.Add(items[i]);
+
+            ReloadDropList = false;
+        }
     }
 
     private async void Grid_Drop(object sender, DragEventArgs e)
@@ -210,6 +236,8 @@ public sealed partial class SearchPage : Page
                 RunCommand(triggerCommand.CommandTrigger + searchBox.Text, resultlistViewitem);
             }
         }
+
+        ReloadDropList = true;
     }
 
     private void resultView_ItemClick(object sender, ItemClickEventArgs e)
@@ -234,5 +262,7 @@ public sealed partial class SearchPage : Page
         {
             searchBox.Text += await e.DataView.GetTextAsync();
         }
+
+        ReloadDropList = true;
     }
 }

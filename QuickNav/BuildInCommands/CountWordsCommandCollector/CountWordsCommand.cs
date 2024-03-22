@@ -6,7 +6,7 @@ using QuickNav.Extensions;
 
 namespace QuickNav.BuildInCommands.FileInfoCommandCollector;
 
-internal class CountWordsCommand : ITriggerCommand, IUnknownCommandCollector
+internal class CountWordsCommand : ITriggerCommand, IUnknownCommandCollector, IFileCommand
 {
     public string Description => "Count the words in a file or clipboard";
 
@@ -14,9 +14,11 @@ internal class CountWordsCommand : ITriggerCommand, IUnknownCommandCollector
 
     public Priority Priority => Priority.Low;
 
-    public string CommandTrigger => "cnt:";
+    public string CommandTrigger => "count:";
 
     public string[] Keywords => new string[] { "count", "word"};
+
+    public string[] ExtensionFilter => new string[] { "txt", "md", "rtf" };
 
     public string Name(string query)
     {
