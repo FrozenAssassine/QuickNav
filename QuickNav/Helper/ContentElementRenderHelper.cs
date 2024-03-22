@@ -156,6 +156,39 @@ namespace QuickNav.Helper
 
                 return textBlock;
             }
+            if (content is ProgressBarElement progressBarElement)
+            {
+                ProgressBar progressBar = new ProgressBar();
+                progressBar.Value = progressBarElement.Progress;
+                progressBar.Width = progressBarElement.Width;
+                progressBarElement.TextChanged += (ContentElement sender, string Text) =>
+                {
+                    progressBar.Value = Convert.ToDouble(Text);
+                };
+
+                return progressBar;
+            }
+            if (content is GridElement gridElement)
+            {
+                Grid grid = new Grid();
+
+                for (int i = 0; i<gridElement.Children.Count; i++)
+                {
+                    if (gridElement.Orientation == QuickNavPlugin.UI.Orientation.Horizontal)
+                        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                    else
+                        grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+
+                    var uiItem = RenderContentElement(gridElement.Children[i]);
+                    grid.Children.Add(uiItem);
+
+                    if (gridElement.Orientation == QuickNavPlugin.UI.Orientation.Horizontal)
+                        Grid.SetColumn(uiItem as FrameworkElement, i);
+                    else Grid.SetRow(uiItem as FrameworkElement, i);
+                }
+                
+                return grid;
+            }
             return null;
         }
     }
