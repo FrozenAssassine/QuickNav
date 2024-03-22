@@ -6,6 +6,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:QuickNav.Controls"
     mc:Ignorable="d"
 >
+    <Window.SystemBackdrop>
+        <DesktopAcrylicBackdrop/>
+    </Window.SystemBackdrop>
     <ScrollViewer Margin="0,30,0,0" HorizontalScrollMode="Enabled" VerticalScrollMode="Enabled">
         <StackPanel Margin="20">
             <TextBlock TextAlignment="Center" FontSize="36" Text="About"/>

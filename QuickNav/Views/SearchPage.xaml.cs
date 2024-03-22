@@ -1,6 +1,5 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Navigation;
 using QuickNav.Helper;
 using QuickNav.Models;
 using QuickNavPlugin;
@@ -24,7 +23,6 @@ public sealed partial class SearchPage : Page
     public SearchPage()
     {
         this.InitializeComponent();
-
     }
 
     public void InitialiseOnShowWindow()
@@ -67,12 +65,9 @@ public sealed partial class SearchPage : Page
                     resultView.Items.Add(new ResultListViewItem() { Command = command, Text = command.Name(searchBox.Text) });
                 }
             }
-
-            return;
         }
         else
         {
-            if (searchBox.Text == "") return;
             List<ICommand> commands = PluginHelper.SearchFor(searchBox.Text);
             List<ResultListViewItem> items = commands.Select((command) => new ResultListViewItem() { Command = command, Text = command.Name(searchBox.Text) }).ToList();
             for (int i = 0; i < items.Count; i++)

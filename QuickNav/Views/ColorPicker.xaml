@@ -286,6 +286,9 @@
                                 </Grid>
                                 <Grid VerticalAlignment="Bottom" Height="220" Margin="0,20,0,0" x:Name="ThirdDimensionSliderGrid" Grid.Column="1">
                                     <Rectangle x:Name="ThirdDimensionBackgroundRectangle" Width="12" VerticalAlignment="Stretch"  RadiusX="{Binding Source={ThemeResource ColorPickerSliderCornerRadius}, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource TopLeftCornerRadiusDoubleValueConverter}}" RadiusY="{Binding Source={ThemeResource ColorPickerSliderCornerRadius}, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BottomRightCornerRadiusDoubleValueConverter}}">
+                                        <Rectangle.RenderTransform>
+                                            <RotateTransform Angle="180" CenterX="6" CenterY="110"/>
+                                        </Rectangle.RenderTransform>
                                         <Rectangle.Fill>
                                             <LinearGradientBrush x:Name="ThirdDimensionSliderGradientBrush" />
                                         </Rectangle.Fill>
@@ -294,11 +297,17 @@
                                 </Grid>
                                 <Grid VerticalAlignment="Bottom" Height="220" Margin="0,20,0,0" x:Name="AlphaSliderGrid" Grid.Column="2">
                                     <Rectangle x:Name="AlphaSliderCheckeredBackgroundRectangle" Width="12" RadiusX="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource TopLeftCornerRadiusDoubleValueConverter}}" RadiusY="{Binding CornerRadius, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BottomRightCornerRadiusDoubleValueConverter}}">
+                                        <Rectangle.RenderTransform>
+                                            <RotateTransform Angle="180" CenterX="6" CenterY="110"/>
+                                        </Rectangle.RenderTransform>
                                         <Rectangle.Fill>
                                             <ImageBrush x:Name="AlphaSliderCheckeredBackgroundImageBrush" />
                                         </Rectangle.Fill>
                                     </Rectangle>
                                     <Rectangle x:Name="AlphaSliderBackgroundRectangle"  Width="12" RadiusX="{Binding Source={ThemeResource ColorPickerSliderCornerRadius}, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource TopLeftCornerRadiusDoubleValueConverter}}" RadiusY="{Binding Source={ThemeResource ColorPickerSliderCornerRadius}, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BottomRightCornerRadiusDoubleValueConverter}}">
+                                        <Rectangle.RenderTransform>
+                                            <RotateTransform Angle="180" CenterX="6" CenterY="110"/>
+                                        </Rectangle.RenderTransform>
                                         <Rectangle.Fill>
                                             <LinearGradientBrush x:Name="AlphaSliderGradientBrush" />
                                         </Rectangle.Fill>
