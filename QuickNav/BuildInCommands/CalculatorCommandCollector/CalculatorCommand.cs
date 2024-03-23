@@ -21,7 +21,7 @@ namespace QuickNav.BuildInCommands.CalculatorCommandCollector
                 return QuickNavPlugin.Priority.Low;
             try
             {
-                Parser.Parse(query.StartsWith(CommandTrigger) ? query.Substring(CommandTrigger.Length).TrimStart() : query).Calc().ToString().Replace(',', '.');
+                Parser.Parse(query).Calc();
                 return QuickNavPlugin.Priority.High;
             }
             catch
@@ -40,7 +40,7 @@ namespace QuickNav.BuildInCommands.CalculatorCommandCollector
                 return "Calculate";
             try
             {
-                return "= " + Parser.Parse(query.StartsWith(CommandTrigger) ? query.Substring(CommandTrigger.Length).TrimStart() : query).Calc().ToString().Replace(',', '.');
+                return "= " + ClearNegativeZero(((double)decimal.Round(Parser.Parse(query).Calc(), 15)).ToString().Replace(',', '.'));
             }
             catch
             {
@@ -58,7 +58,7 @@ namespace QuickNav.BuildInCommands.CalculatorCommandCollector
 
             try
             {
-                content = new LabelElement(Parser.Parse(parameters).Calc().ToString().Replace(',', '.'));
+                content = new LabelElement(ClearNegativeZero(((double)decimal.Round(Parser.Parse(parameters).Calc(), 15)).ToString().Replace(',', '.')));
                 return true;
             }
             catch (Exception e)
@@ -66,6 +66,18 @@ namespace QuickNav.BuildInCommands.CalculatorCommandCollector
                 content = new LabelElement("Parsing error!");
                 return true;
             }
+        }
+
+        public CalculatorCommand()
+        {
+            Settings.MaxTaylorIterations = 100;
+        }
+
+        private string ClearNegativeZero(string val)
+        {
+            if (val == "-0")
+                return "0";
+            return val;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using raminrahimzada;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,14 +12,12 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
     {
         public static bool InsertLostTimesSymbols = true;
         public static bool Radians = true;
-        //public static double DeviationValue = 0.00000000000000010;
-        public static bool FixApproximationErrors = true;
-        public static int RoundToDigits = 14;
+        public static int MaxTaylorIterations { get => DecimalMath.MaxIteration; set { DecimalMath.MaxIteration = value; } }
     }
 
     public interface IFormula
     {
-        double Calc();
+        decimal Calc();
         string ToString();
         void OverwriteVariable(char name, IFormula value);
         void ReplaceVariable(char name, IFormula value);
@@ -60,7 +59,7 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
             throw new NotImplementedException("Method not implemented.");
         }
 
-        public double Calc()
+        public decimal Calc()
         {
             throw new NotImplementedException("Method not implemented.");
         }
@@ -93,9 +92,9 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
 
     public class FNumber : IFormula
     {
-        public double Num { get; set; } = 0;
+        public decimal Num { get; set; } = 0m;
 
-        public double Calc()
+        public decimal Calc()
         {
             return Num;
         }
@@ -133,7 +132,7 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
         private IFormula _content = new FNumber();
         public char Symbol { get; set; } = 'x';
 
-        public double Calc()
+        public decimal Calc()
         {
             return _content.Calc();
         }
@@ -187,9 +186,9 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
             return false;
         }
 
-        public double Calc()
+        public decimal Calc()
         {
-            return CalculationHelper.FixApproximation(Formula1.Calc() - Formula2.Calc());
+            return Formula1.Calc() - Formula2.Calc();
         }
 
         public override string ToString()
@@ -243,9 +242,9 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
             return false;
         }
 
-        public double Calc()
+        public decimal Calc()
         {
-            return CalculationHelper.FixApproximation(Formula1.Calc() + Formula2.Calc());
+            return Formula1.Calc() + Formula2.Calc();
         }
 
         public override string ToString()
@@ -299,9 +298,9 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
             return false;
         }
 
-        public double Calc()
+        public decimal Calc()
         {
-            return CalculationHelper.FixApproximation(Formula1.Calc() * Formula2.Calc());
+            return Formula1.Calc() * Formula2.Calc();
         }
 
         public override string ToString()
@@ -355,9 +354,9 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
             return false;
         }
 
-        public double Calc()
+        public decimal Calc()
         {
-            return CalculationHelper.FixApproximation(Formula1.Calc() / Formula2.Calc());
+            return Formula1.Calc() / Formula2.Calc();
         }
 
         public override string ToString()
@@ -411,9 +410,9 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
             return false;
         }
 
-        public double Calc()
+        public decimal Calc()
         {
-            return CalculationHelper.FixApproximation(Formula1.Calc() % Formula2.Calc());
+            return Formula1.Calc() % Formula2.Calc();
         }
 
         public override string ToString()
@@ -467,9 +466,9 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
             return false;
         }
 
-        public double Calc()
+        public decimal Calc()
         {
-            return Math.Pow(Formula1.Calc(), Formula2.Calc());
+            return DecimalMath.Power(Formula1.Calc(), Formula2.Calc());
         }
 
         public override string ToString()
@@ -525,15 +524,15 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
             return true;
         }
 
-        public double Calc()
+        public decimal Calc()
         {
-            double res = 0;
-            for (double counter = Math.Floor(From.Calc()); counter <= Math.Floor(To.Calc()); counter++)
+            decimal res = 0;
+            for (decimal counter = Math.Floor(From.Calc()); counter <= Math.Floor(To.Calc()); counter++)
             {
                 var fnum = new FNumber();
                 fnum.Num = counter;
                 Formula.OverwriteVariable(Symbol, fnum);
-                res = CalculationHelper.FixApproximation(res + Formula.Calc());
+                res = res + Formula.Calc();
             }
             return res;
         }
@@ -596,15 +595,15 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
             return true;
         }
 
-        public double Calc()
+        public decimal Calc()
         {
-            double res = 1;
-            for (double counter = Math.Floor(From.Calc()); counter <= Math.Floor(To.Calc()); counter++)
+            decimal res = 1;
+            for (decimal counter = Math.Floor(From.Calc()); counter <= Math.Floor(To.Calc()); counter++)
             {
                 var fnum = new FNumber();
                 fnum.Num = counter;
                 Formula.OverwriteVariable(Symbol, fnum);
-                res = CalculationHelper.FixApproximation(res * Formula.Calc());
+                res = res * Formula.Calc();
             }
             return res;
         }
@@ -662,9 +661,9 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
             return true;
         }
 
-        public double Calc()
+        public decimal Calc()
         {
-            return Math.Log(Num.Calc()) / Math.Log(Base.Calc());
+            return DecimalMath.Log(Num.Calc()) / DecimalMath.Log(Base.Calc());
         }
 
         public override string ToString()
@@ -713,7 +712,7 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
             return true;
         }
 
-        public double Calc()
+        public decimal Calc()
         {
             return Math.Abs(Value.Calc());
         }
@@ -765,12 +764,12 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
             return true;
         }
 
-        public double Calc()
+        public decimal Calc()
         {
             if (Settings.Radians)
-                return Math.Sin(Formula.Calc());
+                return DecimalMath.Sin(Formula.Calc());
             else
-                return Math.Sin(Formula.Calc() * Math.PI / 180);
+                return DecimalMath.Sin(Formula.Calc() * DecimalMath.Pi / 180);
         }
 
         public override string ToString()
@@ -815,12 +814,12 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
             return true;
         }
 
-        public double Calc()
+        public decimal Calc()
         {
             if (Settings.Radians)
-                return Math.Cos(Formula.Calc());
+                return DecimalMath.Cos(Formula.Calc());
             else
-                return Math.Cos(Formula.Calc() * Math.PI / 180);
+                return DecimalMath.Cos(Formula.Calc() * DecimalMath.Pi / 180);
         }
 
         public override string ToString()
@@ -865,12 +864,12 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
             return true;
         }
 
-        public double Calc()
+        public decimal Calc()
         {
             if (Settings.Radians)
-                return Math.Tan(Formula.Calc());
+                return DecimalMath.Tan(Formula.Calc());
             else
-                return Math.Tan(Formula.Calc() * Math.PI / 180);
+                return DecimalMath.Tan(Formula.Calc() * DecimalMath.Pi / 180);
         }
 
         public override string ToString()
@@ -915,12 +914,12 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
             return true;
         }
 
-        public double Calc()
+        public decimal Calc()
         {
             if (Settings.Radians)
-                return Math.Asin(Formula.Calc());
+                return DecimalMath.Asin(Formula.Calc());
             else
-                return Math.Asin(Formula.Calc()) * 180 / Math.PI;
+                return DecimalMath.Asin(Formula.Calc()) * 180 / DecimalMath.Pi;
         }
 
         public override string ToString()
@@ -965,12 +964,12 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
             return true;
         }
 
-        public double Calc()
+        public decimal Calc()
         {
             if (Settings.Radians)
-                return Math.Acos(Formula.Calc());
+                return DecimalMath.Acos(Formula.Calc());
             else
-                return Math.Acos(Formula.Calc()) * 180 / Math.PI;
+                return DecimalMath.Acos(Formula.Calc()) * 180 / DecimalMath.Pi;
         }
 
         public override string ToString()
@@ -1015,12 +1014,12 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
             return true;
         }
 
-        public double Calc()
+        public decimal Calc()
         {
             if (Settings.Radians)
-                return Math.Atan(Formula.Calc());
+                return DecimalMath.ATan(Formula.Calc());
             else
-                return Math.Atan(Formula.Calc()) * 180 / Math.PI;
+                return DecimalMath.ATan(Formula.Calc()) * 180 / DecimalMath.Pi;
         }
 
         public override string ToString()
@@ -1065,9 +1064,9 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
             return true;
         }
 
-        public double Calc()
+        public decimal Calc()
         {
-            return Math.Sqrt(Formula.Calc());
+            return DecimalMath.Sqrt(Formula.Calc());
         }
 
         public override string ToString()
@@ -1114,9 +1113,9 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
             return true;
         }
 
-        public double Calc()
+        public decimal Calc()
         {
-            return Math.Pow(Formula.Calc(), 1 / Base.Calc());
+            return DecimalMath.Power(Formula.Calc(), 1 / Base.Calc());
         }
 
         public override string ToString()
@@ -1162,7 +1161,7 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
             return true;
         }
 
-        public double Calc()
+        public decimal Calc()
         {
             return Formula.Calc();
         }
@@ -1210,7 +1209,7 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
             return true;
         }
 
-        public double Calc()
+        public decimal Calc()
         {
             return Math.Round(Formula.Calc());
         }
@@ -1258,9 +1257,9 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
             return true;
         }
 
-        public double Calc()
+        public decimal Calc()
         {
-            return Math.Round(Formula.Calc() + 0.5);
+            return decimal.Round(Formula.Calc() + 0.5m);
         }
 
         public override string ToString()
@@ -1306,9 +1305,9 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
             return true;
         }
 
-        public double Calc()
+        public decimal Calc()
         {
-            return Math.Round(Formula.Calc() - 0.5);
+            return decimal.Round(Formula.Calc() - 0.5m);
         }
 
         public override string ToString()
@@ -1377,17 +1376,6 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
         };
     }
 
-    public static class CalculationHelper
-    {
-        public static double FixApproximation(double value)
-        {
-            if (!Settings.FixApproximationErrors)
-                return value;
-            return Math.Round(value, Settings.RoundToDigits);
-            //return Math.Round(value / Settings.DeviationValue) * Settings.DeviationValue;
-        }
-    }
-
     public static class Parser
     {
         public static IFormula Parse(string formula)
@@ -1401,8 +1389,8 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
                 formula = formula.ToLower();
                 formula = formula.Replace(" ", "");
                 formula = formula.Replace("\r", "").Replace("\n", "").Replace("\t", "");
-                formula = formula.Replace("π", ("(" + Math.PI + ")").Replace(',', '.')).Replace("\\pi", ("(" + Math.PI + ")").Replace(',', '.'));
-                formula = formula.Replace("\\e", ("(" + Math.E + ")").Replace(',', '.'));
+                formula = formula.Replace("π", ("(" + DecimalMath.Pi + ")").Replace(',', '.')).Replace("\\pi", ("(" + DecimalMath.Pi + ")").Replace(',', '.'));
+                formula = formula.Replace("\\e", ("(" + DecimalMath.E + ")").Replace(',', '.'));
                 formula = formula.Replace("\\", "/");
                 formula = formula.Replace("÷", "/").Replace("×", "*");
                 Random r = new Random();
@@ -1636,15 +1624,20 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
             }
         }
 
-        public static double ParseNumber(string num)
+        public static decimal ParseNumber(string num)
         {
+            if ((DecimalMath.Pi + "").Replace(',', '.').StartsWith(num.Substring(0, num.Length - 1)) && num.Length > 20)
+                return DecimalMath.Pi;
+            if ((DecimalMath.E + "").Replace(',', '.').StartsWith(num.Substring(0, num.Length - 1)) && num.Length > 20)
+                return DecimalMath.E;
+
             string[] parts = num.Split('.');
             if (parts.Length == 1)
-                return double.Parse(parts[0]);
+                return decimal.Parse(parts[0]);
 
-            double before = double.Parse(parts[0]);
-            double after = double.Parse(parts[1]);
-            return before + (after / Math.Pow(10, parts[1].Length));
+            decimal before = decimal.Parse(parts[0]);
+            decimal after = decimal.Parse(parts[1]);
+            return before + (after / DecimalMath.Power(10, parts[1].Length));
         }
 
         public static IFormula TryMatchFunction(string name, IFormula[] args)
