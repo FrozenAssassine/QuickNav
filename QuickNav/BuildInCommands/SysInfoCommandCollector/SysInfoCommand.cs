@@ -11,7 +11,7 @@ using QuickNav.Helper;
 
 namespace QuickNav.BuildInCommands.SystemMonitorCommandCollector;
 
-internal class SysInfoCommand : ITriggerCommand
+internal class SysInfoCommand : ICommand
 {
     public string Description => "See your system informations";
 

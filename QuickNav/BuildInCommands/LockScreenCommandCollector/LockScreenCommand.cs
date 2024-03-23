@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace QuickNav.BuildInCommands.LockScreenCommandCollector;
 
-internal class LockScreenCommand : IUnknownCommandCollector, ITriggerCommand
+internal class LockScreenCommand : ICommand
 {
     const int SYSCOM = 0x0112;
     const int MONPOW = 0xF170;

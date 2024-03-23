@@ -9,8 +9,7 @@ namespace QuickNav.Models
 {
     internal class Plugin
     {
-        public List<ITriggerCommand> TriggerCommands = new List<ITriggerCommand>();
-        public List<IUnknownCommandCollector> CollectorCommands = new List<IUnknownCommandCollector>();
+        public List<ICommand> Commands = new List<ICommand>();
         public IAboutInfo Info = null;
     }
 }

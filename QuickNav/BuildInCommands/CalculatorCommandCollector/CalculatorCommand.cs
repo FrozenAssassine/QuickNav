@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace QuickNav.BuildInCommands.CalculatorCommandCollector
 {
-    internal class CalculatorCommand : IUnknownCommandCollector, ITriggerCommand
+    internal class CalculatorCommand : ICommand
     {
         public string Description => "Calculate terms.";
 
@@ -17,8 +17,8 @@ namespace QuickNav.BuildInCommands.CalculatorCommandCollector
 
         public QuickNavPlugin.Priority Priority(string query)
         {
-            if (query == "")
-                return QuickNavPlugin.Priority.Low;
+            if (query == "" || IsWrongAlert(query))
+                return QuickNavPlugin.Priority.Invisible;
             try
             {
                 Parser.Parse(query).Calc();
@@ -26,7 +26,7 @@ namespace QuickNav.BuildInCommands.CalculatorCommandCollector
             }
             catch
             {
-                return QuickNavPlugin.Priority.Low;
+                return QuickNavPlugin.Priority.Invisible;
             }
         }
 
@@ -50,7 +50,7 @@ namespace QuickNav.BuildInCommands.CalculatorCommandCollector
 
         public bool RunCommand(string parameters, out ContentElement content)
         {
-            if(parameters == "")
+            if(parameters == "" || IsWrongAlert(parameters))
             {
                 content = null;
                 return false;
@@ -70,7 +70,7 @@ namespace QuickNav.BuildInCommands.CalculatorCommandCollector
 
         public CalculatorCommand()
         {
-            Settings.MaxTaylorIterations = 100;
+            CommandSettings.MaxTaylorIterations = 100;
         }
 
         private string ClearNegativeZero(string val)
@@ -78,6 +78,15 @@ namespace QuickNav.BuildInCommands.CalculatorCommandCollector
             if (val == "-0")
                 return "0";
             return val;
+        }
+
+        private bool IsWrongAlert(string query)
+        {
+            return (query.Length == 2
+                && char.IsLetter(query[0])
+                && char.IsLetter(query[1]))
+                || (query.Length == 1
+                && char.IsLetter(query[0]));
         }
     }
 }

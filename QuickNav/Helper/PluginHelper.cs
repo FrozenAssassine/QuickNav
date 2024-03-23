@@ -1,4 +1,5 @@
-﻿using QuickNav.Models;
+﻿using QuickNav.Extensions;
+using QuickNav.Models;
 using QuickNavPlugin;
 using System;
 using System.Collections.Generic;
@@ -19,8 +20,46 @@ namespace QuickNav.Helper
             List<ICommand> commands = new List<ICommand>();
             string queryLower = query.ToLower();
             string[] keywords = queryLower.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            List<ICommand> triggerFound = new List<ICommand>();
+            List<ICommand> keywordFound = new List<ICommand>();
+            List<ICommand> keywordContains = new List<ICommand>();
+            List<ICommand> other = new List<ICommand>();
+
             // Do not combine these loops, as this would destroy the order!
-            List<ICommand> triggerMatches = new List<ICommand>();
+            for (int i = 0; i < Plugins.Count; i++)
+                for (int j = 0; j < Plugins[i].Commands.Count; j++)
+                    if (queryLower.StartsWith(Plugins[i].Commands[j].CommandTrigger.ToLower()) && Plugins[i].Commands[j].CommandTrigger != "")
+                        triggerFound.Add(Plugins[i].Commands[j]);
+            for (int i = 0; i < Plugins.Count; i++)
+                for (int j = 0; j < Plugins[i].Commands.Count; j++)
+                    for (int k = 0; k < Plugins[i].Commands[j].Keywords.Length; k++)
+                        if (keywords.Contains(Plugins[i].Commands[j].Keywords[k].ToLower()))
+                            keywordFound.Add(Plugins[i].Commands[j]);
+            for (int i = 0; i < Plugins.Count; i++)
+                for (int j = 0; j < Plugins[i].Commands.Count; j++)
+                    for (int k = 0; k < Plugins[i].Commands[j].Keywords.Length; k++)
+                        for (int l = 0; l < keywords.Length; l++)
+                            if (Plugins[i].Commands[j].Keywords[k].ToLower().Contains(keywords[l].ToLower()))
+                                keywordContains.Add(Plugins[i].Commands[j]);
+            for (int i = 0; i < Plugins.Count; i++)
+                for (int j = 0; j < Plugins[i].Commands.Count; j++)
+                    if (!triggerFound.Contains(Plugins[i].Commands[j]) && !keywordFound.Contains(Plugins[i].Commands[j]) && !keywordContains.Contains(Plugins[i].Commands[j]))
+                        other.Add(Plugins[i].Commands[j]);
+
+            triggerFound.SortByPriority(query);
+            keywordFound.SortByPriority(query);
+            keywordContains.SortByPriority(query);
+            other.SortByPriority(query);
+
+            var condition = (ICommand cmd) => { return !commands.Contains(cmd); };
+            commands.AddRange(triggerFound.Where(condition));
+            commands.AddRange(keywordFound.Where(condition));
+            commands.AddRange(keywordContains.Where(condition));
+            commands.AddRange(other.Where(condition));
+
+            // Do not combine these loops, as this would destroy the order!
+            /*List<ICommand> triggerMatches = new List<ICommand>();
             for (int i = 0; i < Plugins.Count; i++)
                 for (int j = 0; j < Plugins[i].TriggerCommands.Count; j++)
                     if (queryLower.StartsWith(Plugins[i].TriggerCommands[j].CommandTrigger.ToLower()) && Plugins[i].TriggerCommands[j].CommandTrigger != "" && !triggerMatches.Contains(Plugins[i].TriggerCommands[j]))
@@ -44,17 +83,16 @@ namespace QuickNav.Helper
                     if (!unknownCollectors.Contains(Plugins[i].CollectorCommands[j]))
                         unknownCollectors.Add(Plugins[i].CollectorCommands[j]);
 
-            Comparison<ICommand> comparison = ((ICommand c1, ICommand c2) => { return ((int)c1.Priority(QueryHelper.FixQuery(c1, query))) - (int)c2.Priority(QueryHelper.FixQuery(c2, query)); });
-            triggerMatches.Sort(comparison);
-            keywordsMatches.Sort(comparison);
-            keywordsContains.Sort(comparison);
-            unknownCollectors.Sort(comparison);
+            triggerMatches.SortByPriority(query);
+            keywordsMatches.SortByPriority(query);
+            keywordsContains.SortByPriority(query);
+            unknownCollectors.SortByPriority(query);
 
             var condition = (ICommand cmd) => { return !commands.Contains(cmd); };
             commands.AddRange(triggerMatches.Where(condition));
             commands.AddRange(keywordsMatches.Where(condition));
             commands.AddRange(keywordsContains.Where(condition));
-            commands.AddRange(unknownCollectors.Where(condition));
+            commands.AddRange(unknownCollectors.Where(condition));*/
 
             return commands;
         }
@@ -81,12 +119,10 @@ namespace QuickNav.Helper
             {
                 if (interfaces[i] is IAboutInfo)
                     plugin.Info = (IAboutInfo)interfaces[i];
-                if (interfaces[i] is ITriggerCommand)
-                    plugin.TriggerCommands.Add((ITriggerCommand)interfaces[i]);
-                if (interfaces[i] is IUnknownCommandCollector)
-                    plugin.CollectorCommands.Add((IUnknownCommandCollector)interfaces[i]);
+                if (interfaces[i] is ICommand)
+                    plugin.Commands.Add((ICommand)interfaces[i]);
             }
-            if (plugin.Info != null || plugin.TriggerCommands.Count > 0 || plugin.CollectorCommands.Count > 0)
+            if (plugin.Info != null || plugin.Commands.Count > 0)
                 return plugin;
             return null;
         }
@@ -96,12 +132,9 @@ namespace QuickNav.Helper
             List<IFileCommand> commands = new List<IFileCommand>();
             for(int i = 0; i < Plugins.Count; i++)
             {
-                for (int j = 0; j < Plugins[i].TriggerCommands.Count; j++)
-                    if (Plugins[i].TriggerCommands[j] is IFileCommand && !commands.Contains((IFileCommand)Plugins[i].TriggerCommands[j]))
-                        commands.Add((IFileCommand)Plugins[i].TriggerCommands[j]);
-                for (int j = 0; j < Plugins[i].CollectorCommands.Count; j++)
-                    if (Plugins[i].CollectorCommands[j] is IFileCommand && !commands.Contains((IFileCommand)Plugins[i].CollectorCommands[j]))
-                        commands.Add((IFileCommand)Plugins[i].CollectorCommands[j]);
+                for (int j = 0; j < Plugins[i].Commands.Count; j++)
+                    if (Plugins[i].Commands[j] is IFileCommand)
+                        commands.Add((IFileCommand)Plugins[i].Commands[j]);
             }
             return commands;
         }

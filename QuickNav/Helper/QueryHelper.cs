@@ -12,8 +12,8 @@ namespace QuickNav.Helper
         public static string FixQuery(ICommand cmd, string query)
         {
             query = query.Trim();
-            if(cmd is ITriggerCommand trigger && query.ToLower().StartsWith(trigger.CommandTrigger.ToLower()))
-                return query.Substring(trigger.CommandTrigger.Length).Trim();
+            if(cmd.CommandTrigger != null && query.ToLower().StartsWith(cmd.CommandTrigger.ToLower()))
+                return query.Substring(cmd.CommandTrigger.Length).Trim();
             return query;
         }
     }

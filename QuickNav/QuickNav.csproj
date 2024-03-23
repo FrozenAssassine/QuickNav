@@ -70,6 +70,7 @@
     <None Remove="Controls\SettingsControl.xaml" />
     <None Remove="Controls\SettingsItemSeparator.xaml" />
     <None Remove="Views\ColorPicker.xaml" />
+    <None Remove="Views\SearchedFilesView.xaml" />
     <None Remove="Views\SearchPage.xaml" />
     <None Remove="Widgets\CountWordsWidget.xaml" />
     <None Remove="AppWindows\SettingsWindow.xaml" />
@@ -97,6 +98,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\QuickNavPlugin\QuickNavPlugin.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\SearchedFilesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\SearchedFilesView.xaml">

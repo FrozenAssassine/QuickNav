@@ -24,6 +24,14 @@ namespace QuickNavPlugin
         /// <returns>The priority of the command.</returns>
         Priority Priority(string query);
         /// <summary>
+        /// Command Trigger, for example if you have a command-line plugin use ">" as trigger. With that the application can find your command. Leave it empty to let the user just find your command via keywords.
+        /// </summary>
+        string CommandTrigger { get; }
+        /// <summary>
+        /// Keywords with which your command can be found.
+        /// </summary>
+        string[] Keywords { get; }
+        /// <summary>
         /// Name/Headline of the command.
         /// </summary>
         /// <param name="query">Maybe your command name/headline should depend on the given query?</param>
