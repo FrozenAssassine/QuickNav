@@ -137,6 +137,14 @@ public sealed partial class SearchPage : Page
         }
         else if (e.Key == Windows.System.VirtualKey.Down)
         {
+            //a control is rendered
+            if(contentView.Visibility == Visibility.Visible)
+            {
+                if(contentView.Children.Count > 0)
+                    contentView.Children[0].Focus(FocusState.Programmatic);
+                return;
+            }
+
             resultView.SelectedIndex = Math.Clamp(resultView.SelectedIndex + 1, 0, resultView.Items.Count - 1);
         }
         else if (e.Key == Windows.System.VirtualKey.Up)
