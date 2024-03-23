@@ -2,8 +2,10 @@ using QuickNav.BuildInCommands.CalculatorCommandCollector;
 using QuickNav.BuildInCommands.CMDCommandCollector;
 using QuickNav.BuildInCommands.ColorPickerCommandTrigger;
 using QuickNav.BuildInCommands.FileInfoCommandCollector;
+using QuickNav.BuildInCommands.LaunchAppCommandCollector;
 using QuickNav.BuildInCommands.LockScreenCommandCollector;
 using QuickNav.BuildInCommands.PlainTextConverterCommandCollector;
+using QuickNav.BuildInCommands.SystemMonitorCommandCollector;
 using QuickNav.BuildInCommands.WebSearchCommandCollector;
 using QuickNav.BuildInCommands.WindowsFileSearch;
 using QuickNav.Helper;
@@ -21,6 +23,7 @@ namespace QuickNav.BuildInCommands
             var calccmd = new CalculatorCommand();
             var cmdcmd = new CMDCommand();
             var wordcmd = new CountWordsCommand();
+            var launchcmd = new LaunchAppCommand();
 
             Plugin buildInCommands = new Plugin();
             buildInCommands.Info = new AboutBuildInCommands();
@@ -29,6 +32,7 @@ namespace QuickNav.BuildInCommands
             buildInCommands.CollectorCommands.Add(calccmd);
             buildInCommands.CollectorCommands.Add(cmdcmd);
             buildInCommands.CollectorCommands.Add(wordcmd);
+            buildInCommands.CollectorCommands.Add(launchcmd);
             buildInCommands.TriggerCommands.Add(webcmd);
             buildInCommands.TriggerCommands.Add(filecmd);
             buildInCommands.TriggerCommands.Add(cmdcmd);
@@ -38,6 +42,8 @@ namespace QuickNav.BuildInCommands
             buildInCommands.TriggerCommands.Add(calccmd);
             buildInCommands.TriggerCommands.Add(new ColorPickerCommand());
             buildInCommands.TriggerCommands.Add(new LockScreenCommand());
+            buildInCommands.TriggerCommands.Add(new SysInfoCommand());
+            buildInCommands.TriggerCommands.Add(launchcmd);
 
             PluginHelper.Plugins.Add(buildInCommands);
         }
