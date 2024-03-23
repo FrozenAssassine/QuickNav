@@ -4,6 +4,7 @@ using QuickNav.BuildInCommands.ColorPickerCommandTrigger;
 using QuickNav.BuildInCommands.FileInfoCommandCollector;
 using QuickNav.BuildInCommands.LockScreenCommandCollector;
 using QuickNav.BuildInCommands.PlainTextConverterCommandCollector;
+using QuickNav.BuildInCommands.SystemMonitorCommandCollector;
 using QuickNav.BuildInCommands.WebSearchCommandCollector;
 using QuickNav.BuildInCommands.WindowsFileSearch;
 using QuickNav.Helper;
@@ -38,6 +39,7 @@ namespace QuickNav.BuildInCommands
             buildInCommands.TriggerCommands.Add(calccmd);
             buildInCommands.TriggerCommands.Add(new ColorPickerCommand());
             buildInCommands.TriggerCommands.Add(new LockScreenCommand());
+            buildInCommands.TriggerCommands.Add(new SysInfoCommand());
 
             PluginHelper.Plugins.Add(buildInCommands);
         }

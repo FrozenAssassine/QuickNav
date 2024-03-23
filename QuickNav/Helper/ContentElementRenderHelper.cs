@@ -5,14 +5,13 @@ using Microsoft.UI.Xaml.Input;
 using QuickNavPlugin.UI;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.UI.Input;
 using Microsoft.UI.Xaml.Media;
 using Windows.UI;
-using System.Net.Mime;
 using Microsoft.UI.Xaml.Controls.Primitives;
+using CommunityToolkit.Common.Parsers.Markdown;
+using CommunityToolkit.WinUI.UI.Controls;
+using Microsoft.UI;
 
 namespace QuickNav.Helper
 {
@@ -188,6 +187,18 @@ namespace QuickNav.Helper
                 }
                 
                 return grid;
+            }
+            if (content is QuickNavPlugin.UI.MarkdownElement markdownElement)
+            {
+                ScrollViewer scrollViewer = new ScrollViewer();
+                var mdRenderer = new MarkdownTextBlock
+                {
+                    Text = markdownElement.Markdown,
+                    Background = new SolidColorBrush(Colors.Transparent),
+                };
+                scrollViewer.VerticalScrollMode = ScrollMode.Auto;
+                scrollViewer.Content = mdRenderer;
+                return scrollViewer;
             }
             return null;
         }
