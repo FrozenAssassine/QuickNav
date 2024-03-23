@@ -12,6 +12,8 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 using CommunityToolkit.Common.Parsers.Markdown;
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI;
+using QuickNav.Controls;
+using Microsoft.WindowsAPICodePack.Shell;
 
 namespace QuickNav.Helper
 {
@@ -199,6 +201,12 @@ namespace QuickNav.Helper
                 scrollViewer.VerticalScrollMode = ScrollMode.Auto;
                 scrollViewer.Content = mdRenderer;
                 return scrollViewer;
+            }
+            if(content is SearchedFilesViewElement searchedFilesViewElement)
+            {
+                var searchedFilesView = new SearchedFilesView();
+                searchedFilesView.ShowFiles(searchedFilesViewElement.Files);
+                return searchedFilesView;
             }
             return null;
         }
