@@ -109,14 +109,14 @@ internal class FileInfoCommand : ICommand, IFileCommand
                 directories = ImageMetadataReader.ReadMetadata(file);
             }
 
-            if (directories == null)
-                return false;
-
-            foreach (var directory in directories)
+            if (directories != null)
             {
-                foreach (var tag in directory.Tags)
+                foreach (var directory in directories)
                 {
-                    sb.AppendMarkdownLine($"**{tag.Name}:** {tag.Description}");
+                    foreach (var tag in directory.Tags)
+                    {
+                        sb.AppendMarkdownLine($"**{tag.Name}:** {tag.Description}");
+                    }
                 }
             }
         }
