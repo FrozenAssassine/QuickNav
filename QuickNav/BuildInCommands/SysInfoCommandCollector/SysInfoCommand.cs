@@ -6,6 +6,8 @@ using Microsoft.Win32;
 using System.Text;
 using QuickNav.Extensions;
 using System.IO;
+using Microsoft.VisualBasic.Devices;
+using QuickNav.Helper;
 
 namespace QuickNav.BuildInCommands.SystemMonitorCommandCollector;
 
@@ -13,9 +15,9 @@ internal class SysInfoCommand : ITriggerCommand
 {
     public string Description => "See your system informations";
 
-    public Uri Icon => null; //Todo for Finn
+    public Uri Icon => new Uri("ms-appx://App/Assets/commands/sysinfo.png");
 
-    public string CommandTrigger => "sysinfo"; //system informations
+    public string CommandTrigger => "";
 
     public string[] Keywords => new string[] { "system", "informations", "sysinf" };
 
@@ -34,6 +36,14 @@ internal class SysInfoCommand : ITriggerCommand
         markdown.AppendLine("## CPU Information");
         markdown.AppendMarkdownLine("**Name:** " + GetCPUName());
         markdown.AppendMarkdownLine("**Threads:** " + Environment.ProcessorCount);
+
+        Win32Apis.GetPhysicallyInstalledSystemMemory(out long tmik);
+        Win32Apis.MEMORYSTATUSEX status = new Win32Apis.MEMORYSTATUSEX();
+        bool success = Win32Apis.GlobalMemoryStatusEx(status);
+        markdown.AppendLine("## RAM Information");
+        markdown.AppendMarkdownLine("**Installed:** " + (tmik / 1024.0 / 1024.0) + " GB");
+        if (success)
+            markdown.AppendMarkdownLine("**Available:** " + (status.ullTotalPhys / 1024.0 / 1024.0 / 1024.0) + " GB");
 
         markdown.AppendLine("## Windows Version");
         markdown.AppendMarkdownLine("**Version:** " + Environment.OSVersion.Version);
