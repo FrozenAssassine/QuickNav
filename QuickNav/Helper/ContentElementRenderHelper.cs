@@ -202,12 +202,6 @@ namespace QuickNav.Helper
                 scrollViewer.Content = mdRenderer;
                 return scrollViewer;
             }
-            if(content is SearchedFilesViewElement searchedFilesViewElement)
-            {
-                var searchedFilesView = new SearchedFilesView();
-                searchedFilesView.ShowFiles(searchedFilesViewElement.Files);
-                return searchedFilesView;
-            }
             return null;
         }
     }

@@ -6,10 +6,14 @@ using System.Data.OleDb;
 using QuickNav.Helper;
 using System.Windows;
 using System.Threading;
+using QuickNav.Models;
+using Microsoft.UI.Xaml.Controls;
+using QuickNav.Views;
+using System.Collections.Generic;
 
 namespace QuickNav.BuildInCommands.WindowsFileSearch;
 
-internal class FileSearchCommand : ICommand
+internal class FileSearchCommand : ICommand, IBuildInCommand
 {
     public string Description => "Run this command to search files on windows";
 
@@ -33,8 +37,16 @@ internal class FileSearchCommand : ICommand
     public bool RunCommand(string searchTerm, out QuickNavPlugin.UI.ContentElement content)
     {
         content = null;
+        return false;
+    }
 
-        if (searchTerm == "")
+    public bool RunCommand(string parameters, out Page content, out double addWidth, out double addHeight)
+    {
+        content = null;
+        addWidth = 0;
+        addHeight = 0;
+
+        if (parameters == "")
             return false;
 
         var connection = new OleDbConnection(@"Provider=Search.CollatorDSO;Extended Properties=""Application=Windows""");
@@ -42,12 +54,14 @@ internal class FileSearchCommand : ICommand
         try
         {
             connection.Open();
-            var query = $"SELECT TOP 10 System.ItemName, System.ItemPathDisplay FROM SystemIndex WHERE scope ='file:' AND System.ItemName LIKE '%{searchTerm}%'";
+            var query = $"SELECT TOP {CommandSettings.AmountOfFiles} System.ItemName, System.ItemPathDisplay FROM SystemIndex WHERE scope ='file:' AND System.ItemName LIKE '%{parameters}%'";
 
             var command = new OleDbCommand(query, connection);
 
-            var searchedFilesView = new SearchedFilesViewElement();
+            var searchedFilesView = new SearchedFilesView();
             content = searchedFilesView;
+
+            List<(string name, string path)> files = new List<(string name, string path)>();
 
             using (var reader = command.ExecuteReader())
             {
@@ -56,9 +70,11 @@ internal class FileSearchCommand : ICommand
                     string fileName = reader["System.ItemName"].ToString();
                     string filePath = reader["System.ItemPathDisplay"].ToString();
 
-                    searchedFilesView.Files.Add((fileName, filePath));
+                    files.Add((fileName, filePath));
                 }
             }
+
+            searchedFilesView.ShowFiles(files);
         }
         catch (Exception ex)
         {

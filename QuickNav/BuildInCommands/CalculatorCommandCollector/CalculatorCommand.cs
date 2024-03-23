@@ -70,7 +70,7 @@ namespace QuickNav.BuildInCommands.CalculatorCommandCollector
 
         public CalculatorCommand()
         {
-            Settings.MaxTaylorIterations = 100;
+            CommandSettings.MaxTaylorIterations = 100;
         }
 
         private string ClearNegativeZero(string val)

@@ -1,4 +1,5 @@
-﻿using raminrahimzada;
+﻿using QuickNav.BuildInCommands;
+using raminrahimzada;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +9,6 @@ using System.Threading.Tasks;
 
 namespace Calculator // DO NOT CHANGE ANYTHING!!!
 {
-    public static class Settings
-    {
-        public static bool InsertLostTimesSymbols = true;
-        public static bool Radians = true;
-        public static int MaxTaylorIterations { get => DecimalMath.MaxIteration; set { DecimalMath.MaxIteration = value; } }
-    }
-
     public interface IFormula
     {
         decimal Calc();
@@ -766,7 +760,7 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
 
         public decimal Calc()
         {
-            if (Settings.Radians)
+            if (CommandSettings.Radians)
                 return DecimalMath.Sin(Formula.Calc());
             else
                 return DecimalMath.Sin(Formula.Calc() * DecimalMath.Pi / 180);
@@ -816,7 +810,7 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
 
         public decimal Calc()
         {
-            if (Settings.Radians)
+            if (CommandSettings.Radians)
                 return DecimalMath.Cos(Formula.Calc());
             else
                 return DecimalMath.Cos(Formula.Calc() * DecimalMath.Pi / 180);
@@ -866,7 +860,7 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
 
         public decimal Calc()
         {
-            if (Settings.Radians)
+            if (CommandSettings.Radians)
                 return DecimalMath.Tan(Formula.Calc());
             else
                 return DecimalMath.Tan(Formula.Calc() * DecimalMath.Pi / 180);
@@ -916,7 +910,7 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
 
         public decimal Calc()
         {
-            if (Settings.Radians)
+            if (CommandSettings.Radians)
                 return DecimalMath.Asin(Formula.Calc());
             else
                 return DecimalMath.Asin(Formula.Calc()) * 180 / DecimalMath.Pi;
@@ -966,7 +960,7 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
 
         public decimal Calc()
         {
-            if (Settings.Radians)
+            if (CommandSettings.Radians)
                 return DecimalMath.Acos(Formula.Calc());
             else
                 return DecimalMath.Acos(Formula.Calc()) * 180 / DecimalMath.Pi;
@@ -1016,7 +1010,7 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
 
         public decimal Calc()
         {
-            if (Settings.Radians)
+            if (CommandSettings.Radians)
                 return DecimalMath.ATan(Formula.Calc());
             else
                 return DecimalMath.ATan(Formula.Calc()) * 180 / DecimalMath.Pi;
@@ -1557,7 +1551,7 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
                     objs.Add(fvar);
                 }
 
-                if (Settings.InsertLostTimesSymbols)
+                if (CommandSettings.InsertLostTimesSymbols)
                 {
                     bool operatorRequired = false;
 
