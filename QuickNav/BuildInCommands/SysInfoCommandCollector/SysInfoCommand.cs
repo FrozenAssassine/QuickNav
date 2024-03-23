@@ -15,8 +15,6 @@ internal class SysInfoCommand : ITriggerCommand
 
     public Uri Icon => null; //Todo for Finn
 
-    public Priority Priority => Priority.Low;
-
     public string CommandTrigger => "sysinfo"; //system informations
 
     public string[] Keywords => new string[] { "system", "informations", "sysinf" };
@@ -90,5 +88,10 @@ internal class SysInfoCommand : ITriggerCommand
         {
             return -1;
         }
+    }
+
+    Priority ICommand.Priority(string query)
+    {
+        return QuickNavPlugin.Priority.Low;
     }
 }
