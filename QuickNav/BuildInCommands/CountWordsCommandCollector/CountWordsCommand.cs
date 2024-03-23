@@ -26,7 +26,7 @@ internal class CountWordsCommand : ITriggerCommand, IUnknownCommandCollector, IF
 
     public string[] Keywords => new string[] { "count", "word"};
 
-    public string[] ExtensionFilter => new string[] { "txt", "md", "rtf" };
+    public string[] ExtensionFilter => new string[] { "txt", "md", "rtf", "html", "xml", "csv", "json", "log", "yaml", "ini", "conf", "css", "scss", "js", "jsx", "ts", "tsx", "c", "cpp", "h", "hpp", "java", "py", "rb", "php", "pl", "sh", "bat", "ps1", "sql", "asm" };
 
     public string Name(string query)
     {

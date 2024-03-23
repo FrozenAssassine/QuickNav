@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace QuickNav.BuildInCommands.CMDCommandCollector;
 
-internal class CMDCommand : ITriggerCommand, IUnknownCommandCollector, IAbort
+internal class CMDCommand : ITriggerCommand, IUnknownCommandCollector, IAbort, IFileCommand
 {
     public string Description => "Run this command to execute in commandline";
 
@@ -20,6 +20,7 @@ internal class CMDCommand : ITriggerCommand, IUnknownCommandCollector, IAbort
     public string CommandTrigger => ">";
 
     public string[] Keywords => new string[] { "cmd", "command", "run" };
+    public string[] ExtensionFilter => new string[] { "bat", "ps1"};
 
     Process process = null;
 
