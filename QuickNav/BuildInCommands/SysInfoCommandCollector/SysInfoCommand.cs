@@ -23,7 +23,7 @@ internal class SysInfoCommand : ITriggerCommand
 
     public string Name(string query)
     {
-        return "Get informations about your system";
+        return "Information about your system";
     }
 
     public bool RunCommand(string file, out ContentElement content)
