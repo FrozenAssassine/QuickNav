@@ -16,7 +16,10 @@ internal class LockScreenCommand : IUnknownCommandCollector, ITriggerCommand
 
     public Uri Icon => new Uri("ms-appx://App/Assets/commands/lockscreen.png");
 
-    public Priority Priority => Priority.Low;
+    public Priority Priority(string query)
+    {
+        return QuickNavPlugin.Priority.Low;
+    }
 
     public string CommandTrigger => "lock";
 

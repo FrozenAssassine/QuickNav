@@ -62,14 +62,14 @@ public sealed partial class SearchPage : Page
             {
                 foreach (var command in commandList)
                 {
-                    resultView.Items.Add(new ResultListViewItem() { Command = command, Text = command.Name(searchBox.Text) });
+                    resultView.Items.Add(new ResultListViewItem() { Command = command, Text = command.Name(QueryHelper.FixQuery(command, searchBox.Text)) });
                 }
             }
         }
         else
         {
             List<ICommand> commands = PluginHelper.SearchFor(searchBox.Text);
-            List<ResultListViewItem> items = commands.Select((command) => new ResultListViewItem() { Command = command, Text = command.Name(searchBox.Text) }).ToList();
+            List<ResultListViewItem> items = commands.Select((command) => new ResultListViewItem() { Command = command, Text = command.Name(QueryHelper.FixQuery(command, searchBox.Text)) }).ToList();
             for (int i = 0; i < items.Count; i++)
                 resultView.Items.Add(items[i]);
         }
@@ -91,12 +91,7 @@ public sealed partial class SearchPage : Page
 
         lastCommand = command;
 
-        query = query.Trim();
-
-        if (command is ITriggerCommand trigger && query.StartsWith(trigger.CommandTrigger))
-            query = query.Substring(trigger.CommandTrigger.Length);
-
-        query = query.Trim();
+        query = QueryHelper.FixQuery(command, query);
 
         UIElement element = null;
         if (command is IBuildInCommand buildInCommand)
@@ -167,7 +162,7 @@ public sealed partial class SearchPage : Page
             resultView.Items.Clear();
             List<ResultListViewItem> items = commands
                 .Where((IFileCommand cmd) => { return cmd.ExtensionFilter.Length == 0 || cmd.ExtensionFilter.Contains(extension); })
-                .Select((command) => new ResultListViewItem() { Command = command, Text = command.Name(searchBox.Text) }).ToList();
+                .Select((command) => new ResultListViewItem() { Command = command, Text = command.Name(QueryHelper.FixQuery(command, searchBox.Text)) }).ToList();
             for (int i = 0; i < items.Count; i++)
                 resultView.Items.Add(items[i]);
 

@@ -9,7 +9,7 @@ namespace QuickNavPlugin
     /// <summary>
     /// You can use this interface to assign files to your command using drag & drop.
     /// </summary>
-    public interface IFileCommand : ICommand
+    public interface IFileCommand : ITriggerCommand
     {
         /// <summary>
         /// Filter for file extension (e.g. "txt" for *.txt files), leave empty to accept any file type; Write all the extensions in lower case!

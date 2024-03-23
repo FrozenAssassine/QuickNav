@@ -3,6 +3,7 @@ using QuickNavPlugin;
 using System;
 using System.IO;
 using QuickNav.Extensions;
+using System.Linq;
 
 namespace QuickNav.BuildInCommands.FileInfoCommandCollector;
 
@@ -12,7 +13,14 @@ internal class CountWordsCommand : ITriggerCommand, IUnknownCommandCollector, IF
 
     public Uri Icon => new Uri("ms-appx://App/Assets/commands/wordcounter.png");
 
-    public Priority Priority => Priority.Low;
+    public Priority Priority(string query)
+    {
+        if (query == "")
+            return QuickNavPlugin.Priority.Low;
+        if (File.Exists(query) && ExtensionFilter.Contains(Path.GetExtension(query).Substring(1)))
+            return QuickNavPlugin.Priority.Medium;
+        return QuickNavPlugin.Priority.Low;
+    }
 
     public string CommandTrigger => "count:";
 

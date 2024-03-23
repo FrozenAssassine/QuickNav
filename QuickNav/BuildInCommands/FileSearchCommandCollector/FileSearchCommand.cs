@@ -14,7 +14,10 @@ internal class FileSearchCommand : IUnknownCommandCollector, ITriggerCommand
 
     public Uri Icon => new Uri("ms-appx://App/Assets/commands/filesearch.png");
 
-    public Priority Priority => Priority.Low;
+    public Priority Priority(string query)
+    {
+        return QuickNavPlugin.Priority.Low;
+    }
 
     public string CommandTrigger => "file:";
 
