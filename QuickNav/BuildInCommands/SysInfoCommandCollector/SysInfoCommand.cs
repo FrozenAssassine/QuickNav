@@ -19,7 +19,7 @@ internal class SysInfoCommand : ICommand
 
     public string CommandTrigger => "";
 
-    public string[] Keywords => new string[] { "system", "informations", "sysinf" };
+    public string[] Keywords => new string[] { "system", "informations", "sysinfo" };
 
     public string Name(string query)
     {
