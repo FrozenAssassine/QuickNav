@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace QuickNav.BuildInCommands.FileInfoCommandCollector;
 
-internal class CountWordsCommand : ITriggerCommand, IUnknownCommandCollector, IFileCommand
+internal class CountWordsCommand : ICommand, IFileCommand
 {
     public string Description => "Count the words in a file or clipboard";
 
@@ -16,10 +16,10 @@ internal class CountWordsCommand : ITriggerCommand, IUnknownCommandCollector, IF
     public Priority Priority(string query)
     {
         if (query == "")
-            return QuickNavPlugin.Priority.Low;
-        if (File.Exists(query) && ExtensionFilter.Contains(Path.GetExtension(query).Substring(1)))
+            return QuickNavPlugin.Priority.Invisible;
+        if (File.Exists(query.Trim().Trim('\"')) && ExtensionFilter.Contains(Path.GetExtension(query).Substring(1)))
             return QuickNavPlugin.Priority.Medium;
-        return QuickNavPlugin.Priority.Low;
+        return QuickNavPlugin.Priority.Invisible;
     }
 
     public string CommandTrigger => "count:";
@@ -37,6 +37,8 @@ internal class CountWordsCommand : ITriggerCommand, IUnknownCommandCollector, IF
     {
         var textLabel = new LabelElement();
         content = textLabel;
+
+        param = param.Trim().Trim('\"');
 
         if (!File.Exists(param))
             return false;

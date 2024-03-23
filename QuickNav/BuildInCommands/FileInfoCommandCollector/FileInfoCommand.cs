@@ -5,7 +5,7 @@ using System.IO;
 
 namespace QuickNav.BuildInCommands.FileInfoCommandCollector;
 
-internal class FileInfoCommand : ITriggerCommand, IFileCommand
+internal class FileInfoCommand : ICommand, IFileCommand
 {
     public string Description => "Get infos about a file";
 
@@ -14,10 +14,10 @@ internal class FileInfoCommand : ITriggerCommand, IFileCommand
     public Priority Priority(string query)
     {
         if (query == "")
-            return QuickNavPlugin.Priority.Low;
-        if (File.Exists(query))
+            return QuickNavPlugin.Priority.Invisible;
+        if (File.Exists(query.Trim().Trim('\"')))
             return QuickNavPlugin.Priority.Medium;
-        return QuickNavPlugin.Priority.Low;
+        return QuickNavPlugin.Priority.Invisible;
     }
 
     public string CommandTrigger => "fileinfo:";
@@ -30,13 +30,15 @@ internal class FileInfoCommand : ITriggerCommand, IFileCommand
     {
         if (query.Length == 0)
             return "Informations about a file";
-        return "Informations about \"" + query + "\"";
+        return "Informations about \"" + query.Trim().Trim('\"') + "\"";
     }
 
     public bool RunCommand(string file, out ContentElement content)
     {
         var textLabel = new LabelElement();
         content = textLabel;
+
+        file = file.Trim().Trim('\"');
 
         if (!File.Exists(file))
         {

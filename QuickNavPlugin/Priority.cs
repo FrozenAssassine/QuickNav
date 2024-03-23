@@ -13,6 +13,7 @@ namespace QuickNavPlugin
     {
         High = 2,
         Medium = 1,
-        Low = 0
+        Low = 0,
+        Invisible = -1
     }
 }

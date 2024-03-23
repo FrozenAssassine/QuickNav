@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace QuickNav.BuildInCommands.WindowsFileSearch;
 
-internal class FileSearchCommand : IUnknownCommandCollector, ITriggerCommand
+internal class FileSearchCommand : ICommand
 {
     public string Description => "Run this command to search files on windows";
 

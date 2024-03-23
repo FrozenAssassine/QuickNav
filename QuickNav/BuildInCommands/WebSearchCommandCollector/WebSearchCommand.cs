@@ -7,7 +7,7 @@ using Windows.Services.Store;
 
 namespace QuickNav.BuildInCommands.WebSearchCommandCollector
 {
-    internal class WebSearchCommand : IUnknownCommandCollector, ITriggerCommand
+    internal class WebSearchCommand : ICommand
     {
         public string Description => "Run this command to search for your query in web.";
 

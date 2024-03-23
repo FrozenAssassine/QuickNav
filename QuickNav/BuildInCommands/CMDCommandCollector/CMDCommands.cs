@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace QuickNav.BuildInCommands.CMDCommandCollector;
 
-internal class CMDCommand : ITriggerCommand, IUnknownCommandCollector, IAbort, IFileCommand
+internal class CMDCommand : ICommand, IAbort, IFileCommand
 {
     public string Description => "Run this command to execute in commandline";
 

@@ -54,11 +54,9 @@ public sealed partial class SearchPage : Page
         //home screen with nothing entered
         if (searchBox.Text.Length == 0)
         {
-            //Todo simpler approach to add the items
-            var commands = PluginHelper.Plugins.Select(x => x.CollectorCommands);
-            var triggerCommands = PluginHelper.Plugins.Select(x => x.TriggerCommands);
+            var commands = PluginHelper.Plugins.Select(x => x.Commands);
 
-            foreach (var commandList in triggerCommands)
+            foreach (var commandList in commands)
             {
                 foreach (var command in commandList)
                 {
@@ -203,28 +201,18 @@ public sealed partial class SearchPage : Page
             }
 
             var resultlistViewitem = resultView.Items[droppedItemIndex] as ResultListViewItem;
-            if (resultlistViewitem.Command is ITriggerCommand triggerCommand)
-            {
-                PreventSearchboxChangedEvent = true;
-                searchBox.Text = triggerCommand.CommandTrigger + files[0].Path;
-                RunCommand(triggerCommand.CommandTrigger + files[0].Path, resultlistViewitem);
-            }
-            else if (resultlistViewitem.Command is IUnknownCommandCollector collector)
-            {
-                //any ideas?
-            }
+            PreventSearchboxChangedEvent = true;
+            searchBox.Text = resultlistViewitem.Command.CommandTrigger + files[0].Path;
+            RunCommand(resultlistViewitem.Command.CommandTrigger + files[0].Path, resultlistViewitem);
         }
         //handle text:
         else if (e.DataView.Contains(StandardDataFormats.Text))
         {
             searchBox.Text += await e.DataView.GetTextAsync();
             var resultlistViewitem = resultView.Items[droppedItemIndex] as ResultListViewItem;
-            if (resultlistViewitem.Command is ITriggerCommand triggerCommand)
-            {
-                PreventSearchboxChangedEvent = true;
-                searchBox.Text = triggerCommand.CommandTrigger + searchBox.Text;
-                RunCommand(triggerCommand.CommandTrigger + searchBox.Text, resultlistViewitem);
-            }
+            PreventSearchboxChangedEvent = true;
+            searchBox.Text = resultlistViewitem.Command.CommandTrigger + searchBox.Text;
+            //RunCommand(resultlistViewitem.Command.CommandTrigger + searchBox.Text, resultlistViewitem);
         }
 
         ReloadDropList = true;

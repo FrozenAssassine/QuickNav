@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace QuickNav.BuildInCommands.ColorPickerCommandTrigger
 {
-    public class ColorPickerCommand : ITriggerCommand, IBuildInCommand
+    public class ColorPickerCommand : ICommand, IBuildInCommand
     {
         public string CommandTrigger => "";
 

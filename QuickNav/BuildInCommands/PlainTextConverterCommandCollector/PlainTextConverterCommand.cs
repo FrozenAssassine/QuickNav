@@ -4,7 +4,7 @@ using System;
 
 namespace QuickNav.BuildInCommands.PlainTextConverterCommandCollector;
 
-internal class PlainTextConverterCommand : ITriggerCommand
+internal class PlainTextConverterCommand : ICommand
 {
     public string Description => "Convert text in your clipboard to plain text";
 
@@ -14,7 +14,7 @@ internal class PlainTextConverterCommand : ITriggerCommand
     {
         if (System.Windows.Clipboard.GetText() != "")
             return QuickNavPlugin.Priority.Medium;
-        return QuickNavPlugin.Priority.Low;
+        return QuickNavPlugin.Priority.Invisible;
     }
 
     public string CommandTrigger => "pt"; //plain text
