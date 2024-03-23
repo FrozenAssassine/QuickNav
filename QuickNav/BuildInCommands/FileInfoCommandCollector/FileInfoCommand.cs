@@ -2,17 +2,14 @@
 using QuickNavPlugin;
 using System;
 using System.IO;
-using Windows.Storage.FileProperties;
-using Windows.Storage;
 using System.Text;
 using QuickNav.Extensions;
 using MetadataExtractor;
 using System.Collections.Generic;
-using System.Net.Mime;
-using MetadataExtractor.Formats.FileSystem;
 using MetadataExtractor.Formats.Avi;
 using MetadataExtractor.Formats.Mpeg;
 using System.Diagnostics;
+using QuickNav.Helper;
 
 namespace QuickNav.BuildInCommands.FileInfoCommandCollector;
 
@@ -69,6 +66,12 @@ internal class FileInfoCommand : ICommand, IFileCommand
                extension.Equals(".ogg", StringComparison.OrdinalIgnoreCase) ||
                extension.Equals(".flac", StringComparison.OrdinalIgnoreCase);
     }
+    static bool IsExeDll(string filePath)
+    {
+        string extension = Path.GetExtension(filePath);
+        return extension.Equals(".exe", StringComparison.OrdinalIgnoreCase)||
+               extension.Equals(".dll", StringComparison.OrdinalIgnoreCase);
+    }
 
 
     public bool RunCommand(string file, out ContentElement content)
@@ -88,7 +91,7 @@ internal class FileInfoCommand : ICommand, IFileCommand
         StringBuilder sb = new StringBuilder();
         sb.AppendLine($"#Info {fileInfo.Name}");
         sb.AppendMarkdownLine($"**Path:** {file}");
-        sb.AppendMarkdownLine($"**Size:** {fileInfo.Length}");
+        sb.AppendMarkdownLine($"**Size:** {FileExplorerHelper.FileSize(fileInfo.Length)}" );
         sb.AppendMarkdownLine($"**Extension:** {fileInfo.Extension}");
         sb.AppendMarkdownLine($"**Date Modified:** {fileInfo.LastWriteTime}");
 
@@ -102,11 +105,22 @@ internal class FileInfoCommand : ICommand, IFileCommand
             }
             else if (IsVideo(file))
             {
-                directories = AviMetadataReader.ReadMetadata(file);
+                directories = Path.GetExtension(file) switch
+                {
+                    ".mp4" => MetadataExtractor.Formats.QuickTime.QuickTimeMetadataReader.ReadMetadata(File.OpenRead(file)),
+                    _ => AviMetadataReader.ReadMetadata(file),
+                };
             }
-            else if(IsImage(file))
+            else if (IsImage(file))
             {
                 directories = ImageMetadataReader.ReadMetadata(file);
+            }
+            else if (IsExeDll(file))
+            {
+                var info = FileVersionInfo.GetVersionInfo(file);
+                sb.AppendMarkdownLine($"**Description:** {info.FileDescription}");
+                sb.AppendMarkdownLine($"**Version:** {info.FileVersion}");
+                sb.AppendMarkdownLine($"**Company:** {info.CompanyName}");
             }
 
             if (directories != null)
