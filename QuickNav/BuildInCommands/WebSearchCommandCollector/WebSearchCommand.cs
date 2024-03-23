@@ -13,7 +13,10 @@ namespace QuickNav.BuildInCommands.WebSearchCommandCollector
 
         public Uri Icon => BrowserInfo.BrowserIcon;
 
-        public Priority Priority => Priority.Low;
+        public Priority Priority(string query)
+        {
+            return QuickNavPlugin.Priority.Low;
+        }
 
         public string CommandTrigger => "net";
 

@@ -11,7 +11,14 @@ internal class FileInfoCommand : ITriggerCommand, IFileCommand
 
     public Uri Icon => new Uri("ms-appx://App/Assets/commands/fileinfo.png");
 
-    public Priority Priority => Priority.Low;
+    public Priority Priority(string query)
+    {
+        if (query == "")
+            return QuickNavPlugin.Priority.Low;
+        if (File.Exists(query))
+            return QuickNavPlugin.Priority.Medium;
+        return QuickNavPlugin.Priority.Low;
+    }
 
     public string CommandTrigger => "fileinfo:";
 

@@ -20,7 +20,9 @@ namespace QuickNavPlugin
         /// <summary>
         /// Priority of the command, should it be shown on top or at bottom?
         /// </summary>
-        Priority Priority { get; }
+        /// <param name="query">Maybe your command priority should depend on the given query?</param>
+        /// <returns>The priority of the command.</returns>
+        Priority Priority(string query);
         /// <summary>
         /// Name/Headline of the command.
         /// </summary>

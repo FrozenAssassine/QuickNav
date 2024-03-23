@@ -12,7 +12,10 @@ internal class CMDCommand : ITriggerCommand, IUnknownCommandCollector, IAbort
 
     public Uri Icon => new Uri("ms-appx://App/Assets/commands/cmd.png");
 
-    public Priority Priority => Priority.Low;
+    public Priority Priority(string query)
+    {
+        return QuickNavPlugin.Priority.Low;
+    }
 
     public string CommandTrigger => ">";
 

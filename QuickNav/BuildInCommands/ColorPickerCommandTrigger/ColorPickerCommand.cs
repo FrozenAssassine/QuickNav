@@ -20,7 +20,10 @@ namespace QuickNav.BuildInCommands.ColorPickerCommandTrigger
 
         public Uri Icon => new Uri("ms-appx://App/Assets/commands/colorpicker.png");
 
-        public Priority Priority => Priority.Low;
+        public Priority Priority(string query)
+        {
+            return QuickNavPlugin.Priority.Low;
+        }
 
         public string Name(string query)
         {

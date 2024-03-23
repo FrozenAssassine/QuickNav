@@ -15,7 +15,20 @@ namespace QuickNav.BuildInCommands.CalculatorCommandCollector
 
         public Uri Icon => new Uri("ms-appx://App/Assets/commands/calculator.png");
 
-        public QuickNavPlugin.Priority Priority => QuickNavPlugin.Priority.Low;
+        public QuickNavPlugin.Priority Priority(string query)
+        {
+            if (query == "")
+                return QuickNavPlugin.Priority.Low;
+            try
+            {
+                Parser.Parse(query.StartsWith(CommandTrigger) ? query.Substring(CommandTrigger.Length).TrimStart() : query).Calc().ToString().Replace(',', '.');
+                return QuickNavPlugin.Priority.High;
+            }
+            catch
+            {
+                return QuickNavPlugin.Priority.Low;
+            }
+        }
 
         public string CommandTrigger => "=";
 
@@ -23,7 +36,8 @@ namespace QuickNav.BuildInCommands.CalculatorCommandCollector
 
         public string Name(string query)
         {
-            if (query == "") return "Calculate";
+            if (query == "")
+                return "Calculate";
             try
             {
                 return "= " + Parser.Parse(query.StartsWith(CommandTrigger) ? query.Substring(CommandTrigger.Length).TrimStart() : query).Calc().ToString().Replace(',', '.');

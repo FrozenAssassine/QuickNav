@@ -10,7 +10,12 @@ internal class PlainTextConverterCommand : ITriggerCommand
 
     public Uri Icon => new Uri("ms-appx://App/Assets/commands/clipboardtext.png");
 
-    public Priority Priority => Priority.Low;
+    public Priority Priority(string query)
+    {
+        if (System.Windows.Clipboard.GetText() != "")
+            return QuickNavPlugin.Priority.Medium;
+        return QuickNavPlugin.Priority.Low;
+    }
 
     public string CommandTrigger => "pt"; //plain text
 
