@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Data.OleDb;
 using QuickNav.Helper;
 using System.Windows;
+using System.Threading;
 
 namespace QuickNav.BuildInCommands.WindowsFileSearch;
 
@@ -41,40 +42,21 @@ internal class FileSearchCommand : IUnknownCommandCollector, ITriggerCommand
         try
         {
             connection.Open();
-
-            // File name search (case insensitive), also searches sub directories
-            var query = $"SELECT TOP 50 System.ItemName, System.ItemPathDisplay FROM SystemIndex WHERE scope ='file:' AND System.ItemName LIKE '%{searchTerm}%'";
+            var query = $"SELECT TOP 10 System.ItemName, System.ItemPathDisplay FROM SystemIndex WHERE scope ='file:' AND System.ItemName LIKE '%{searchTerm}%'";
 
             var command = new OleDbCommand(query, connection);
 
-            var listViewElement = new ListViewElement();
-            content = listViewElement;
-            listViewElement.Orientation = QuickNavPlugin.UI.Orientation.Vertical;
-            listViewElement.Children.Clear();
+            var searchedFilesView = new SearchedFilesViewElement();
+            content = searchedFilesView;
 
             using (var reader = command.ExecuteReader())
             {
                 while (reader.Read())
                 {
-                    //string filePath = reader["System.ItemPathDisplay"].ToString();
                     string fileName = reader["System.ItemName"].ToString();
                     string filePath = reader["System.ItemPathDisplay"].ToString();
 
-                    FlyoutElement flyout = new FlyoutElement();
-                    flyout.AddButton("Copy Path", (sender) =>
-                    {
-                        Clipboard.SetText(filePath);
-                    });
-                    flyout.AddButton("Copy FileName", (sender) =>
-                    {
-                        Clipboard.SetText(fileName);
-                    });
-                    flyout.AddButton("Show in explorer", (sender) =>
-                    {
-                        FileExplorerHelper.OpenExplorer(filePath);
-                    });
-
-                    listViewElement.Children.Add(new LabelElement(fileName, flyout));
+                    searchedFilesView.Files.Add((fileName, filePath));
                 }
             }
         }
@@ -87,7 +69,6 @@ internal class FileSearchCommand : IUnknownCommandCollector, ITriggerCommand
         {
             connection.Close();
         }
-
         return true;
     }
 }
