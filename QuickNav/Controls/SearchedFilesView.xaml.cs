@@ -5,6 +5,7 @@ using QuickNav.Helper;
 using QuickNav.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 
@@ -25,6 +26,7 @@ public sealed partial class SearchedFilesView : UserControl
     private void OpenFile(object item)
     {
         if (item is FilesViewItem fileItem)
+            Debug.WriteLine("TODO: OPEN FILE");
 
     }
 
