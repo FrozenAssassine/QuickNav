@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using QuickNav.Extensions;
 using System.Linq;
+using System.Text;
 
 namespace QuickNav.BuildInCommands.FileInfoCommandCollector;
 
@@ -35,11 +36,9 @@ internal class CountWordsCommand : ICommand, IFileCommand
 
     public bool RunCommand(string param, out ContentElement content)
     {
-        var textLabel = new LabelElement();
-        content = textLabel;
+        content = null;
 
         param = param.Trim().Trim('\"');
-
         if (!File.Exists(param))
             return false;
 
@@ -57,8 +56,12 @@ internal class CountWordsCommand : ICommand, IFileCommand
                 text = File.ReadAllText(param);
         }
 
-        textLabel.Text = "Words: " + text.CountWords() + "\nCharacter: " + text.Length + "\nLines: " + text.CountLines();
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine("## Words: " + text.CountWords());
+        sb.AppendLine("## Characters: " + text.Length);
+        sb.AppendLine("## Lines: " + text.CountLines());
 
+        content = new MarkdownElement(sb.ToString());
         return true;
     }
 }
