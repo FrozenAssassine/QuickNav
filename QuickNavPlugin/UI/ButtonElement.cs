@@ -23,5 +23,10 @@ namespace QuickNavPlugin.UI
         }
 
         public ElementTextChanged TextChanged;
+
+        public ButtonElement(string text = "")
+        {
+            _Text = text;
+        }
     }
 }

@@ -22,11 +22,22 @@ namespace QuickNavPlugin.UI
                 if (OrientationChanged != null) OrientationChanged(this, value);
             }
         }
+        private bool _EqualSpaced = false;
+        public bool EqualSpaced
+        {
+            get => _EqualSpaced;
+            set
+            {
+                _EqualSpaced = value;
+                if (EqualSpacedChanged != null) EqualSpacedChanged(this, value);
+            }
+        }
         private ObservableCollection<ContentElement> _Children;
         public ObservableCollection<ContentElement> Children => _Children;
 
         public ElementOrientationChanged OrientationChanged;
         public ElementChildrenChanged ChildrenChanged;
+        public ElementEqualSpacedChanged EqualSpacedChanged;
 
         public ListViewElement()
         {
@@ -36,7 +47,7 @@ namespace QuickNavPlugin.UI
 
         private void _Children_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            if (OrientationChanged != null) ChildrenChanged(this, _Children);
+            if (ChildrenChanged != null) ChildrenChanged(this, _Children);
         }
     }
 }

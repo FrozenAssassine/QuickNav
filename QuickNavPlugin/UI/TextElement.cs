@@ -11,12 +11,6 @@ namespace QuickNavPlugin.UI
     /// </summary>
     public class TextElement : ContentElement
     {
-        public TextElement(string text = "", bool isEditable = false)
-        {
-            this.Text = text;
-            this.IsEditable = isEditable;
-        }
-
         private string _Text;
         public string Text
         {
@@ -39,5 +33,10 @@ namespace QuickNavPlugin.UI
 
         public ElementTextChanged TextChanged;
         public ElementIsEditableChanged IsEditableChanged;
+
+        public TextElement(string text = "")
+        {
+            _Text = text;
+        }
     }
 }

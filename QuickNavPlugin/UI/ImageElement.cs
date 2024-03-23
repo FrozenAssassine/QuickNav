@@ -24,5 +24,10 @@ namespace QuickNavPlugin.UI
 
         public ElementImageChanged ImageChanged;
         public ElementClickedPosition ClickedPosition;
+
+        public ImageElement(Uri image)
+        {
+            _Image = image;
+        }
     }
 }

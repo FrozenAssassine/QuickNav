@@ -72,28 +72,60 @@ namespace QuickNav.Helper
                         Microsoft.UI.Xaml.Controls.Orientation.Horizontal :
                         Microsoft.UI.Xaml.Controls.Orientation.Vertical;
 
-                ScrollViewer scrollviewer = new ScrollViewer();
-                scrollviewer.VerticalAlignment = VerticalAlignment.Top;
-                scrollviewer.VerticalScrollMode = ScrollMode.Enabled;
-                scrollviewer.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
-                StackPanel stack = new StackPanel();
-                scrollviewer.Content = stack;
-                SetOrientation(stack, listElement.Orientation);
+                void GenerateBody(Grid grid, ListViewElement listView)
+                {
+                    if (listView.EqualSpaced)
+                    {
+                        Grid innergrid = new Grid();
+
+                        for (int i = 0; i < listView.Children.Count; i++)
+                        {
+                            if (listView.Orientation == QuickNavPlugin.UI.Orientation.Horizontal)
+                                innergrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+                            else
+                                innergrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+
+                            var uiItem = RenderContentElement(listView.Children[i]);
+                            innergrid.Children.Add(uiItem);
+
+                            if (listView.Orientation == QuickNavPlugin.UI.Orientation.Horizontal)
+                                Grid.SetColumn(uiItem as FrameworkElement, i);
+                            else Grid.SetRow(uiItem as FrameworkElement, i);
+                        }
+                        grid.Children.Clear();
+                        grid.Children.Add(innergrid);
+                    }
+                    else
+                    {
+                        ScrollViewer scrollviewer = new ScrollViewer();
+                        scrollviewer.VerticalAlignment = VerticalAlignment.Top;
+                        scrollviewer.VerticalScrollMode = ScrollMode.Enabled;
+                        scrollviewer.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
+                        StackPanel stack = new StackPanel();
+                        scrollviewer.Content = stack;
+                        SetOrientation(stack, listElement.Orientation);
 
 
-                for (int i = 0; i < listElement.Children.Count; i++)
-                    stack.Children.Add(RenderContentElement(listElement.Children[i]));
-                listElement.OrientationChanged += (ContentElement sender, QuickNavPlugin.UI.Orientation orientation) =>
-                {
-                    SetOrientation(stack, orientation);
-                };
-                listElement.ChildrenChanged += (ContentElement sender, IEnumerable<ContentElement> children) =>
-                {
-                    stack.Children.Clear();
-                    foreach (ContentElement child in children)
-                        stack.Children.Add(RenderContentElement(child));
-                };
-                return scrollviewer;
+                        for (int i = 0; i < listElement.Children.Count; i++)
+                            stack.Children.Add(RenderContentElement(listElement.Children[i]));
+                        listElement.OrientationChanged += (ContentElement sender, QuickNavPlugin.UI.Orientation orientation) =>
+                        {
+                            SetOrientation(stack, orientation);
+                        };
+                        listElement.ChildrenChanged += (ContentElement sender, IEnumerable<ContentElement> children) =>
+                        {
+                            stack.Children.Clear();
+                            foreach (ContentElement child in children)
+                                stack.Children.Add(RenderContentElement(child));
+                        };
+                        grid.Children.Clear();
+                        grid.Children.Add(scrollviewer);
+                    }
+                }
+
+                Grid outergrid = new Grid();
+                GenerateBody(outergrid, listElement);
+                return outergrid;
             }
             if(content is TextElement textElement)
             {
@@ -148,12 +180,25 @@ namespace QuickNav.Helper
                         sv.ScrollTo(0, sv.ScrollableHeight);
                     }
                 };
-
+                sv.Content = textBlock;
                 if (labelElement.Scrollable)
                 {
-                    sv.Content = textBlock;
-                    return sv;
+                    sv.HorizontalScrollMode = ScrollingScrollMode.Auto;
+                    sv.VerticalScrollMode = ScrollingScrollMode.Auto;
                 }
+                labelElement.ScrollableChanged += (ContentElement sender, bool scrollable) =>
+                {
+                    if (scrollable)
+                    {
+                        sv.HorizontalScrollMode = ScrollingScrollMode.Auto;
+                        sv.VerticalScrollMode = ScrollingScrollMode.Auto;
+                    }
+                    else
+                    {
+                        sv.HorizontalScrollMode = ScrollingScrollMode.Disabled;
+                        sv.VerticalScrollMode = ScrollingScrollMode.Disabled;
+                    }
+                };
 
                 return textBlock;
             }
@@ -161,34 +206,12 @@ namespace QuickNav.Helper
             {
                 ProgressBar progressBar = new ProgressBar();
                 progressBar.Value = progressBarElement.Progress;
-                progressBar.Width = progressBarElement.Width;
-                progressBarElement.TextChanged += (ContentElement sender, string Text) =>
+                progressBarElement.ProgressChanged += (ContentElement sender, double progress) =>
                 {
-                    progressBar.Value = Convert.ToDouble(Text);
+                    progressBar.Value = progress;
                 };
 
                 return progressBar;
-            }
-            if (content is GridElement gridElement)
-            {
-                Grid grid = new Grid();
-
-                for (int i = 0; i<gridElement.Children.Count; i++)
-                {
-                    if (gridElement.Orientation == QuickNavPlugin.UI.Orientation.Horizontal)
-                        grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                    else
-                        grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-
-                    var uiItem = RenderContentElement(gridElement.Children[i]);
-                    grid.Children.Add(uiItem);
-
-                    if (gridElement.Orientation == QuickNavPlugin.UI.Orientation.Horizontal)
-                        Grid.SetColumn(uiItem as FrameworkElement, i);
-                    else Grid.SetRow(uiItem as FrameworkElement, i);
-                }
-                
-                return grid;
             }
             if (content is QuickNavPlugin.UI.MarkdownElement markdownElement)
             {
@@ -200,6 +223,10 @@ namespace QuickNav.Helper
                 };
                 scrollViewer.VerticalScrollMode = ScrollMode.Auto;
                 scrollViewer.Content = mdRenderer;
+                mdRenderer.PointerPressed += (object sender, PointerRoutedEventArgs e) =>
+                {
+                    if (markdownElement.Clicked != null) markdownElement.Clicked(markdownElement);
+                };
                 return scrollViewer;
             }
             return null;
