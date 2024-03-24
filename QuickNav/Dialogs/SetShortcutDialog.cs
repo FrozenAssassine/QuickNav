@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Controls;
+using QuickNav.Views.DialogViews;
 using QuickNavPlugin;
 using System;
 using System.Collections.Generic;
@@ -10,18 +11,8 @@ namespace QuickNav.Dialogs
 {
     internal class SetShortcutDialog
     {
-        private HashSet<VirtualKey> pressedKeys = new HashSet<VirtualKey>();
-
-        private void UpdateShortcutDisplay(ContentDialog dialog)
-        {
-            dialog.Content = "Shortcut: ";
-            foreach (var key in pressedKeys)
-            {
-                dialog.Content += key.ToString() + " ";
-            }
-        }
-
-        public async Task<VirtualKey[]> ShowAsync(ICommand command)
+        private SetShortcutDialogPage page = new SetShortcutDialogPage();
+        public async Task<(VirtualKey[] keys, string query)> ShowAsync(ICommand command)
         {
             var dialog = new ContentDialog
             {
@@ -30,30 +21,25 @@ namespace QuickNav.Dialogs
                 CloseButtonText = "Cancel",
                 SecondaryButtonText = "Reset",
                 XamlRoot = MainWindow.mWindow.Content.XamlRoot,
-                Content = "Shortcut:"
+                Content = page
             };
             dialog.Closing += (sender, args) =>
             {
                 if (args.Result == ContentDialogResult.Secondary)
                 {
-                    pressedKeys.Clear();
-                    UpdateShortcutDisplay(dialog);
+                    page.pressedKeys.Clear();
+                    page.UpdateShortcutDisplay();
                     args.Cancel = true;
                 }
-            };
-            dialog.PreviewKeyDown += (sender, e) =>
-            {
-                pressedKeys.Add(e.Key);
-                UpdateShortcutDisplay(dialog);
             };
 
             var dlgRes = await dialog.ShowAsync();
             if (dlgRes == ContentDialogResult.Primary)
             {
                 dialog.Hide();
-                return pressedKeys.ToArray();
+                return (page.pressedKeys.ToArray(), page.GetQuery);
             }
-            return null;
+            return (null, null);
         }
     }
 }
