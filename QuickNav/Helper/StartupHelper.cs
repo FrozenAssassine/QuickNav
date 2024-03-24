@@ -1,59 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+using System.Diagnostics;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
+using Windows.UI.Popups;
 
 namespace QuickNav.Helper
 {
     public class StartupHelper
     {
-        public static bool AddToStartup(string appName/*, string appPath*/)
+        public static async Task<bool> StartupEnabled()
         {
-            throw new NotImplementedException();
-            /*try
-            {
-                string startupFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
-
-                string shortcutPath = Path.Combine(startupFolderPath, appName + ".lnk");
-
-                IWshRuntimeLibrary.WshShell shell = new IWshRuntimeLibrary.WshShell();
-                IWshRuntimeLibrary.IWshShortcut shortcut = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(shortcutPath);
-
-                shortcut.TargetPath = appPath;
-                shortcut.WorkingDirectory = Path.GetDirectoryName(appPath);
-                shortcut.Save();
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }*/
+            var startup = await StartupTask.GetAsync("quicknavID1234");
+            return GetToggleState(startup.State);
         }
 
-        public static bool StartupExists(string appName)
+        private static bool GetToggleState(StartupTaskState state)
         {
-            string startupFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
-
-            string shortcutPath = Path.Combine(startupFolderPath, appName + ".lnk");
-
-            return File.Exists(shortcutPath);
+            return state == StartupTaskState.Enabled;
         }
-        
-        public static bool RemoveFromStartup(string appName)
+        public static async Task<bool> ToggleLaunchOnStartup(bool enable)
         {
-            string startupFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
-
-            string shortcutPath = Path.Combine(startupFolderPath, appName + ".lnk");
-
-            if (File.Exists(shortcutPath))
+            var startup = await StartupTask.GetAsync("quicknavID1234");
+            switch (startup.State)
             {
-                File.Delete(shortcutPath);
-                return true;
+                case StartupTaskState.Enabled when !enable:
+                    startup.Disable();
+                    break;
+                case StartupTaskState.Disabled when enable:
+                    var updatedState = await startup.RequestEnableAsync();
+                    Debug.WriteLine("ENABLED");
+                    return GetToggleState(updatedState);
+                case StartupTaskState.DisabledByUser when enable:
+                    Debug.WriteLine("Unable to change state of startup task via the application - enable via Startup tab on Task Manager (Ctrl+Shift+Esc)");
+                    break;
+                default:
+                    Debug.WriteLine("Unable to change state of startup task");
+                    break;
             }
-
             return false;
         }
     }
