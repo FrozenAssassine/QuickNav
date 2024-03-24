@@ -260,9 +260,9 @@ public sealed partial class SearchPage : Page
             return;
 
         var keys = await new SetShortcutDialog().ShowAsync(clickedCommand);
-        if (keys == null)
+        if (keys.keys == null)
             return;
 
-        CommandShortcutHelper.AddOrUpdate(keys, clickedCommand);
+        CommandShortcutHelper.AddOrUpdate(keys.keys, keys.query, clickedCommand);
     }
 }

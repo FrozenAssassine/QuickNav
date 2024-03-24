@@ -6,7 +6,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:QuickNav.Models" 
-    xmlns:converter="using:QuickNav.Converter"
     mc:Ignorable="d">
 
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -33,7 +32,7 @@
 
                         <Image Grid.Column="0" Source="{Binding Command.Icon}" Width="30" Margin="5" />
                         <TextBlock  Grid.Column="1" Text="{Binding Text}" ToolTipService.ToolTip="{Binding Command.Description}" VerticalAlignment="Center" Margin="5,0,0,0" />
-                        <Grid Grid.Column="2" Visibility="{x:Bind ShortcutVisibility }" VerticalAlignment="Center" BorderBrush="#555555" BorderThickness="1" CornerRadius="4">
+                        <Grid ToolTipService.ToolTip="{x:Bind }" Grid.Column="2" Visibility="{x:Bind ShortcutVisibility }" VerticalAlignment="Center" BorderBrush="#555555" BorderThickness="1" CornerRadius="4">
                             <TextBlock Padding="2" Text="{x:Bind Shortcut}" x:Phase="1" />
                         </Grid>
                     </Grid>

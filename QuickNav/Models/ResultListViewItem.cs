@@ -7,8 +7,12 @@ namespace QuickNav.Models
     class ResultListViewItem
     {
         public string Text { get; set; }
-        public ICommand Command { get; set; }
-        public string Shortcut { get => CommandShortcutHelper.GetShortcutForPlugin(Command); }
+        private ICommand _Command;
+        public ICommand Command { get => _Command; set { _Command = value; shortcutItem = CommandShortcutHelper.GetItemFromCommand(value); } }
+        public string Shortcut { get => shortcutItem == null ? "" : CommandShortcutHelper.GetShortcutForPlugin(shortcutItem); }
         public Visibility ShortcutVisibility { get => ConvertHelper.BoolToVisibility(Shortcut.Length != 0); }
+        public string Query { get => shortcutItem == null ? "" : shortcutItem.Query; }
+
+        private ShortcutConfigurationItem shortcutItem;
     }
 }

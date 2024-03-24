@@ -30,26 +30,31 @@ namespace QuickNav.Helper
             return command.GetType().FullName + command.GetType().Assembly.FullName;
         }
 
-        public static string GetShortcutForPlugin(ICommand command)
+        public static ShortcutConfigurationItem GetItemFromCommand(ICommand command)
         {
             if (Shortcuts == null)
-                return "";
+                return null;
 
             var uid = GetUniqueCommandID(command);
             int index = Shortcuts.FindIndex(x => x.UniqueCommandID == uid);
             if (index == -1)
-                return "";
+                return null;
+            return Shortcuts[index];
 
-            return string.Join(" + ", Shortcuts[index].Keys);
         }
 
-        public static void AddOrUpdate(VirtualKey[] keys, ICommand clickedCommand)
+        public static string GetShortcutForPlugin(ShortcutConfigurationItem item)
+        {
+            return string.Join(" + ", item.Keys);
+        }
+
+        public static void AddOrUpdate(VirtualKey[] keys, string query, ICommand clickedCommand)
         {
             string uid = GetUniqueCommandID(clickedCommand);
             int index = Shortcuts.FindIndex(x => x.UniqueCommandID == uid);
 
             if (index == -1)
-                Shortcuts.Add(new ShortcutConfigurationItem { Keys = keys, UniqueCommandID = uid });
+                Shortcuts.Add(new ShortcutConfigurationItem { Keys = keys, Query = query, UniqueCommandID = uid });
             else
                 Shortcuts[index].Keys = keys;
 
