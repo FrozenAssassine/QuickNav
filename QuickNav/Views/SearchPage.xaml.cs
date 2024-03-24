@@ -76,15 +76,14 @@ public sealed partial class SearchPage : Page
         ReloadDropList = true;
     }
 
-    private void RunCommand(string query, ResultListViewItem item)
+    private void RunCommand(string query, ICommand command)
     {
         if (resultView.Items.Count == 0)
             return;
-
+        
         if (lastCommand != null && lastCommand is IAbort)
             ((IAbort)lastCommand).Abort();
 
-        var command = item.Command;
         if (command == null)
             return;
 
@@ -132,7 +131,7 @@ public sealed partial class SearchPage : Page
             if (resultView.Items.Count == 0)
                 return;
 
-            RunCommand(searchBox.Text, (ResultListViewItem)resultView.Items[resultView.SelectedIndex]);
+            RunCommand(searchBox.Text, ((ResultListViewItem)resultView.Items[resultView.SelectedIndex]).Command);
         }
         else if (e.Key == Windows.System.VirtualKey.Down)
         {
@@ -212,7 +211,7 @@ public sealed partial class SearchPage : Page
             var resultlistViewitem = resultView.Items[droppedItemIndex] as ResultListViewItem;
             PreventSearchboxChangedEvent = true;
             searchBox.Text = resultlistViewitem.Command.CommandTrigger + files[0].Path;
-            RunCommand(resultlistViewitem.Command.CommandTrigger + files[0].Path, resultlistViewitem);
+            RunCommand(resultlistViewitem.Command.CommandTrigger + files[0].Path, resultlistViewitem.Command);
         }
         //handle text:
         else if (e.DataView.Contains(StandardDataFormats.Text))
@@ -232,7 +231,7 @@ public sealed partial class SearchPage : Page
         if (e.ClickedItem == null)
             return;
 
-        RunCommand(searchBox.Text, (ResultListViewItem)e.ClickedItem);
+        RunCommand(searchBox.Text, ((ResultListViewItem)e.ClickedItem).Command);
     }
 
     private async void searchBox_Drop(object sender, DragEventArgs e)
@@ -262,6 +261,8 @@ public sealed partial class SearchPage : Page
         var keys = await new SetShortcutDialog().ShowAsync(clickedCommand);
         if (keys == null)
             return;
+
+        CommandShortcutHelper.Callback = RunCommand;
 
         CommandShortcutHelper.AddOrUpdate(keys, clickedCommand);
     }

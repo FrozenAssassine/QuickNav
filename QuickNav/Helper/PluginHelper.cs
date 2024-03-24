@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace QuickNav.Helper
 {
-    internal class PluginHelper
+    internal static class PluginHelper
     {
         public static List<Plugin> Plugins = new List<Plugin>();
 
@@ -97,7 +97,21 @@ namespace QuickNav.Helper
             return commands;
         }
 
-        public void InitFromDir(string path)
+        public static string GetUniqueCommandID(ICommand command)
+        {
+            return command.GetType().FullName + command.GetType().Assembly.FullName;
+        }
+
+        public static ICommand GetCommandFromUniqueID(string uniqueID)
+        {
+            for (int i = 0; i < Plugins.Count; i++)
+                for (int j = 0; j < Plugins[i].Commands.Count; i++)
+                    if (GetUniqueCommandID(Plugins[i].Commands[j]) == uniqueID)
+                        return Plugins[i].Commands[j];
+            return null;
+        }
+
+        public static void InitFromDir(string path)
         {
             string[] files = Directory.GetFiles(path);
             for(int i = 0; i < files.Length; i++)

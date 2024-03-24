@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
+using System.Windows.Input;
 using Windows.System;
 
 namespace QuickNav.Helper
@@ -31,9 +32,9 @@ namespace QuickNav.Helper
         private const int WM_HOTKEY = 0x0312;
         private const int GWLP_WNDPROC = -4;
 
-        private static List<(int HotKeyID, VirtualKeyModifiers Modifier, VirtualKey Key, EventHandler Event)> hotkeyRegistry = new List<(int, VirtualKeyModifiers, VirtualKey, EventHandler)>();
+        private static List<(int HotKeyID, EventHandler Event)> hotkeyRegistry = new List<(int, EventHandler)>();
 
-        public static bool RegisterHotkey(VirtualKeyModifiers modifier, VirtualKey key, EventHandler hotkeyPressed)
+        public static bool RegisterHotkey(VirtualKey[] keys, EventHandler hotkeyPressed, out int HotkeyID)
         {
             if (_oldWndProc == IntPtr.Zero)
             {
@@ -41,10 +42,51 @@ namespace QuickNav.Helper
                 _oldWndProc = SetWndProc(_wndProcDelegate);
             }
 
+            uint key = 0;
+            for(int i = 0; i < keys.Length; i++)
+            {
+                key |= (uint)keys[i];
+            }
+
+            HotkeyID = -1;
+            bool success = RegisterHotKey(MainWindow.hWnd, HOTKEY_ID, 0, key);
+            if (success)
+            {
+                HotkeyID = HOTKEY_ID;
+                hotkeyRegistry.Add((HOTKEY_ID++, hotkeyPressed));
+            }
+            return success;
+        }
+
+        public static bool RegisterHotkey(VirtualKeyModifiers modifier, VirtualKey key, EventHandler hotkeyPressed, out int HotkeyID)
+        {
+            if (_oldWndProc == IntPtr.Zero)
+            {
+                _wndProcDelegate = HwndHook;
+                _oldWndProc = SetWndProc(_wndProcDelegate);
+            }
+
+            HotkeyID = -1;
             bool success = RegisterHotKey(MainWindow.hWnd, HOTKEY_ID, (uint)modifier, (uint)key);
             if (success)
-                hotkeyRegistry.Add((HOTKEY_ID++, modifier, key, hotkeyPressed));
+            {
+                HotkeyID = HOTKEY_ID;
+                hotkeyRegistry.Add((HOTKEY_ID++, hotkeyPressed));
+            }
             return success;
+        }
+
+        public static void UnregisterHotkey(int HotkeyID)
+        {
+            UnregisterHotKey(MainWindow.hWnd, HotkeyID);
+            for(int i = 0; i < hotkeyRegistry.Count; i++)
+            {
+                if (hotkeyRegistry[i].HotKeyID == HotkeyID)
+                {
+                    hotkeyRegistry.RemoveAt(i);
+                    return;
+                }
+            }
         }
 
         public static void UnregisterAllHotkeys()
@@ -53,6 +95,7 @@ namespace QuickNav.Helper
             {
                 UnregisterHotKey(MainWindow.hWnd, hotkeyRegistry[i].HotKeyID);
             }
+            hotkeyRegistry.Clear();
         }
 
         public static IntPtr SetWndProc(WndProcDelegate newProc)

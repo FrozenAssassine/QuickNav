@@ -1,15 +1,19 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.UI.Xaml;
+using Newtonsoft.Json;
 using QuickNav.Core;
 using QuickNav.Models;
 using QuickNavPlugin;
+using System;
 using System.Collections.Generic;
 using Windows.System;
 
 namespace QuickNav.Helper
 {
-    internal class CommandShortcutHelper
+    internal static class CommandShortcutHelper
     {
         private static List<ShortcutConfigurationItem> Shortcuts;
+        public delegate void RunCommandCallback(string query, ICommand cmd);
+        public static RunCommandCallback Callback;
 
         public static void GetShortcuts()
         {
@@ -25,17 +29,12 @@ namespace QuickNav.Helper
             AppSettings.SaveSettings(AppSettingsValues.PluginShortcuts, data);
         }
 
-        public static string GetUniqueCommandID(ICommand command)
-        {
-            return command.GetType().FullName + command.GetType().Assembly.FullName;
-        }
-
         public static string GetShortcutForPlugin(ICommand command)
         {
             if (Shortcuts == null)
                 return "";
 
-            var uid = GetUniqueCommandID(command);
+            var uid = PluginHelper.GetUniqueCommandID(command);
             int index = Shortcuts.FindIndex(x => x.UniqueCommandID == uid);
             if (index == -1)
                 return "";
@@ -45,7 +44,7 @@ namespace QuickNav.Helper
 
         public static void AddOrUpdate(VirtualKey[] keys, ICommand clickedCommand)
         {
-            string uid = GetUniqueCommandID(clickedCommand);
+            string uid = PluginHelper.GetUniqueCommandID(clickedCommand);
             int index = Shortcuts.FindIndex(x => x.UniqueCommandID == uid);
 
             if (index == -1)
@@ -54,6 +53,34 @@ namespace QuickNav.Helper
                 Shortcuts[index].Keys = keys;
 
             SaveShortcuts();
+            ReregisterAll();
+        }
+
+        public static void RegisterAll()
+        {
+            for(int i = 0; i < Shortcuts.Count; i++)
+            {
+                GlobalHotkeyHelper.RegisterHotkey(Shortcuts[i].Keys, (object sender, EventArgs e) =>
+                {
+                    if (Callback == null)
+                        return;
+                    ICommand cmd = PluginHelper.GetCommandFromUniqueID(Shortcuts[i].UniqueCommandID);
+                    if (cmd != null)
+                        Callback("", cmd);
+                }, out Shortcuts[i].HotkeyID);
+            }
+        }
+
+        public static void UnregisterAll()
+        {
+            for (int i = 0; i < Shortcuts.Count; i++)
+                GlobalHotkeyHelper.UnregisterHotkey(Shortcuts[i].HotkeyID);
+        }
+
+        public static void ReregisterAll()
+        {
+            UnregisterAll();
+            RegisterAll();
         }
     }
 }

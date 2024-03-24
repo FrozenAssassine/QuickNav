@@ -54,9 +54,8 @@ public sealed partial class MainWindow : Window
 
         GlobalHotkeyHelper.RegisterHotkey(Windows.System.VirtualKeyModifiers.Windows, Windows.System.VirtualKey.Y, (object sender, EventArgs e) =>
         {
-            this.Show();
-            Win32Apis.SetForegroundWindow(hWnd);
-        });
+            ShowAndFocus();
+        }, out int x);
 
         if (_presenter is null)
         {
@@ -66,6 +65,12 @@ public sealed partial class MainWindow : Window
         _presenter.IsAlwaysOnTop = true;
         _presenter.IsResizable = false;
         this.AppWindow.IsShownInSwitchers = false;
+    }
+
+    public void ShowAndFocus()
+    {
+        this.Show();
+        Win32Apis.SetForegroundWindow(hWnd);
     }
 
     private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
