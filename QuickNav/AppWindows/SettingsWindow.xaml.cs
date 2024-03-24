@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml;
 using QuickNav.BuildInCommands;
+using QuickNav.Helper;
 using System.Collections.Generic;
 using System.IO;
 using Windows.ApplicationModel;
@@ -9,6 +10,8 @@ namespace QuickNav.AppWindows;
 
 public sealed partial class SettingsWindow : Window
 {
+    const string AppName = "QuickNav";
+
     public SettingsWindow(List<Window> openWindows)
     {
         this.InitializeComponent();
@@ -19,6 +22,7 @@ public sealed partial class SettingsWindow : Window
         this.SetWindowSize(600, 750);
         this.AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets\\AppIcon\\appicon.ico"));
 
+        startupswitch.IsOn = StartupHelper.StartupExists(AppName);
         filesearchamount.Value = CommandSettings.AmountOfFiles;
         angleUnit.Items.Add("Radians");
         angleUnit.Items.Add("Degrees");
@@ -42,5 +46,17 @@ public sealed partial class SettingsWindow : Window
     {
         CommandSettings.Radians = angleUnit.SelectedIndex == 0;
         CommandSettings.SaveAll();
+    }
+
+    private void startupswitch_Toggled(object sender, RoutedEventArgs e)
+    {
+        if (startupswitch.IsOn)
+        {
+            StartupHelper.AddToStartup(AppName);
+        }
+        else
+        {
+            StartupHelper.RemoveFromStartup(AppName);
+        }
     }
 }

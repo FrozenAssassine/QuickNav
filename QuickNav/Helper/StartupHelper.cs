@@ -9,9 +9,10 @@ namespace QuickNav.Helper
 {
     public class StartupHelper
     {
-        public static bool AddToStartup(string appName, string appPath)
+        public static bool AddToStartup(string appName/*, string appPath*/)
         {
-            try
+            throw new NotImplementedException();
+            /*try
             {
                 string startupFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
 
@@ -29,24 +30,30 @@ namespace QuickNav.Helper
             catch (Exception ex)
             {
                 return false;
-            }
+            }*/
+        }
+
+        public static bool StartupExists(string appName)
+        {
+            string startupFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
+
+            string shortcutPath = Path.Combine(startupFolderPath, appName + ".lnk");
+
+            return File.Exists(shortcutPath);
         }
         
         public static bool RemoveFromStartup(string appName)
         {
-            try
+            string startupFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
+
+            string shortcutPath = Path.Combine(startupFolderPath, appName + ".lnk");
+
+            if (File.Exists(shortcutPath))
             {
-                string startupFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
-
-                string shortcutPath = Path.Combine(startupFolderPath, appName + ".lnk");
-
-                if (File.Exists(shortcutPath))
-                {
-                    File.Delete(shortcutPath);
-                    return true;
-                }
+                File.Delete(shortcutPath);
+                return true;
             }
-            catch { }
+
             return false;
         }
     }
