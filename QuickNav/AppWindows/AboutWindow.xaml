@@ -87,12 +87,13 @@
                 </Expander.Header>
                 <Expander.Content>
                     <StackPanel>
-                        <HyperlinkButton FontSize="16" NavigateUri="https://www.nuget.org/packages/BCrypt.Net/0.1.0" Content="BCrypt.Net"/>
+                        <HyperlinkButton FontSize="16" NavigateUri="https://www.nuget.org/packages/CommunityToolkit.WinUI.UI.Controls/7.1.2" Content="CommunityToolkit.WinUI.UI.Controls"/>
                         <HyperlinkButton FontSize="16" NavigateUri="https://www.nuget.org/packages/Newtonsoft.Json" Content="Newtonsoft.Json"/>
-                        <HyperlinkButton FontSize="16" NavigateUri="https://www.nuget.org/packages/ZXing.Net/" Content="ZXing.Net"/>
-                        <HyperlinkButton FontSize="16" NavigateUri="https://www.nuget.org/packages/WindowsDisplayAPI" Content="WindowsDisplayAPI"/>
-                        <HyperlinkButton FontSize="16" NavigateUri="https://www.nuget.org/packages/CommunityToolkit.WinUI.Controls.Sizers" Content="CommunityToolkit.WinUI.Controls.Sizers"/>
-                        <HyperlinkButton FontSize="16" NavigateUri="https://www.nuget.org/packages/System.Drawing.Common/" Content="System.Drawing.Common"/>
+                        <HyperlinkButton FontSize="16" NavigateUri="https://www.nuget.org/packages/H.NotifyIcon.WinUI/2.0.124" Content="H.NotifyIcon.WinUI"/>
+                        <HyperlinkButton FontSize="16" NavigateUri="https://www.nuget.org/packages/MetadataExtractor/2.8.1" Content="MetadataExtractor"/>
+                        <HyperlinkButton FontSize="16" NavigateUri="https://www.nuget.org/packages/System.Data.OleDb/8.0.0" Content="System.Data.OleDb"/>
+                        <HyperlinkButton FontSize="16" NavigateUri="https://www.nuget.org/packages/WinUIEx/2.3.4?_src=template" Content="WinUIEx"/>
+                        <HyperlinkButton FontSize="16" NavigateUri="https://www.nuget.org/packages/Microsoft-WindowsAPICodePack-Shell/1.1.5" Content="Microsoft-WindowsAPICodePack-Shell"/>
                     </StackPanel>
                 </Expander.Content>
             </Expander>
