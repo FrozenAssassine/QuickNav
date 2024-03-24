@@ -32,9 +32,9 @@ namespace QuickNav.Helper
         private const int WM_HOTKEY = 0x0312;
         private const int GWLP_WNDPROC = -4;
 
-        private static List<(int HotKeyID, EventHandler Event)> hotkeyRegistry = new List<(int, EventHandler)>();
+        private static List<(int HotKeyID, EventHandler Event, object obj)> hotkeyRegistry = new List<(int, EventHandler, object)>();
 
-        public static bool RegisterHotkey(VirtualKey[] keys, EventHandler hotkeyPressed, out int HotkeyID)
+        public static bool RegisterHotkey(VirtualKey[] keys, EventHandler hotkeyPressed, out int HotkeyID, object obj = null)
         {
             if (_oldWndProc == IntPtr.Zero)
             {
@@ -53,12 +53,12 @@ namespace QuickNav.Helper
             if (success)
             {
                 HotkeyID = HOTKEY_ID;
-                hotkeyRegistry.Add((HOTKEY_ID++, hotkeyPressed));
+                hotkeyRegistry.Add((HOTKEY_ID++, hotkeyPressed, obj));
             }
             return success;
         }
 
-        public static bool RegisterHotkey(VirtualKeyModifiers modifier, VirtualKey key, EventHandler hotkeyPressed, out int HotkeyID)
+        public static bool RegisterHotkey(VirtualKeyModifiers modifier, VirtualKey key, EventHandler hotkeyPressed, out int HotkeyID, object obj = null)
         {
             if (_oldWndProc == IntPtr.Zero)
             {
@@ -71,7 +71,7 @@ namespace QuickNav.Helper
             if (success)
             {
                 HotkeyID = HOTKEY_ID;
-                hotkeyRegistry.Add((HOTKEY_ID++, hotkeyPressed));
+                hotkeyRegistry.Add((HOTKEY_ID++, hotkeyPressed, obj));
             }
             return success;
         }
@@ -112,8 +112,13 @@ namespace QuickNav.Helper
             if(msg == WM_HOTKEY)
                 for (int i = 0; i < hotkeyRegistry.Count; i++)
                     if (hotkeyRegistry[i].HotKeyID == wParam.ToInt32() && hotkeyRegistry[i].Event != null)
-                        hotkeyRegistry[i].Event(null, EventArgs.Empty);
+                        hotkeyRegistry[i].Event(null, new ObjectEventArgs() { Obj = hotkeyRegistry[i].obj });
             return CallWindowProc(_oldWndProc, hwnd, msg, wParam, lParam);
         }
+    }
+
+    internal class ObjectEventArgs : EventArgs
+    {
+        public object Obj;
     }
 }

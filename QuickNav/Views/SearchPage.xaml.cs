@@ -24,6 +24,7 @@ public sealed partial class SearchPage : Page
     public SearchPage()
     {
         this.InitializeComponent();
+        CommandShortcutHelper.Callback = RunCommand;
     }
 
     public void InitialiseOnShowWindow()
@@ -78,8 +79,13 @@ public sealed partial class SearchPage : Page
 
     private void RunCommand(string query, ICommand command)
     {
-        if (resultView.Items.Count == 0)
-            return;
+        /*if (resultView.Items.Count == 0)
+            return;*/
+
+        MainWindow.mWindow.ShowAndFocus();
+
+        if (query == null)
+            query = "";
         
         if (lastCommand != null && lastCommand is IAbort)
             ((IAbort)lastCommand).Abort();
@@ -261,8 +267,6 @@ public sealed partial class SearchPage : Page
         var keys = await new SetShortcutDialog().ShowAsync(clickedCommand);
         if (keys.keys == null)
             return;
-
-        CommandShortcutHelper.Callback = RunCommand;
 
         CommandShortcutHelper.AddOrUpdate(keys.keys, keys.query, clickedCommand);
     }

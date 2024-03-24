@@ -49,7 +49,8 @@ public sealed partial class MainWindow : Window
         systrayHandle.Icon = new System.Drawing.Icon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets\\AppIcon\\appicon.ico"));
 
         CommandSettings.LoadAll();
-        
+        CommandShortcutHelper.GetShortcuts();
+        CommandShortcutHelper.RegisterAll();
         BuildInCommandRegistry.Register();
 
         GlobalHotkeyHelper.RegisterHotkey(Windows.System.VirtualKeyModifiers.Windows, Windows.System.VirtualKey.Y, (object sender, EventArgs e) =>

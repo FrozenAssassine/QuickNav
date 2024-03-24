@@ -105,7 +105,7 @@ namespace QuickNav.Helper
         public static ICommand GetCommandFromUniqueID(string uniqueID)
         {
             for (int i = 0; i < Plugins.Count; i++)
-                for (int j = 0; j < Plugins[i].Commands.Count; i++)
+                for (int j = 0; j < Plugins[i].Commands.Count; j++)
                     if (GetUniqueCommandID(Plugins[i].Commands[j]) == uniqueID)
                         return Plugins[i].Commands[j];
             return null;

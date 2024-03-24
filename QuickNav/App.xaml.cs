@@ -46,7 +46,6 @@ namespace QuickNav
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
-            CommandShortcutHelper.GetShortcuts();
             m_window = new MainWindow();
 
             //start widgets

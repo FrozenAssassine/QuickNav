@@ -67,12 +67,13 @@ namespace QuickNav.Helper
             {
                 GlobalHotkeyHelper.RegisterHotkey(Shortcuts[i].Keys, (object sender, EventArgs e) =>
                 {
+                    ShortcutConfigurationItem item = (ShortcutConfigurationItem)(e as ObjectEventArgs).Obj;
                     if (Callback == null)
                         return;
-                    ICommand cmd = PluginHelper.GetCommandFromUniqueID(Shortcuts[i].UniqueCommandID);
+                    ICommand cmd = PluginHelper.GetCommandFromUniqueID(item.UniqueCommandID);
                     if (cmd != null)
-                        Callback("", cmd);
-                }, out Shortcuts[i].HotkeyID);
+                        Callback(item.Query, cmd);
+                }, out Shortcuts[i].HotkeyID, Shortcuts[i]);
             }
         }
 
