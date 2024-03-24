@@ -12,6 +12,11 @@
     </Window.SystemBackdrop>
     <ScrollViewer HorizontalScrollMode="Disabled" VerticalScrollMode="Auto">
         <StackPanel Margin="20">
+            <controls:SettingsControl Header="Run on every restart" ToolTipService.ToolTip="If this feature is enabled, QuickNav will automatically start when you start your computer.">
+                <ToggleSwitch x:Name="startupswitch" Toggled="startupswitch_Toggled"/>
+            </controls:SettingsControl>
+
+            <controls:SettingsItemSeparator Header="Commands" />
             <controls:SettingsControl Header="File search command">
                 <NumberBox SpinButtonPlacementMode="Inline" ValueChanged="filesearchamount_ValueChanged" Maximum="100" Minimum="1" MinWidth="150" Margin="5" x:Name="filesearchamount" PlaceholderText="Amount of files" Header="Amount of files"/>
             </controls:SettingsControl>
