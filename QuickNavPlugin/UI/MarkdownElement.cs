@@ -2,9 +2,21 @@
 
 public class MarkdownElement : ContentElement
 {
-    public MarkdownElement(string markdown)
+    private string _Markdown;
+    public string Markdown
     {
-        this.Markdown = markdown;
+        get => _Markdown;
+        set
+        {
+            _Markdown = value;
+            if (TextChanged != null) TextChanged(this, value);
+        }
     }
-    public string Markdown { get; set; }
+
+    public ElementTextChanged TextChanged;
+
+    public MarkdownElement(string markdown = "")
+    {
+        _Markdown = markdown;
+    }
 }

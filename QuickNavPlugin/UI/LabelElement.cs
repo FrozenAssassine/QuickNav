@@ -5,13 +5,16 @@
 /// </summary>
 public class LabelElement : ContentElement
 {
-    public LabelElement(string text = "", FlyoutElement flyout = null)
+    private bool _Scrollable = false;
+    public bool Scrollable
     {
-        this.Text = text;
-        base.Flyout = flyout;
+        get => _Scrollable;
+        set
+        {
+            _Scrollable = value;
+            if (ScrollableChanged != null) ScrollableChanged(this, value);
+        }
     }
-
-    public bool Scrollable { get; set; } = false;
     public bool AutoScrollBottom { get; set; } = false;
     private string _Text;
     public string Text
@@ -26,4 +29,10 @@ public class LabelElement : ContentElement
 
     public ElementTextChanged TextChanged;
     public ElementIsEditableChanged IsEditableChanged;
+    public ElementScrollableChanged ScrollableChanged;
+
+    public LabelElement(string text = "")
+    {
+        _Text = text;
+    }
 }

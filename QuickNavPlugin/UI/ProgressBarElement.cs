@@ -5,8 +5,6 @@
 /// </summary>
 public class ProgressBarElement : ContentElement
 {
-    public string Header { get; set; }
-    public double Width { get; set; }
     private double _progress;
     public double Progress 
     {
@@ -14,8 +12,8 @@ public class ProgressBarElement : ContentElement
         set
         {
             _progress = value;
-            TextChanged(this, _progress.ToString());
+            if (ProgressChanged != null) ProgressChanged(this, _progress);
         }
     }
-    public ElementTextChanged TextChanged;
+    public ElementProgressChanged ProgressChanged;
 }
