@@ -5,7 +5,8 @@
     xmlns:local="using:QuickNav.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="using:QuickNav.Models"
+    xmlns:models="using:QuickNav.Models" 
+    xmlns:converter="using:QuickNav.Converter"
     mc:Ignorable="d">
 
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -17,10 +18,25 @@
         <ListView ItemClick="resultView_ItemClick" IsItemClickEnabled="True" DragOver="Grid_DragOver" Drop="Grid_Drop" AllowDrop="True"  x:Name="resultView" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:ResultListViewItem">
-                    <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Horizontal">
-                        <Image Source="{Binding Command.Icon}" Width="30" Margin="5" />
-                        <TextBlock Text="{Binding Text}" ToolTipService.ToolTip="{Binding Command.Description}" VerticalAlignment="Center" Margin="5,0,0,0" />
-                    </StackPanel>
+                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Grid.ContextFlyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Tag="{x:Bind }" Text="Configure shortcut" Click="ConfigureListItemShortcut_Click"/>
+                            </MenuFlyout>
+                        </Grid.ContextFlyout>
+
+                        <Image Grid.Column="0" Source="{Binding Command.Icon}" Width="30" Margin="5" />
+                        <TextBlock  Grid.Column="1" Text="{Binding Text}" ToolTipService.ToolTip="{Binding Command.Description}" VerticalAlignment="Center" Margin="5,0,0,0" />
+                        <Grid Grid.Column="2" Visibility="{x:Bind ShortcutVisibility }" VerticalAlignment="Bottom" BorderBrush="#555555" BorderThickness="1" CornerRadius="4">
+                            <TextBlock Padding="2" Text="{x:Bind Shortcut}" x:Phase="1" />
+                        </Grid>
+                    </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
