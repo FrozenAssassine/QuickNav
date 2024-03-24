@@ -26,4 +26,18 @@ public static class StringExtension
         }
         return text.Split("\n").Length;
     }
+
+    public static int CountSentences(this string text)
+    {
+        string[] sentences = text.Split(new char[] { '.', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
+
+        return sentences.Length;
+    }
+
+    public static int CountParagraphs(this string text)
+    {
+        string[] paragraphs = text.Split(new string[] { "\r\n\r\n", "\n\n", "\r\r" }, StringSplitOptions.RemoveEmptyEntries);
+
+        return paragraphs.Length;
+    }
 }

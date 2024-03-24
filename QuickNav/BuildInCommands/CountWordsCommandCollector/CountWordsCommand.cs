@@ -5,6 +5,7 @@ using System.IO;
 using QuickNav.Extensions;
 using System.Linq;
 using System.Text;
+using System.Collections.Generic;
 
 namespace QuickNav.BuildInCommands.FileInfoCommandCollector;
 
@@ -60,7 +61,8 @@ internal class CountWordsCommand : ICommand, IFileCommand
         sb.AppendLine("## Words: " + text.CountWords());
         sb.AppendLine("## Characters: " + text.Length);
         sb.AppendLine("## Lines: " + text.CountLines());
-
+        sb.AppendLine("## Sentences: " + text.CountSentences());
+        sb.AppendLine("## Paragraphs: " + text.CountParagraphs());
         content = new MarkdownElement(sb.ToString());
         return true;
     }
