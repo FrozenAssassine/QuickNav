@@ -34,6 +34,38 @@ namespace QuickNav.Helper
 
         private static List<(int HotKeyID, EventHandler Event, object obj)> hotkeyRegistry = new List<(int, EventHandler, object)>();
 
+        private static uint GetModifier(VirtualKey[] keys)
+        {
+            uint modifier = 0;
+            foreach (var key in keys)
+            {
+                if (key == VirtualKey.Control || key == VirtualKey.LeftControl || key == VirtualKey.RightControl)
+                {
+                    modifier |= 0x2; // CTRL
+                }
+                else if (key == VirtualKey.Shift || key == VirtualKey.LeftShift || key == VirtualKey.RightShift)
+                {
+                    modifier |= 0x4; // SHIFT
+                }
+                else if (key == VirtualKey.Menu || key == VirtualKey.LeftMenu || key == VirtualKey.RightMenu)
+                {
+                    modifier |= 0x1; // ALT
+                }
+                else if (key == VirtualKey.LeftWindows || key == VirtualKey.RightWindows)
+                {
+                    modifier |= 0x8; // Windows key
+                }
+            }
+            return modifier;
+        }
+
+        private static bool IsModifierKey(VirtualKey key)
+        {
+            return key == VirtualKey.Control || key == VirtualKey.LeftControl || key == VirtualKey.RightControl ||
+                   key == VirtualKey.Shift || key == VirtualKey.LeftShift || key == VirtualKey.RightShift ||
+                   key == VirtualKey.RightWindows|| key == VirtualKey.LeftWindows ||
+                   key == VirtualKey.Menu || key == VirtualKey.LeftMenu || key == VirtualKey.RightMenu;
+        }
         public static bool RegisterHotkey(VirtualKey[] keys, EventHandler hotkeyPressed, out int HotkeyID, object obj = null)
         {
             if (_oldWndProc == IntPtr.Zero)
@@ -45,11 +77,12 @@ namespace QuickNav.Helper
             uint key = 0;
             for(int i = 0; i < keys.Length; i++)
             {
-                key |= (uint)keys[i];
+                if (!IsModifierKey(keys[i]))
+                    key |= (uint)keys[i];
             }
 
             HotkeyID = -1;
-            bool success = RegisterHotKey(MainWindow.hWnd, HOTKEY_ID, 0, key);
+            bool success = RegisterHotKey(MainWindow.hWnd, HOTKEY_ID, GetModifier(keys), key);
             if (success)
             {
                 HotkeyID = HOTKEY_ID;
