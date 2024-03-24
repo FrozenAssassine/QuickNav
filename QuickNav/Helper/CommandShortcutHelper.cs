@@ -53,6 +53,7 @@ namespace QuickNav.Helper
             if (item == null)
                 return;
 
+            GlobalHotkeyHelper.UnregisterHotkey(item.HotkeyID);
             Shortcuts.Remove(item);
         }
 
