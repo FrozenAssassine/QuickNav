@@ -265,4 +265,13 @@ public sealed partial class SearchPage : Page
 
         CommandShortcutHelper.AddOrUpdate(keys.keys, keys.query, clickedCommand);
     }
+
+    private void RemoveShortcut_Click(object sender, RoutedEventArgs e)
+    {
+        var clickedCommand = ((sender as MenuFlyoutItem).Tag as ResultListViewItem).Command;
+        if (clickedCommand == null)
+            return;
+
+        CommandShortcutHelper.RemoveShortcut(clickedCommand);
+    }
 }

@@ -48,6 +48,15 @@ namespace QuickNav.Helper
             return string.Join(" + ", item.Keys);
         }
 
+        public static void RemoveShortcut(ICommand clickedCommand)
+        {
+            var item = GetItemFromCommand(clickedCommand);
+            if (item == null)
+                return;
+
+            Shortcuts.Remove(item);
+        }
+
         public static void AddOrUpdate(VirtualKey[] keys, string query, ICommand clickedCommand)
         {
             string uid = GetUniqueCommandID(clickedCommand);
@@ -60,5 +69,6 @@ namespace QuickNav.Helper
 
             SaveShortcuts();
         }
+    
     }
 }

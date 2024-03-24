@@ -27,6 +27,7 @@
                         <Grid.ContextFlyout>
                             <MenuFlyout>
                                 <MenuFlyoutItem Tag="{x:Bind }" Text="Configure shortcut" Click="ConfigureListItemShortcut_Click"/>
+                                <MenuFlyoutItem Tag="{x:Bind }" Text="Remove shortcut" Click="RemoveShortcut_Click"/>
                             </MenuFlyout>
                         </Grid.ContextFlyout>
 
