@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using QuickNav.Dialogs;
 using QuickNav.Helper;
 using QuickNav.Models;
 using QuickNavPlugin;
@@ -250,5 +251,18 @@ public sealed partial class SearchPage : Page
         }
 
         ReloadDropList = true;
+    }
+
+    private async void ConfigureListItemShortcut_Click(object sender, RoutedEventArgs e)
+    {
+        var clickedCommand = ((sender as MenuFlyoutItem).Tag as ResultListViewItem).Command;
+        if (clickedCommand == null)
+            return;
+
+        var keys = await new SetShortcutDialog().ShowAsync(clickedCommand);
+        if (keys == null)
+            return;
+
+        CommandShortcutHelper.AddOrUpdate(keys, clickedCommand);
     }
 }

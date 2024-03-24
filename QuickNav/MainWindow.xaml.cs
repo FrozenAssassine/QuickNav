@@ -28,14 +28,16 @@ public sealed partial class MainWindow : Window
     private OverlappedPresenter? _presenter;
     public static DispatcherQueue dispatcherQueue;
     public List<Window> OpenWindows = new();
+    public static MainWindow mWindow;
 
     public MainWindow()
     {
         this.InitializeComponent();
         this.Hide();
+        mWindow = this;
+
         hWnd = WindowNative.GetWindowHandle(this);
         WindowId wndId = Win32Interop.GetWindowIdFromWindow(hWnd);
-
 
         m_AppWindow = AppWindow.GetFromWindowId(wndId);
 
@@ -46,7 +48,6 @@ public sealed partial class MainWindow : Window
         this.AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets\\AppIcon\\appicon.ico"));
         systrayHandle.Icon = new System.Drawing.Icon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets\\AppIcon\\appicon.ico"));
         
-
         BuildInCommandRegistry.Register();
 
         GlobalHotkeyHelper.RegisterHotkey(Windows.System.VirtualKeyModifiers.Windows, Windows.System.VirtualKey.Y, (object sender, EventArgs e) =>
