@@ -12,7 +12,7 @@
     </Window.SystemBackdrop>
     <ScrollViewer HorizontalScrollMode="Disabled" VerticalScrollMode="Auto">
         <StackPanel Margin="20">
-            <controls:SettingsControl Header="Run on every restart" ToolTipService.ToolTip="If this feature is enabled, QuickNav will automatically start when you start your computer.">
+            <controls:SettingsControl Header="Run in Autostart" ToolTipService.ToolTip="If this feature is enabled, QuickNav will automatically start when you start your computer.">
                 <ToggleSwitch x:Name="startupswitch" Toggled="startupswitch_Toggled"/>
             </controls:SettingsControl>
 
@@ -20,7 +20,7 @@
             <controls:SettingsControl Header="File search command">
                 <NumberBox SpinButtonPlacementMode="Inline" ValueChanged="filesearchamount_ValueChanged" Maximum="100" Minimum="1" MinWidth="150" Margin="5" x:Name="filesearchamount" PlaceholderText="Amount of files" Header="Amount of files"/>
             </controls:SettingsControl>
-            <Expander Margin="0,5,0,0" HorizontalAlignment="Stretch">
+            <Expander HorizontalContentAlignment="Stretch" Margin="0,5,0,0" HorizontalAlignment="Stretch">
                 <Expander.Header>
                     <StackPanel Orientation="Horizontal" Height="70">
                         <TextBlock FontSize="20" Margin="10" VerticalAlignment="Center" Text="Calculator command" />
@@ -29,17 +29,18 @@
                 <Expander.Content>
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="80" />
-                            <RowDefinition Height="80" />
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="300" />
-                            <ColumnDefinition Width="300" />
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock FontSize="15" Margin="10" Text="Radians/Degrees" Grid.Row="0" Grid.Column="0" />
+                        <TextBlock VerticalAlignment="Center" FontSize="15" Margin="10" Text="Radians/Degrees" Grid.Row="0" Grid.Column="0" />
                         <ComboBox Width="200" x:Name="angleUnit" SelectionChanged="angleUnit_SelectionChanged" Grid.Row="0" Grid.Column="1" />
-                        <TextBlock FontSize="15" Margin="10" Text="Taylor iterations" Grid.Row="1" Grid.Column="0" />
-                        <NumberBox SpinButtonPlacementMode="Inline" ValueChanged="maxtayloriterations_ValueChanged" Maximum="5000" Minimum="1" MinWidth="200" x:Name="maxtayloriterations" PlaceholderText="Taylor iterations" Header="Taylor iterations" Grid.Row="1" Grid.Column="1"/>
+                        <TextBlock VerticalAlignment="Center" FontSize="15" Margin="10" Text="Taylor iterations" Grid.Row="2" Grid.Column="0" />
+                        <NumberBox SpinButtonPlacementMode="Inline" ValueChanged="maxtayloriterations_ValueChanged" Maximum="5000" Minimum="1" x:Name="maxtayloriterations" PlaceholderText="Taylor iterations" Header="Taylor iterations" Grid.Row="2" Grid.Column="1"/>
                     </Grid>
                 </Expander.Content>
             </Expander>
