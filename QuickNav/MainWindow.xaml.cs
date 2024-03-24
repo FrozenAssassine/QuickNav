@@ -45,8 +45,8 @@ public sealed partial class MainWindow : Window
 
         this.AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets\\AppIcon\\appicon.ico"));
         systrayHandle.Icon = new System.Drawing.Icon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets\\AppIcon\\appicon.ico"));
-        
 
+        CommandSettings.LoadAll();
         BuildInCommandRegistry.Register();
 
         GlobalHotkeyHelper.RegisterHotkey(Windows.System.VirtualKeyModifiers.Windows, Windows.System.VirtualKey.Y, (object sender, EventArgs e) =>
@@ -79,6 +79,7 @@ public sealed partial class MainWindow : Window
 
     private void Window_Closed(object sender, WindowEventArgs args)
     {
+        CommandSettings.SaveAll();
         GlobalHotkeyHelper.UnregisterAllHotkeys();
     }
 
