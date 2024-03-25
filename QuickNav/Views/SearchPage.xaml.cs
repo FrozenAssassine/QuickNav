@@ -269,6 +269,8 @@ public sealed partial class SearchPage : Page
             return;
 
         CommandShortcutHelper.AddOrUpdate(keys.keys, keys.query, clickedCommand);
+
+        searchInputBox_TextChanged(this, null);
     }
 
     private void RemoveShortcut_Click(object sender, RoutedEventArgs e)
@@ -278,5 +280,7 @@ public sealed partial class SearchPage : Page
             return;
 
         CommandShortcutHelper.RemoveShortcut(clickedCommand);
+
+        searchInputBox_TextChanged(this, null);
     }
 }

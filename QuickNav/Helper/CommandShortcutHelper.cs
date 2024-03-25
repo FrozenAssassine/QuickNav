@@ -55,6 +55,9 @@ namespace QuickNav.Helper
 
             GlobalHotkeyHelper.UnregisterHotkey(item.HotkeyID);
             Shortcuts.Remove(item);
+
+            SaveShortcuts();
+            ReregisterAll();
         }
 
         public static void AddOrUpdate(VirtualKey[] keys, string query, ICommand clickedCommand)
