@@ -14,15 +14,12 @@ public sealed partial class AboutWindow : Window
 
     public string AppVersion => AppVersionHelper.GetAppVersion();
     public string DeveloperName => Package.Current.PublisherDisplayName;
-    public AboutWindow(List<Window> openWindows)
+    public AboutWindow()
     {
         this.InitializeComponent();
         this.SetWindowSize(600, 750);
-        this.Closed += delegate
-        {
-            openWindows.Remove(this);
-        };
         this.AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets\\AppIcon\\appicon.ico"));
+        this.Title = "About QuickNav";
     }
 
     private async void NavigateToLink_Click(Controls.SettingsControl sender)

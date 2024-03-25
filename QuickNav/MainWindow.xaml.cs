@@ -18,6 +18,7 @@ using System.Drawing;
 using QuickNav.AppWindows;
 using System.Windows.Documents;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace QuickNav;
 
@@ -27,7 +28,6 @@ public sealed partial class MainWindow : Window
     public static IntPtr hWnd;
     private OverlappedPresenter? _presenter;
     public static DispatcherQueue dispatcherQueue;
-    public List<Window> OpenWindows = new();
     public static MainWindow mWindow;
 
     public MainWindow()
@@ -102,24 +102,17 @@ public sealed partial class MainWindow : Window
 
     private void ShowSettings_Click(object sender, RoutedEventArgs e)
     {
-        SettingsWindow settingsWindow = new SettingsWindow(OpenWindows);
-        settingsWindow.Activate();
-        OpenWindows.Add(settingsWindow);
+        ShowWindowHelper.ShowWindow<SettingsWindow>();
     }
 
     private void ShowAbout_Click(object sender, RoutedEventArgs e)
     {
-        AboutWindow aboutWindow = new AboutWindow(OpenWindows);
-        aboutWindow.Activate();
-        OpenWindows.Add(aboutWindow);
+        ShowWindowHelper.ShowWindow<AboutWindow>();
     }
 
     private void Exit_Click(object sender, RoutedEventArgs e)
     {
-        while(OpenWindows.Count > 0)
-        {
-            OpenWindows[0].Close();
-        }
+        ShowWindowHelper.CloseAll();
         this.Close();
         systrayHandle.Dispose();
     }

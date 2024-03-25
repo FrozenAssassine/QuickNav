@@ -11,18 +11,14 @@ namespace QuickNav.AppWindows;
 
 public sealed partial class SettingsWindow : Window
 {
-    const string AppName = "QuickNav";
     bool IsLoadingSettings = false;
-    public SettingsWindow(List<Window> openWindows)
+    public SettingsWindow()
     {
         this.InitializeComponent();
-        this.Closed += delegate
-        {
-            openWindows.Remove(this);
-        };
+
         this.SetWindowSize(600, 750);
         this.AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets\\AppIcon\\appicon.ico"));
-
+        this.Title = "QuickNav Settings";
         LoadSettings();
     }
 
