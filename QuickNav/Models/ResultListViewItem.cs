@@ -8,11 +8,17 @@ namespace QuickNav.Models
     {
         public string Text { get; set; }
         private ICommand _Command;
-        public ICommand Command { get => _Command; set { _Command = value; shortcutItem = CommandShortcutHelper.GetItemFromCommand(value); } }
+        public ICommand Command { get => _Command; set { _Command = value; shortcutItem = CommandShortcutHelper.GetItemFromCommand(value); autostartItem = CommandAutostartHelper.GetItemFromCommand(value); } }
+        
         public string Shortcut { get => shortcutItem == null ? "" : CommandShortcutHelper.GetShortcutForPlugin(shortcutItem); }
         public Visibility ShortcutVisibility { get => ConvertHelper.BoolToVisibility(Shortcut.Length != 0); }
-        public string Query { get => shortcutItem == null ? "" : shortcutItem.Query; }
+        public string ShortcutQuery { get => shortcutItem == null ? "" : shortcutItem.Query; }
+        
+        public string Autostart { get => autostartItem == null ? "" : "Reboot"; }
+        public Visibility AutostartVisibility { get => ConvertHelper.BoolToVisibility(Autostart.Length != 0); }
+        public string AutostartQuery { get => autostartItem == null ? "" : autostartItem.Query; }
 
         private ShortcutConfigurationItem shortcutItem;
+        private AutostartConfigurationItem autostartItem;
     }
 }

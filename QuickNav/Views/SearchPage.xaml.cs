@@ -25,6 +25,7 @@ public sealed partial class SearchPage : Page
     {
         this.InitializeComponent();
         CommandShortcutHelper.Callback = RunCommand;
+        CommandAutostartHelper.Callback = RunCommand;
     }
 
     public void InitialiseOnShowWindow()
@@ -32,6 +33,7 @@ public sealed partial class SearchPage : Page
         searchBox.Text = "";
         searchBox.Focus(FocusState.Programmatic);
         searchInputBox_TextChanged(null, null);
+        CommandAutostartHelper.RunCommands();
     }
 
     private void searchInputBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -280,6 +282,28 @@ public sealed partial class SearchPage : Page
             return;
 
         CommandShortcutHelper.RemoveShortcut(clickedCommand);
+
+        searchInputBox_TextChanged(this, null);
+    }
+
+    private void LaunchOnReboot_Click(object sender, RoutedEventArgs e)
+    {
+        var clickedCommand = ((sender as MenuFlyoutItem).Tag as ResultListViewItem).Command;
+        if (clickedCommand == null)
+            return;
+
+        CommandAutostartHelper.AddCommand(clickedCommand, "");
+
+        searchInputBox_TextChanged(this, null);
+    }
+
+    private void RemoveFromReboot_Click(object sender, RoutedEventArgs e)
+    {
+        var clickedCommand = ((sender as MenuFlyoutItem).Tag as ResultListViewItem).Command;
+        if (clickedCommand == null)
+            return;
+
+        CommandAutostartHelper.RemoveCommand(clickedCommand);
 
         searchInputBox_TextChanged(this, null);
     }

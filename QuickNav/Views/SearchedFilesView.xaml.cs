@@ -36,25 +36,7 @@ namespace QuickNav.Views
             if(item is FilesViewItem filesViewItem)
             {
                 string fullPath = filesViewItem.Path;
-                string directoryPath = Path.GetDirectoryName(fullPath);
-                string fileName = Path.GetFileName(fullPath);
-
-                // Encode the directory path and file name using UTF-8
-                byte[] directoryBytes = Encoding.UTF8.GetBytes(directoryPath);
-                byte[] fileBytes = Encoding.UTF8.GetBytes(fileName);
-
-                // Decode the byte arrays back to strings
-                string encodedDirectoryPath = Encoding.UTF8.GetString(directoryBytes);
-                string encodedFileName = Encoding.UTF8.GetString(fileBytes);
-
-                ProcessStartInfo psi = new ProcessStartInfo
-                {
-                    WorkingDirectory = encodedDirectoryPath,
-                    FileName = encodedFileName,
-                };
-                Process p = new Process();
-                p.StartInfo = psi;
-                p.Start();
+                Process.Start("explorer.exe", fullPath);
             }
         }
 

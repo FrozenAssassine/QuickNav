@@ -51,6 +51,7 @@ public sealed partial class MainWindow : Window
         CommandSettings.LoadAll();
         CommandShortcutHelper.GetShortcuts();
         CommandShortcutHelper.RegisterAll();
+        CommandAutostartHelper.LoadAll();
         BuildInCommandRegistry.Register();
 
         GlobalHotkeyHelper.RegisterHotkey(Windows.System.VirtualKeyModifiers.Windows, Windows.System.VirtualKey.Y, (object sender, EventArgs e) =>
@@ -66,6 +67,9 @@ public sealed partial class MainWindow : Window
         _presenter.IsAlwaysOnTop = true;
         _presenter.IsResizable = false;
         this.AppWindow.IsShownInSwitchers = false;
+
+        if (CommandAutostartHelper.AutostartCommands.Count > 0)
+            ShowAndFocus();
     }
 
     public void ShowAndFocus()
