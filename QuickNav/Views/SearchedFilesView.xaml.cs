@@ -8,9 +8,11 @@ using Microsoft.UI.Xaml.Navigation;
 using QuickNav.Helper;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using System.Windows;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -31,7 +33,29 @@ namespace QuickNav.Views
 
         private void OpenFile(object item)
         {
+            if(item is FilesViewItem filesViewItem)
+            {
+                string fullPath = filesViewItem.Path;
+                string directoryPath = Path.GetDirectoryName(fullPath);
+                string fileName = Path.GetFileName(fullPath);
 
+                // Encode the directory path and file name using UTF-8
+                byte[] directoryBytes = Encoding.UTF8.GetBytes(directoryPath);
+                byte[] fileBytes = Encoding.UTF8.GetBytes(fileName);
+
+                // Decode the byte arrays back to strings
+                string encodedDirectoryPath = Encoding.UTF8.GetString(directoryBytes);
+                string encodedFileName = Encoding.UTF8.GetString(fileBytes);
+
+                ProcessStartInfo psi = new ProcessStartInfo
+                {
+                    WorkingDirectory = encodedDirectoryPath,
+                    FileName = encodedFileName,
+                };
+                Process p = new Process();
+                p.StartInfo = psi;
+                p.Start();
+            }
         }
 
         private void listView_ItemClick(object sender, ItemClickEventArgs e)

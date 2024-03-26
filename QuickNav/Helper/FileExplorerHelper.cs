@@ -7,6 +7,7 @@ internal class FileExplorerHelper
     public static void OpenExplorer(string fullPath)
     {
         Process.Start("explorer.exe", $"/select,\"{fullPath}\"");
+        Debug.WriteLine(fullPath);
     }
 
     public static string FileSize(long size)
