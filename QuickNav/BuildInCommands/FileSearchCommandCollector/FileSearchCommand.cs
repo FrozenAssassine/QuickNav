@@ -10,6 +10,10 @@ using QuickNav.Models;
 using Microsoft.UI.Xaml.Controls;
 using QuickNav.Views;
 using System.Collections.Generic;
+using System.Text;
+using System.IO;
+using System.Runtime.InteropServices;
+using Microsoft.WindowsAPICodePack.Shell;
 
 namespace QuickNav.BuildInCommands.WindowsFileSearch;
 
@@ -34,12 +38,6 @@ internal class FileSearchCommand : ICommand, IBuildInCommand
         return "Search for \"" + query + "\" in your files";
     }
 
-    public bool RunCommand(string searchTerm, out QuickNavPlugin.UI.ContentElement content)
-    {
-        content = null;
-        return false;
-    }
-
     public bool RunCommand(string parameters, out Page content, out double addWidth, out double addHeight)
     {
         content = null;
@@ -54,7 +52,7 @@ internal class FileSearchCommand : ICommand, IBuildInCommand
         try
         {
             connection.Open();
-            var query = $"SELECT TOP {CommandSettings.AmountOfFiles} System.ItemName, System.ItemPathDisplay FROM SystemIndex WHERE scope ='file:' AND System.ItemName LIKE '%{parameters}%'";
+            var query = $"SELECT TOP {CommandSettings.AmountOfFiles} System.ItemName, System.ItemUrl  FROM SystemIndex WHERE scope ='file:' AND System.ItemName LIKE '%{parameters}%'";
 
             var command = new OleDbCommand(query, connection);
 
@@ -68,9 +66,13 @@ internal class FileSearchCommand : ICommand, IBuildInCommand
                 while (reader.Read())
                 {
                     string fileName = reader["System.ItemName"].ToString();
-                    string filePath = reader["System.ItemPathDisplay"].ToString();
+                    string filePath = reader["System.ItemUrl"].ToString();
+                    if (filePath.StartsWith("file:"))
+                        filePath = filePath.Substring(5);
 
-                    files.Add((fileName, filePath));
+                    filePath = filePath.Replace("/", "\\");
+
+                    files.Add((fileName, (filePath)));
                 }
             }
 
@@ -86,5 +88,10 @@ internal class FileSearchCommand : ICommand, IBuildInCommand
             connection.Close();
         }
         return true;
+    }
+
+    public bool RunCommand(string parameters, out QuickNavPlugin.UI.ContentElement content)
+    {
+        throw new NotImplementedException();
     }
 }

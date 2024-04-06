@@ -16,6 +16,7 @@ using System.Text;
 using System.Windows;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 
 namespace QuickNav.Views
 {
@@ -35,8 +36,18 @@ namespace QuickNav.Views
         {
             if(item is FilesViewItem filesViewItem)
             {
-                string fullPath = filesViewItem.Path;
-                Process.Start("explorer.exe", fullPath);
+                string path = filesViewItem.Path;
+
+                // Specify the process start information
+                ProcessStartInfo startInfo = new ProcessStartInfo
+                {
+                    FileName = Path.GetFileName(path),
+                    UseShellExecute = true,
+                    WorkingDirectory = System.IO.Path.GetDirectoryName(path) + "\\"
+                };
+
+                // Start the process
+                Process.Start(startInfo);
             }
         }
 
