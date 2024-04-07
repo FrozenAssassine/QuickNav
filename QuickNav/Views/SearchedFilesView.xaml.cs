@@ -43,11 +43,14 @@ namespace QuickNav.Views
                 {
                     FileName = Path.GetFileName(path),
                     UseShellExecute = true,
-                    WorkingDirectory = System.IO.Path.GetDirectoryName(path) + "\\"
+                    WorkingDirectory = Path.GetDirectoryName(path),
                 };
 
-                // Start the process
-                Process.Start(startInfo);
+                try
+                {
+                    Process.Start(startInfo);
+                }
+                catch { }
             }
         }
 
