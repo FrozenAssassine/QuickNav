@@ -25,7 +25,7 @@ internal class FileSearchCommand : ICommand, IBuildInCommand
 
     public Priority Priority(string query)
     {
-        return QuickNavPlugin.Priority.Low;
+        return QuickNavPlugin.Priority.Medium;
     }
 
     public string CommandTrigger => "file:";
