@@ -22,11 +22,11 @@ internal class LaunchAppCommand : ICommand, IBuildInCommand
     private string OldName = "";
     public string Name(string query)
     {
-        if (oldQuery.Equals(query, StringComparison.Ordinal))
-            return OldName;
-
         if (query.Length == 0)
             return OldName = "Launch an app";
+
+        if (oldQuery.Equals(query, StringComparison.Ordinal))
+            return OldName;
 
         var apps = Apps.Where(x => x.Name.Contains(query, StringComparison.OrdinalIgnoreCase)).ToArray();
         if (apps.Length == 1)
