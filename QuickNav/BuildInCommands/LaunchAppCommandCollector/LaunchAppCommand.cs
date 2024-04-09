@@ -22,21 +22,27 @@ internal class LaunchAppCommand : ICommand, IBuildInCommand
     private string OldName = "";
     public string Name(string query)
     {
+        FoundApp = false;
         if (query.Length == 0)
             return OldName = "Launch an app";
 
         if (oldQuery.Equals(query, StringComparison.Ordinal))
             return OldName;
-
+        
         var apps = Apps.Where(x => x.Name.Contains(query, StringComparison.OrdinalIgnoreCase)).ToArray();
-        if (apps.Length == 1)
+        if (FoundApp = apps.Length == 1)
             return OldName = "Launch \"" + apps[0].Name + "\"";
 
         return OldName = "Search \"" + query + "\" in your APPS";
     }
 
+    bool FoundApp = false;
+
     Priority ICommand.Priority(string query)
     {
+        if(FoundApp)
+            return Priority.High;
+
         return Priority.Medium;
     }
     ShellObject[] Apps;
@@ -44,6 +50,8 @@ internal class LaunchAppCommand : ICommand, IBuildInCommand
     public void OnWindowOpened()
     {
         oldQuery = "";
+        FoundApp = false;
+
         // GUID taken from https://learn.microsoft.com/en-us/windows/win32/shell/knownfolderid
         var FOLDERID_AppsFolder = new Guid("{1e87508d-89c2-42f0-8a7e-645a0f50ca58}");
         ShellObject appsFolder = (ShellObject)KnownFolderHelper.FromKnownFolderId(FOLDERID_AppsFolder);
