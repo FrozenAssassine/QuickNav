@@ -2,6 +2,7 @@ using QuickNav.BuildInCommands.CalculatorCommandCollector;
 using QuickNav.BuildInCommands.CMDCommandCollector;
 using QuickNav.BuildInCommands.ColorPickerCommandTrigger;
 using QuickNav.BuildInCommands.FileInfoCommandCollector;
+using QuickNav.BuildInCommands.LaunchAppCommandCollector;
 using QuickNav.BuildInCommands.LockScreenCommandCollector;
 using QuickNav.BuildInCommands.PlainTextConverterCommandCollector;
 using QuickNav.BuildInCommands.SystemMonitorCommandCollector;
@@ -28,6 +29,7 @@ namespace QuickNav.BuildInCommands
             buildInCommands.Commands.Add(new ColorPickerCommand());
             buildInCommands.Commands.Add(new LockScreenCommand());
             buildInCommands.Commands.Add(new SysInfoCommand());
+            buildInCommands.Commands.Add(new LaunchAppCommand());
 
             PluginHelper.Plugins.Add(buildInCommands);
         }
