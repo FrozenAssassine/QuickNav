@@ -1,12 +1,14 @@
 ﻿using Microsoft.UI.Xaml;
 using QuickNav.Helper;
 using QuickNavPlugin;
+using System;
 
 namespace QuickNav.Models
 {
     class ResultListViewItem
     {
         public string Text { get; set; }
+        public Uri Uri { get; set; }
         private ICommand _Command;
         public ICommand Command { get => _Command; set { _Command = value; shortcutItem = CommandShortcutHelper.GetItemFromCommand(value); autostartItem = CommandAutostartHelper.GetItemFromCommand(value); } }
         

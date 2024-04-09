@@ -4,6 +4,7 @@ using QuickNav.Models;
 using QuickNav.Views;
 using QuickNavPlugin;
 using System;
+using System.IO;
 using System.Linq;
 
 namespace QuickNav.BuildInCommands.LaunchAppCommandCollector;
@@ -12,14 +13,13 @@ internal class LaunchAppCommand : ICommand, IBuildInCommand
 {
     public string Description => "Run this command to launch an app";
 
-    public Uri Icon => null; //Todo for Finn
-
     public string CommandTrigger => "app:";
 
     public string[] Keywords => new string[] { "app", "launch" };
 
     private string oldQuery = "";
     private string OldName = "";
+    private Uri OldUri = null;
     public string Name(string query)
     {
         FoundApp = false;
@@ -33,7 +33,7 @@ internal class LaunchAppCommand : ICommand, IBuildInCommand
         if (FoundApp = apps.Length == 1)
             return OldName = "Launch \"" + apps[0].Name + "\"";
 
-        return OldName = "Search \"" + query + "\" in your APPS";
+        return OldName = "Search \"" + query + "\" in your Apps";
     }
 
     bool FoundApp = false;
@@ -82,6 +82,29 @@ internal class LaunchAppCommand : ICommand, IBuildInCommand
 
     public bool RunCommand(string parameters, out QuickNavPlugin.UI.ContentElement content)
     {
-        throw new NotImplementedException();
+        content = null;
+        return false;
+    }
+
+    public Uri Icon(string query)
+    {
+        FoundApp = false;
+        if (query.Length == 0)
+            return OldUri = new Uri("ms-appx://App/Assets/commands/launch.png");
+
+        if (oldQuery.Equals(query, StringComparison.Ordinal))
+            return OldUri;
+
+        var apps = Apps.Where(x => x.Name.Contains(query, StringComparison.OrdinalIgnoreCase)).ToArray();
+        if (FoundApp = apps.Length == 1)
+        {
+            MemoryStream ms = new MemoryStream();
+            apps[0].Thumbnail.LargeIcon.Save(ms);
+            string p = Path.GetTempFileName();
+            File.WriteAllBytes(p, ms.ToArray());
+            return OldUri = new Uri(p);
+        }
+
+        return OldUri = new Uri("ms-appx://App/Assets/commands/launch.png");
     }
 }

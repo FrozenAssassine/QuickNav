@@ -10,7 +10,7 @@ internal class CMDCommand : ICommand, IAbort, IFileCommand
 {
     public string Description => "Run this command to execute in commandline";
 
-    public Uri Icon => new Uri("ms-appx://App/Assets/commands/cmd.png");
+    public Uri Icon(string query) => new Uri("ms-appx://App/Assets/commands/cmd.png");
 
     public Priority Priority(string query)
     {

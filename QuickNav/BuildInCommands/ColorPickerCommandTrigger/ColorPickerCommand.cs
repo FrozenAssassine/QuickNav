@@ -18,7 +18,7 @@ namespace QuickNav.BuildInCommands.ColorPickerCommandTrigger
 
         public string Description => "Pick a color from color circle.";
 
-        public Uri Icon => new Uri("ms-appx://App/Assets/commands/colorpicker.png");
+        public Uri Icon(string query) => new Uri("ms-appx://App/Assets/commands/colorpicker.png");
 
         public Priority Priority(string query)
         {

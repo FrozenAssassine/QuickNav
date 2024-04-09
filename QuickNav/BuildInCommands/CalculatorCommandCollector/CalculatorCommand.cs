@@ -13,7 +13,7 @@ namespace QuickNav.BuildInCommands.CalculatorCommandCollector
     {
         public string Description => "Calculate terms.";
 
-        public Uri Icon => new Uri("ms-appx://App/Assets/commands/calculator.png");
+        public Uri Icon(string query) => new Uri("ms-appx://App/Assets/commands/calculator.png");
 
         public QuickNavPlugin.Priority Priority(string query)
         {
