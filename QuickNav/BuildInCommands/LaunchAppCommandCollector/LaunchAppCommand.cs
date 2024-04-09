@@ -1,17 +1,10 @@
-﻿using QuickNavPlugin.UI;
+﻿using Microsoft.UI.Xaml.Controls;
+using Microsoft.WindowsAPICodePack.Shell;
+using QuickNav.Models;
+using QuickNav.Views;
 using QuickNavPlugin;
 using System;
-using System.Diagnostics;
-using System.Data.OleDb;
-using QuickNav.Helper;
-using System.Windows;
-using Microsoft.Win32;
-using System.Collections.Generic;
 using System.Linq;
-using Microsoft.WindowsAPICodePack.Shell;
-using QuickNav.Views;
-using QuickNav.Models;
-using Microsoft.UI.Xaml.Controls;
 
 namespace QuickNav.BuildInCommands.LaunchAppCommandCollector;
 
@@ -25,15 +18,37 @@ internal class LaunchAppCommand : ICommand, IBuildInCommand
 
     public string[] Keywords => new string[] { "app", "launch" };
 
+    private string oldQuery = "";
+    private string OldName = "";
     public string Name(string query)
     {
-        if (query == "") return "Launch an app";
-        return "Launch \"" + query + "\"";
+        if (oldQuery.Equals(query, StringComparison.Ordinal))
+            return OldName;
+
+        if (query.Length == 0)
+            return OldName = "Launch an app";
+
+        var apps = Apps.Where(x => x.Name.Contains(query, StringComparison.OrdinalIgnoreCase)).ToArray();
+        if (apps.Length == 1)
+            return OldName = "Launch \"" + apps[0].Name + "\"";
+
+        return OldName = "Search \"" + query + "\" in your APPS";
     }
 
     Priority ICommand.Priority(string query)
     {
         return Priority.Medium;
+    }
+    ShellObject[] Apps;
+
+    public void OnWindowOpened()
+    {
+        oldQuery = "";
+        // GUID taken from https://learn.microsoft.com/en-us/windows/win32/shell/knownfolderid
+        var FOLDERID_AppsFolder = new Guid("{1e87508d-89c2-42f0-8a7e-645a0f50ca58}");
+        ShellObject appsFolder = (ShellObject)KnownFolderHelper.FromKnownFolderId(FOLDERID_AppsFolder);
+
+        Apps = ((IKnownFolder)appsFolder).ToArray();
     }
 
     public bool RunCommand(string searchTerm, out Page content, out double addWidth, out double addHeight)
@@ -44,11 +59,7 @@ internal class LaunchAppCommand : ICommand, IBuildInCommand
 
         var appView = new SearchedAppsView();
 
-        // GUID taken from https://learn.microsoft.com/en-us/windows/win32/shell/knownfolderid
-        var FOLDERID_AppsFolder = new Guid("{1e87508d-89c2-42f0-8a7e-645a0f50ca58}");
-        ShellObject appsFolder = (ShellObject)KnownFolderHelper.FromKnownFolderId(FOLDERID_AppsFolder);
-
-        var apps = ((IKnownFolder)appsFolder).Where(x => x.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
+        var apps = Apps.Where(x => x.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
 
         if (apps.Count() == 1)
             appView.LaunchApp(apps.ElementAt(0).ParsingName);
