@@ -104,4 +104,6 @@ internal class SysInfoCommand : ICommand
     {
         return QuickNavPlugin.Priority.Low;
     }
+
+    public void OnWindowOpened() { }
 }

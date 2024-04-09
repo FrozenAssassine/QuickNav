@@ -41,4 +41,6 @@ internal class LockScreenCommand : ICommand
 
         return true;
     }
+
+    public void OnWindowOpened() { }
 }

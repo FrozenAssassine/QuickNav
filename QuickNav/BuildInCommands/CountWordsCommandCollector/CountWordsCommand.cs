@@ -66,4 +66,6 @@ internal class CountWordsCommand : ICommand, IFileCommand
         content = new MarkdownElement(sb.ToString());
         return true;
     }
+
+    public void OnWindowOpened() { }
 }

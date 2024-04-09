@@ -94,4 +94,6 @@ internal class FileSearchCommand : ICommand, IBuildInCommand
     {
         throw new NotImplementedException();
     }
+
+    public void OnWindowOpened() { }
 }

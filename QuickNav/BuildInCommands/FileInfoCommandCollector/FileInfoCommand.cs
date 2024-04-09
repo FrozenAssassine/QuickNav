@@ -143,4 +143,6 @@ internal class FileInfoCommand : ICommand, IFileCommand
 
         return true;
     }
+
+    public void OnWindowOpened() { }
 }
