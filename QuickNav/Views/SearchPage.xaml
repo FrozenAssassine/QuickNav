@@ -75,6 +75,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <TextBox Drop="searchBox_Drop" DragOver="Grid_DragOver" x:Name="searchBox" Grid.Row="0" TextChanged="searchInputBox_TextChanged" Margin="10" Height="40" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="18" KeyDown="searchBox_KeyDown"/>
         <ListView Style="{StaticResource listviewTemplate}" ItemClick="resultView_ItemClick" IsItemClickEnabled="True" DragOver="Grid_DragOver" Drop="Grid_Drop" AllowDrop="True"  x:Name="resultView" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
