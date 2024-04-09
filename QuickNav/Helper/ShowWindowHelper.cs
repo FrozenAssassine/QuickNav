@@ -1,7 +1,9 @@
 ﻿using Microsoft.UI.Xaml;
+using QuickNav.AppWindows;
 using System.Collections.Generic;
 using System.Linq;
 using WinUIEx;
+using static QuickNav.AppWindows.InfoWindow;
 
 namespace QuickNav.Helper
 {
@@ -25,6 +27,26 @@ namespace QuickNav.Helper
             }
 
             var newWindow = new T();
+            newWindow.Activate();
+            newWindow.Closed += (sender, args) =>
+            {
+                OpenWindows.Remove(newWindow);
+            };
+            OpenWindows.Add(newWindow);
+        }
+
+        public static void ShowInfoWindow(Pages page)
+        {
+            if (OpenWindows.Any(x => x.GetType() == typeof(InfoWindow)))
+            {
+                var existingWindow = OpenWindows.First(x => x.GetType() == typeof(InfoWindow));
+                existingWindow.Activate();
+                (existingWindow as InfoWindow).Select(page);
+                return;
+            }
+
+            var newWindow = new InfoWindow();
+            newWindow.Select(page);
             newWindow.Activate();
             newWindow.Closed += (sender, args) =>
             {

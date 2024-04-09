@@ -65,18 +65,19 @@
     <Content Remove="Assets\AppIcon\Generated\Wide310x150Logo.scale-400.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="AppWindows\AboutWindow.xaml" />
+    <None Remove="AppWindows\InfoWindow.xaml" />
     <None Remove="Assets\AppIcon\appicon.ico" />
     <None Remove="Controls\SearchedFilesView.xaml" />
     <None Remove="Controls\SettingsControl.xaml" />
     <None Remove="Controls\SettingsItemSeparator.xaml" />
+    <None Remove="Views\AboutPage.xaml" />
     <None Remove="Views\ColorPicker.xaml" />
     <None Remove="Views\DialogViews\SetShortcutDialogPage.xaml" />
     <None Remove="Views\SearchedAppsView.xaml" />
     <None Remove="Views\SearchedFilesView.xaml" />
     <None Remove="Views\SearchPage.xaml" />
+    <None Remove="Views\SettingsPage.xaml" />
     <None Remove="Widgets\CountWordsWidget.xaml" />
-    <None Remove="AppWindows\SettingsWindow.xaml" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="IWshRuntimeLibrary">
@@ -115,6 +116,16 @@
     <ProjectReference Include="..\QuickNavPlugin\QuickNavPlugin.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Views\AboutPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\SettingsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="Views\SearchedAppsView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -131,11 +142,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\SettingsItemSeparator.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="AppWindows\AboutWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
@@ -166,6 +172,11 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\DialogViews\SetShortcutDialogPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="AppWindows\InfoWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

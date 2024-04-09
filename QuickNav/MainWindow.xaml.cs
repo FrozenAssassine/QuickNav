@@ -106,15 +106,15 @@ public sealed partial class MainWindow : Window
             this.Hide();
         }
     }
-
+    
     private void ShowSettings_Click(object sender, RoutedEventArgs e)
     {
-        ShowWindowHelper.ShowWindow<SettingsWindow>();
+        ShowWindowHelper.ShowInfoWindow(InfoWindow.Pages.Settings);
     }
 
     private void ShowAbout_Click(object sender, RoutedEventArgs e)
     {
-        ShowWindowHelper.ShowWindow<AboutWindow>();
+        ShowWindowHelper.ShowInfoWindow(InfoWindow.Pages.About);
     }
 
     private void Exit_Click(object sender, RoutedEventArgs e)
