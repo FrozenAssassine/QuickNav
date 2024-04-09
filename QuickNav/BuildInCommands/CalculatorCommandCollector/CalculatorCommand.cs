@@ -39,11 +39,11 @@ namespace QuickNav.BuildInCommands.CalculatorCommandCollector
         public bool IsMathOperation(string query)
         {
             //Not sure? product -> class FProduct : IFunction; 
-            string[] allowedOps = new string[] { "(", ")", "+", "-", "*", "/", "%", "^", "π", "\\pi", "\\e", "cos", "sin", "tan", "asin", "acos", "sqrt", "log", "abs", "⌈", "⌉", "⌊", "⌋", "atan", "[", "]", "x" };
+            string[] allowedOps = new string[] { "(", ")", "+", "-", "*", "/", "%", "^", "π", "\\pi", "\\e", "cos", "sin", "tan", "asin", "acos", "sqrt", "log", "abs", "sum", "product", "⌈", "⌉", "⌊", "⌋", "atan", "[", "]" };
 
             for(int i = 0; i<query.Length; i++)
             {
-                if (char.IsNumber(query[i]) || query[i] == 'π')
+                if (char.IsNumber(query[i]) || query[i] == 'π' || (query[i] == '\\' && query.Length > i + 1 && query[i + 1] == 'e') || (query[i] == '\\' && query.Length > i + 2 && query[i + 1] == 'p' && query[i + 2] == 'i'))
                     return true;
             }
 
