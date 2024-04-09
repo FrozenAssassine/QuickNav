@@ -13,7 +13,7 @@ internal class CountWordsCommand : ICommand, IFileCommand
 {
     public string Description => "Count the words in a file or clipboard";
 
-    public Uri Icon => new Uri("ms-appx://App/Assets/commands/wordcounter.png");
+    public Uri Icon(string query) => new Uri("ms-appx://App/Assets/commands/wordcounter.png");
 
     public Priority Priority(string query)
     {

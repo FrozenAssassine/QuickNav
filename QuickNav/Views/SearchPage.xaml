@@ -99,7 +99,7 @@
                             </MenuFlyout>
                         </Grid.ContextFlyout>
 
-                        <Image Grid.Column="0" Source="{Binding Command.Icon}" Width="30" Margin="5" />
+                        <Image Grid.Column="0" Source="{Binding Uri}" Width="30" Margin="5" />
                         <TextBlock  Grid.Column="1" Text="{Binding Text}" ToolTipService.ToolTip="{Binding Command.Description}" VerticalAlignment="Center" Margin="5,0,0,0" />
                         <Grid ToolTipService.ToolTip="{x:Bind ShortcutQuery }" Grid.Column="2" Visibility="{x:Bind ShortcutVisibility }" VerticalAlignment="Center" BorderBrush="#555555" BorderThickness="1" CornerRadius="4" Margin="5,0,0,0">
                             <TextBlock Padding="2" Text="{x:Bind Shortcut}" x:Phase="1" />

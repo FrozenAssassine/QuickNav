@@ -15,7 +15,7 @@ internal class SysInfoCommand : ICommand
 {
     public string Description => "See your system informations";
 
-    public Uri Icon => new Uri("ms-appx://App/Assets/commands/sysinfo.png");
+    public Uri Icon(string query) => new Uri("ms-appx://App/Assets/commands/sysinfo.png");
 
     public string CommandTrigger => "";
 

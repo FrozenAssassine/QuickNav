@@ -64,14 +64,15 @@ public sealed partial class SearchPage : Page
             {
                 foreach (var command in commandList)
                 {
-                    resultView.Items.Add(new ResultListViewItem() { Command = command, Text = command.Name(QueryHelper.FixQuery(command, searchBox.Text)) });
+                    string q = QueryHelper.FixQuery(command, searchBox.Text);
+                    resultView.Items.Add(new ResultListViewItem() { Command = command, Text = command.Name(q), Uri = command.Icon(q) });
                 }
             }
         }
         else
         {
             List<ICommand> commands = PluginHelper.SearchFor(searchBox.Text);
-            List<ResultListViewItem> items = commands.Select((command) => new ResultListViewItem() { Command = command, Text = command.Name(QueryHelper.FixQuery(command, searchBox.Text)) }).ToList();
+            List<ResultListViewItem> items = commands.Select((command) => new ResultListViewItem() { Command = command, Text = command.Name(QueryHelper.FixQuery(command, searchBox.Text)), Uri = command.Icon(QueryHelper.FixQuery(command, searchBox.Text)) }).ToList();
             for (int i = 0; i < items.Count; i++)
                 resultView.Items.Add(items[i]);
         }
@@ -178,7 +179,7 @@ public sealed partial class SearchPage : Page
             resultView.Items.Clear();
             List<ResultListViewItem> items = commands
                 .Where((IFileCommand cmd) => { return cmd.ExtensionFilter.Length == 0 || cmd.ExtensionFilter.Contains(extension); })
-                .Select((command) => new ResultListViewItem() { Command = command, Text = command.Name(QueryHelper.FixQuery(command, searchBox.Text)) }).ToList();
+                .Select((command) => new ResultListViewItem() { Command = command, Text = command.Name(QueryHelper.FixQuery(command, searchBox.Text)), Uri = command.Icon(QueryHelper.FixQuery(command, searchBox.Text)) }).ToList();
             for (int i = 0; i < items.Count; i++)
                 resultView.Items.Add(items[i]);
 

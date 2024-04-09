@@ -21,7 +21,7 @@ internal class FileSearchCommand : ICommand, IBuildInCommand
 {
     public string Description => "Run this command to search files on windows";
 
-    public Uri Icon => new Uri("ms-appx://App/Assets/commands/filesearch.png");
+    public Uri Icon(string query) => new Uri("ms-appx://App/Assets/commands/filesearch.png");
 
     public Priority Priority(string query)
     {

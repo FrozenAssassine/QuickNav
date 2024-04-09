@@ -17,7 +17,7 @@ internal class FileInfoCommand : ICommand, IFileCommand
 {
     public string Description => "Get infos about a file";
 
-    public Uri Icon => new Uri("ms-appx://App/Assets/commands/fileinfo.png");
+    public Uri Icon(string query) => new Uri("ms-appx://App/Assets/commands/fileinfo.png");
 
     public Priority Priority(string query)
     {

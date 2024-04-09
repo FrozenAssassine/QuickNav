@@ -16,7 +16,9 @@ namespace QuickNavPlugin
         /// <summary>
         /// Icon for the command.
         /// </summary>
-        Uri Icon { get; }
+        /// <param name="query">Maybe your icon should depend on the given query?</param>
+        /// <returns></returns>
+        Uri Icon(string query);
         /// <summary>
         /// Priority of the command, should it be shown on top or at bottom?
         /// </summary>

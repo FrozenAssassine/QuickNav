@@ -11,7 +11,7 @@ namespace QuickNav.BuildInCommands.WebSearchCommandCollector
     {
         public string Description => "Run this command to search for your query in web.";
 
-        public Uri Icon => BrowserInfo.BrowserIcon;
+        public Uri Icon(string query) => BrowserInfo.BrowserIcon;
 
         public Priority Priority(string query)
         {
