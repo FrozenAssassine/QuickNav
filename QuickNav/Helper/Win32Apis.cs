@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
 
 namespace QuickNav.Helper;
@@ -35,6 +36,38 @@ internal class Win32Apis
             this.dwLength = (uint)Marshal.SizeOf(this);
         }
     }
+
+    private const uint SHGFI_ICON = 0x100;
+    private const uint SHGFI_LARGEICON = 0x0;
+    private const uint SHGFI_SMALLICON = 0x1;
+    private const uint SHGFI_USEFILEATTRIBUTES = 0x10;
+
+    [DllImport("shell32.dll")]
+    private static extern IntPtr SHGetFileInfo(string pszPath, uint dwFileAttributes, out SHFILEINFO psfi, uint cbSizeFileInfo, uint uFlags);
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct SHFILEINFO
+    {
+        public IntPtr hIcon;
+        public IntPtr iIcon;
+        public uint dwAttributes;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+        public string szDisplayName;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
+        public string szTypeName;
+    }
+
+    public static Icon GetIconForFile(string filePath)
+    {
+        SHGetFileInfo(filePath, 0, out SHFILEINFO shinfo, (uint)Marshal.SizeOf(typeof(SHFILEINFO)), SHGFI_ICON | SHGFI_LARGEICON | SHGFI_USEFILEATTRIBUTES);
+        Icon icon = (Icon)Icon.FromHandle(shinfo.hIcon).Clone();
+        DestroyIcon(shinfo.hIcon);
+        return icon;
+    }
+
+    // Destroy icon handle to prevent resource leak
+    [DllImport("user32.dll", CharSet = CharSet.Auto)]
+    private static extern bool DestroyIcon(IntPtr handle);
 
 
     [return: MarshalAs(UnmanagedType.Bool)]

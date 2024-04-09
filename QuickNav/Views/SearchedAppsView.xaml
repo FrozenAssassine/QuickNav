@@ -19,7 +19,7 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <!--<ImageIcon Grid.Column="0" Source="{x:Bind IconSource}"/>-->
+                    <ImageIcon Margin="-10,0,5,0" Width="30" Height="30" Grid.Column="0" Source="{x:Bind ImageSource}"/>
                     <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind Name}" FontSize="14"/>
                 </Grid>
             </DataTemplate>

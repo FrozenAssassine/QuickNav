@@ -1,5 +1,9 @@
 ﻿
 using Microsoft.UI.Xaml;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using System;
 
 namespace QuickNav.Helper;
 
@@ -27,5 +31,36 @@ internal class ConvertHelper
                 return converted;
         }
         return defaultValue;
+    }
+
+    //ref: https://stackoverflow.com/questions/76640972/convert-system-drawing-icon-to-microsoft-ui-xaml-imagesource
+    public static async Task<Microsoft.UI.Xaml.Media.Imaging.SoftwareBitmapSource> GetWinUI3BitmapSourceFromIcon(System.Drawing.Icon icon)
+    {
+        if (icon == null)
+            return null;
+
+        using var bmp = icon.ToBitmap();
+        return await GetWinUI3BitmapSourceFromGdiBitmap(bmp);
+    }
+    public static async Task<Microsoft.UI.Xaml.Media.Imaging.SoftwareBitmapSource> GetWinUI3BitmapSourceFromGdiBitmap(System.Drawing.Bitmap bmp)
+    {
+        if (bmp == null)
+            return null;
+
+        var data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, bmp.PixelFormat);
+        var bytes = new byte[data.Stride * data.Height];
+        Marshal.Copy(data.Scan0, bytes, 0, bytes.Length);
+        bmp.UnlockBits(data);
+
+        var softwareBitmap = new Windows.Graphics.Imaging.SoftwareBitmap(
+            Windows.Graphics.Imaging.BitmapPixelFormat.Bgra8,
+            bmp.Width,
+            bmp.Height,
+            Windows.Graphics.Imaging.BitmapAlphaMode.Premultiplied);
+        softwareBitmap.CopyFromBuffer(bytes.AsBuffer());
+
+        var source = new Microsoft.UI.Xaml.Media.Imaging.SoftwareBitmapSource();
+        await source.SetBitmapAsync(softwareBitmap);
+        return source;
     }
 }

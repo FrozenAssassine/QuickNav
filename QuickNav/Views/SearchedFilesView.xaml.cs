@@ -1,99 +1,94 @@
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
 using QuickNav.Helper;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
 using System.Windows;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.System;
 
-namespace QuickNav.Views
+namespace QuickNav.Views;
+
+public sealed partial class SearchedFilesView : Page
 {
-    public sealed partial class SearchedFilesView : Page
+    public SearchedFilesView()
     {
-        public SearchedFilesView()
+        this.InitializeComponent();
+    }
+    public async void ShowFiles(List<(string fileName, string filePath)> files)
+    {
+        foreach (var file in files)
         {
-            this.InitializeComponent();
-        }
+            ImageSource source = null;
+            var icon = Win32Apis.GetIconForFile(file.filePath);
+            if (icon != null)
+                source = await ConvertHelper.GetWinUI3BitmapSourceFromIcon(icon);
 
-        public void ShowFiles(List<(string fileName, string filePath)> files)
-        {
-            listView.ItemsSource = files.Select(file => new FilesViewItem { Name = file.fileName, Path = file.filePath });
-        }
-
-        private void OpenFile(object item)
-        {
-            if(item is FilesViewItem filesViewItem)
-            {
-                string path = filesViewItem.Path;
-
-                // Specify the process start information
-                ProcessStartInfo startInfo = new ProcessStartInfo
-                {
-                    FileName = Path.GetFileName(path),
-                    UseShellExecute = true,
-                    WorkingDirectory = Path.GetDirectoryName(path),
-                };
-
-                try
-                {
-                    Process.Start(startInfo);
-                }
-                catch { }
-            }
-        }
-
-        private void listView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            OpenFile(e.ClickedItem);
-        }
-
-        private void CopyPath_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-        {
-            Clipboard.SetText(((sender as MenuFlyoutItem).Tag as FilesViewItem).Path);
-        }
-
-        private void CopyFileName_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-        {
-            Clipboard.SetText(((sender as MenuFlyoutItem).Tag as FilesViewItem).Name);
-        }
-
-        private void UserControl_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
-        {
-            if (listView.SelectedIndex == -1)
-                listView.SelectedIndex = 0;
-
-            if (e.Key == Windows.System.VirtualKey.Enter)
-            {
-                OpenFile(listView.SelectedIndex);
-            }
-            else if (e.Key == Windows.System.VirtualKey.Down)
-                listView.SelectedIndex = Math.Clamp(listView.SelectedIndex + 1, 0, listView.Items.Count - 1);
-            else if (e.Key == Windows.System.VirtualKey.Up)
-                listView.SelectedIndex = Math.Clamp(listView.SelectedIndex - 1, 0, listView.Items.Count - 1);
-        }
-
-        private void ShowInExplorer_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-        {
-            FileExplorerHelper.OpenExplorer(((sender as MenuFlyoutItem).Tag as FilesViewItem).Path);
+            listView.Items.Add(new FilesViewItem { ImageSource = source, Name = file.fileName, Path = file.filePath });
         }
     }
 
-    public class FilesViewItem
+    private void OpenFile(object item)
     {
-        public string Path { get; set; }
-        public string Name { get; set; }
-        public string IconSource { get; set; }
+        if (item is FilesViewItem filesViewItem)
+        {
+            string path = filesViewItem.Path;
+
+            // Specify the process start information
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = Path.GetFileName(path),
+                UseShellExecute = true,
+                WorkingDirectory = Path.GetDirectoryName(path),
+            };
+
+            try
+            {
+                Process.Start(startInfo);
+            }
+            catch { }
+        }
     }
+
+    private void listView_ItemClick(object sender, ItemClickEventArgs e)
+    {
+        OpenFile(e.ClickedItem);
+    }
+
+    private void CopyPath_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        Clipboard.SetText(((sender as MenuFlyoutItem).Tag as FilesViewItem).Path);
+    }
+
+    private void CopyFileName_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        Clipboard.SetText(((sender as MenuFlyoutItem).Tag as FilesViewItem).Name);
+    }
+
+    private void UserControl_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+    {
+        if (listView.SelectedIndex == -1)
+            listView.SelectedIndex = 0;
+
+        if (e.Key == Windows.System.VirtualKey.Enter)
+        {
+            OpenFile(listView.SelectedIndex);
+        }
+        else if (e.Key == Windows.System.VirtualKey.Down)
+            listView.SelectedIndex = Math.Clamp(listView.SelectedIndex + 1, 0, listView.Items.Count - 1);
+        else if (e.Key == Windows.System.VirtualKey.Up)
+            listView.SelectedIndex = Math.Clamp(listView.SelectedIndex - 1, 0, listView.Items.Count - 1);
+    }
+
+    private void ShowInExplorer_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        FileExplorerHelper.OpenExplorer(((sender as MenuFlyoutItem).Tag as FilesViewItem).Path);
+    }
+
+}
+public class FilesViewItem
+{
+    public string Path { get; set; }
+    public string Name { get; set; }
+    public ImageSource ImageSource { get; set; }
 }

@@ -1,12 +1,12 @@
-using Microsoft.UI.Xaml.Controls;
+using ColorCode.Compilation.Languages;
 using Microsoft.WindowsAPICodePack.Shell;
 using QuickNav.Helper;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Windows;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Controls;
 
 namespace QuickNav.Views;
 
@@ -16,10 +16,17 @@ public sealed partial class SearchedAppsView : Page
     {
         this.InitializeComponent();
     }
-    public void ShowApps(IEnumerable<ShellObject> apps)
+    public async void ShowApps(IEnumerable<ShellObject> apps)
     {
-        //image icon: app.Thumbnail.ExtraLargeBitmapSource
-        listView.ItemsSource = apps.Select(app => new SearchedAppItem { Name = app.Name, AppUserId = app.ParsingName});
+        foreach (var item in apps)
+        {
+            ImageSource source = null;
+            var icon = item.Thumbnail.LargeIcon;
+            if (icon != null)
+                source = await ConvertHelper.GetWinUI3BitmapSourceFromIcon(icon);
+
+            listView.Items.Add(new SearchedAppItem { ImageSource = source, Name = item.Name, AppUserId = item.ParsingName });
+        }
     }
 
     public void LaunchApp(SearchedAppItem app)
@@ -53,6 +60,7 @@ public sealed partial class SearchedAppsView : Page
 
 public class SearchedAppItem
 {
+    public ImageSource ImageSource { get; set; }
     public string AppUserId { get; set; }
     public string Name { get; set; }
 }
