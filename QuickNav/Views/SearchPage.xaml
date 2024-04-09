@@ -90,6 +90,8 @@
                         
                         <Grid.ContextFlyout>
                             <MenuFlyout>
+                                <MenuFlyoutItem Tag="{x:Bind }" Text="Command Info" Click="OpenCommandInfo_Click"/>
+                                <MenuFlyoutSeparator/>
                                 <MenuFlyoutItem Tag="{x:Bind }" Text="Configure shortcut" Click="ConfigureListItemShortcut_Click"/>
                                 <MenuFlyoutItem Tag="{x:Bind }" Text="Remove shortcut" Click="RemoveShortcut_Click"/>
                                 <MenuFlyoutItem Tag="{x:Bind }" Text="Launch on reboot" Click="LaunchOnReboot_Click"/>

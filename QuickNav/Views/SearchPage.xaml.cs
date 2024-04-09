@@ -307,4 +307,13 @@ public sealed partial class SearchPage : Page
 
         searchInputBox_TextChanged(this, null);
     }
+
+    private async void OpenCommandInfo_Click(object sender, RoutedEventArgs e)
+    {
+        var clickedCommand = ((sender as MenuFlyoutItem).Tag as ResultListViewItem).Command;
+        if (clickedCommand == null)
+            return;
+
+        await new CommandInfoDialog().ShowAsync(clickedCommand);
+    }
 }
