@@ -88,5 +88,7 @@ namespace QuickNav.BuildInCommands.CalculatorCommandCollector
                 || (query.Length == 1
                 && char.IsLetter(query[0]));
         }
+
+        public void OnWindowOpened() { }
     }
 }

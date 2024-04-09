@@ -44,5 +44,9 @@ namespace QuickNavPlugin
         /// <param name="content">The result, shown to the user.</param>
         /// <returns>Returns true or false, whether execution were successfully or not.</returns>
         bool RunCommand(string parameters, out ContentElement content);
+        /// <summary>
+        /// This function will be called when the MainWindow opens.
+        /// </summary>
+        void OnWindowOpened();
     }
 }

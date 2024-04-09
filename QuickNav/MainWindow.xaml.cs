@@ -56,6 +56,9 @@ public sealed partial class MainWindow : Window
 
         GlobalHotkeyHelper.RegisterHotkey(Windows.System.VirtualKeyModifiers.Windows, Windows.System.VirtualKey.Y, (object sender, EventArgs e) =>
         {
+            for (int i = 0; i < PluginHelper.Plugins.Count; i++)
+                for (int j = 0; j < PluginHelper.Plugins[i].Commands.Count; j++)
+                    PluginHelper.Plugins[i].Commands[j].OnWindowOpened();
             ShowAndFocus();
         }, out int x);
 

@@ -54,5 +54,7 @@ namespace QuickNav.BuildInCommands.WebSearchCommandCollector
         {
             BrowserInfo.Init();
         }
+
+        public void OnWindowOpened() { }
     }
 }

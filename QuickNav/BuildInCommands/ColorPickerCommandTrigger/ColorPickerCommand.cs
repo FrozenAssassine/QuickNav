@@ -43,5 +43,7 @@ namespace QuickNav.BuildInCommands.ColorPickerCommandTrigger
             height = 280;
             return true;
         }
+
+        public void OnWindowOpened() { }
     }
 }

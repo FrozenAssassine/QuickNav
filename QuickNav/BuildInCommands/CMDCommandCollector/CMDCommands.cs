@@ -100,4 +100,6 @@ internal class CMDCommand : ICommand, IAbort, IFileCommand
             catch { }
         }
     }
+
+    public void OnWindowOpened() { }
 }
