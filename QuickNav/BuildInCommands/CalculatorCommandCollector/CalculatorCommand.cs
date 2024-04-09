@@ -3,6 +3,7 @@ using QuickNavPlugin;
 using QuickNavPlugin.UI;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace QuickNav.BuildInCommands.CalculatorCommandCollector
 
         public QuickNavPlugin.Priority Priority(string query)
         {
-            if (query == "" || IsWrongAlert(query))
+            if (query.Length == 0 || !IsMathOperation(query))
                 return QuickNavPlugin.Priority.Invisible;
             try
             {
@@ -34,9 +35,32 @@ namespace QuickNav.BuildInCommands.CalculatorCommandCollector
 
         public string[] Keywords => new string[] { "calc", "calculator" };
 
+
+        public bool IsMathOperation(string query)
+        {
+            //Not sure? product -> class FProduct : IFunction; 
+            string[] allowedOps = new string[] { "(", ")", "+", "-", "*", "/", "%", "^", "π", "\\pi", "\\e", "cos", "sin", "tan", "asin", "acos", "sqrt", "log", "abs", "⌈", "⌉", "⌊", "⌋", "atan", "[", "]", "x" };
+
+            for(int i = 0; i<query.Length; i++)
+            {
+                if (char.IsNumber(query[i]) || query[i] == 'π')
+                    return true;
+            }
+
+            for (int i = 0; i < allowedOps.Length; i++)
+            {
+                if (query.Contains(allowedOps[i], StringComparison.OrdinalIgnoreCase))
+                    return true;
+            }
+
+            return false;
+        }
+
         public string Name(string query)
         {
-            if (query == "")
+            bool isMath = IsMathOperation(query);
+            Debug.WriteLine(isMath);
+            if (query.Length == 0 || !isMath)
                 return "Calculate";
             try
             {
@@ -50,7 +74,7 @@ namespace QuickNav.BuildInCommands.CalculatorCommandCollector
 
         public bool RunCommand(string parameters, out ContentElement content)
         {
-            if(parameters == "" || IsWrongAlert(parameters))
+            if(parameters.Length == 0)
             {
                 content = null;
                 return false;
@@ -78,15 +102,6 @@ namespace QuickNav.BuildInCommands.CalculatorCommandCollector
             if (val == "-0")
                 return "0";
             return val;
-        }
-
-        private bool IsWrongAlert(string query)
-        {
-            return (query.Length == 2
-                && char.IsLetter(query[0])
-                && char.IsLetter(query[1]))
-                || (query.Length == 1
-                && char.IsLetter(query[0]));
         }
 
         public void OnWindowOpened() { }
