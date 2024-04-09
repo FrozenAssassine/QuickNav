@@ -170,7 +170,9 @@ public sealed partial class SearchPage : Page
             if (!ReloadDropList)
                 return;
 
-            string extension = Path.GetExtension((await e.DataView.GetStorageItemsAsync())[0].Path).Substring(1).ToLower();
+            string extension = Path.GetExtension((await e.DataView.GetStorageItemsAsync())[0].Path).ToLower();
+            if (extension.Length > 0)
+                extension = extension.Substring(1);
 
             List<IFileCommand> commands = PluginHelper.GetFilePlugins();
             resultView.Items.Clear();
