@@ -12,7 +12,7 @@ namespace QuickNav.BuildInCommands.ColorPickerCommandTrigger
 {
     public class ColorPickerCommand : ICommand, IBuildInCommand
     {
-        public string CommandTrigger => "";
+        public string CommandTrigger => "clr";
 
         public string[] Keywords => new string[] { "color", "picker" };
 
