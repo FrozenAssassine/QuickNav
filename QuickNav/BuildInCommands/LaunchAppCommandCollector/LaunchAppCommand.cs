@@ -5,8 +5,6 @@ using QuickNav.Views;
 using QuickNavPlugin;
 using System;
 using System.Linq;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace QuickNav.BuildInCommands.LaunchAppCommandCollector;
 
@@ -68,6 +66,9 @@ internal class LaunchAppCommand : ICommand, IBuildInCommand
         content = null;
         addWidth = 0;
         addHeight = 0;
+
+        if (searchTerm.Length == 0)
+            return false;
 
         var appView = new SearchedAppsView();
 

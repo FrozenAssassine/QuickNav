@@ -6,8 +6,6 @@ using QuickNav.Models;
 using Microsoft.UI.Xaml.Controls;
 using QuickNav.Views;
 using System.Collections.Generic;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace QuickNav.BuildInCommands.WindowsFileSearch;
 
