@@ -6,6 +6,8 @@ using QuickNav.Extensions;
 using System.Linq;
 using System.Text;
 using System.Collections.Generic;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace QuickNav.BuildInCommands.FileInfoCommandCollector;
 
@@ -13,7 +15,7 @@ internal class CountWordsCommand : ICommand, IFileCommand
 {
     public string Description => "Count the words in a file or clipboard";
 
-    public Uri Icon(string query) => new Uri("ms-appx://App/Assets/commands/wordcounter.png");
+    public ImageSource Icon(string query) => new BitmapImage(new Uri("ms-appx://App/Assets/commands/wordcounter.png"));
 
     public Priority Priority(string query)
     {

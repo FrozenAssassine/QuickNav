@@ -10,6 +10,8 @@ using MetadataExtractor.Formats.Avi;
 using MetadataExtractor.Formats.Mpeg;
 using System.Diagnostics;
 using QuickNav.Helper;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace QuickNav.BuildInCommands.FileInfoCommandCollector;
 
@@ -17,7 +19,7 @@ internal class FileInfoCommand : ICommand, IFileCommand
 {
     public string Description => "Get infos about a file";
 
-    public Uri Icon(string query) => new Uri("ms-appx://App/Assets/commands/fileinfo.png");
+    public ImageSource Icon(string query) => new BitmapImage(new Uri("ms-appx://App/Assets/commands/fileinfo.png"));
 
     public Priority Priority(string query)
     {

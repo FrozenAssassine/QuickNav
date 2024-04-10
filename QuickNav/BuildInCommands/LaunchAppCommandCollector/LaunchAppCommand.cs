@@ -1,11 +1,12 @@
-﻿using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.WindowsAPICodePack.Shell;
 using QuickNav.Models;
 using QuickNav.Views;
 using QuickNavPlugin;
 using System;
-using System.IO;
 using System.Linq;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace QuickNav.BuildInCommands.LaunchAppCommandCollector;
 
@@ -87,21 +88,32 @@ internal class LaunchAppCommand : ICommand, IBuildInCommand
         return false;
     }
 
-    public Uri Icon(string query)
+    public ImageSource Icon(string query)
     {
         FoundApp = false;
-        if (query.Length == 0)
-            return OldUri = new Uri("ms-appx://App/Assets/commands/launch.png");
-
-        if (oldQuery.Equals(query, StringComparison.Ordinal))
-            return OldUri;
+        if (query.Length == 0 || oldQuery.Equals(query, StringComparison.Ordinal))
+            return OldIcon = new BitmapImage(new Uri("ms-appx://App/Assets/commands/launch.png"));
 
         var apps = Apps.Where(x => x.Name.Contains(query, StringComparison.OrdinalIgnoreCase)).ToArray();
         if (FoundApp = apps.Length == 1)
         {
-            return OldUri = new LoadedImageHolder(apps[0].Thumbnail.LargeIcon);
+            //TODO returnn icon for the current app
+            //return ConvertHelper.GetWinUI3BitmapSourceFromIcon(apps[0].Thumbnail.LargeIcon);
         }
 
-        return OldUri = new Uri("ms-appx://App/Assets/commands/launch.png");
+        return OldIcon = new BitmapImage(new Uri("ms-appx://App/Assets/commands/launch.png"));
+    }
+
+    public ImageSource IconAsync(string query)
+    {
+        FoundApp = false;
+        if (query.Length == 0 || oldQuery.Equals(query, StringComparison.Ordinal))
+            return OldIcon = new BitmapImage(new Uri("ms-appx://App/Assets/commands/launch.png"));
+
+        var apps = Apps.Where(x => x.Name.Contains(query, StringComparison.OrdinalIgnoreCase)).ToArray();
+        if (FoundApp = apps.Length == 1)
+            return OldUri = new LoadedImageHolder(apps[0].Thumbnail.LargeIcon);
+
+        return new BitmapImage(new Uri("ms-appx://App/Assets/commands/launch.png"));
     }
 }

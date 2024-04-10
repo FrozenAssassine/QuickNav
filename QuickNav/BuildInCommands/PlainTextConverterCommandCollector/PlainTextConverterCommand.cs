@@ -1,6 +1,8 @@
 ﻿using QuickNavPlugin.UI;
 using QuickNavPlugin;
 using System;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace QuickNav.BuildInCommands.PlainTextConverterCommandCollector;
 
@@ -8,7 +10,7 @@ internal class PlainTextConverterCommand : ICommand
 {
     public string Description => "Convert text in your clipboard to plain text";
 
-    public Uri Icon(string query) => new Uri("ms-appx://App/Assets/commands/clipboardtext.png");
+    public ImageSource Icon(string query) => new BitmapImage(new Uri("ms-appx://App/Assets/commands/clipboardtext.png"));
 
     public Priority Priority(string query)
     {

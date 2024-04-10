@@ -3,10 +3,8 @@ using QuickNav.Models;
 using QuickNavPlugin;
 using QuickNavPlugin.UI;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace QuickNav.BuildInCommands.ColorPickerCommandTrigger
 {
@@ -18,7 +16,7 @@ namespace QuickNav.BuildInCommands.ColorPickerCommandTrigger
 
         public string Description => "Pick a color from color circle.";
 
-        public Uri Icon(string query) => new Uri("ms-appx://App/Assets/commands/colorpicker.png");
+        public ImageSource Icon(string query) => new BitmapImage(new Uri("ms-appx://App/Assets/commands/colorpicker.png"));
 
         public Priority Priority(string query)
         {

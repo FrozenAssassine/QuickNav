@@ -8,6 +8,8 @@ using QuickNav.Extensions;
 using System.IO;
 using Microsoft.VisualBasic.Devices;
 using QuickNav.Helper;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace QuickNav.BuildInCommands.SystemMonitorCommandCollector;
 
@@ -15,7 +17,7 @@ internal class SysInfoCommand : ICommand
 {
     public string Description => "See your system informations";
 
-    public Uri Icon(string query) => new Uri("ms-appx://App/Assets/commands/sysinfo.png");
+    public ImageSource Icon(string query) => new BitmapImage(new Uri("ms-appx://App/Assets/commands/sysinfo.png"));
 
     public string CommandTrigger => "";
 

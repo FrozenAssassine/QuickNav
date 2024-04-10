@@ -23,7 +23,7 @@ public sealed partial class SearchedAppsView : Page
             ImageSource source = null;
             var icon = item.Thumbnail.LargeIcon;
             if (icon != null)
-                source = await ConvertHelper.GetWinUI3BitmapSourceFromIcon(icon);
+                source = await ConvertHelper.GetWinUI3BitmapSourceFromIconAsync(icon);
 
             listView.Items.Add(new SearchedAppItem { ImageSource = source, Name = item.Name, AppUserId = item.ParsingName });
         }

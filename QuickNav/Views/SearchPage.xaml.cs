@@ -72,6 +72,7 @@ public sealed partial class SearchPage : Page
         else
         {
             List<ICommand> commands = PluginHelper.SearchFor(searchBox.Text);
+
             List<ResultListViewItem> items = new List<ResultListViewItem>();
             for(int i = 0; i < commands.Count; i++)
             {
