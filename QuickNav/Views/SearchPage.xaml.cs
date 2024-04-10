@@ -161,11 +161,17 @@ public sealed partial class SearchPage : Page
                 return;
             }
 
-            resultView.SelectedIndex = Math.Clamp(resultView.SelectedIndex + 1, 0, resultView.Items.Count - 1);
+            if (KeyHelper.IsKeyPressed(Windows.System.VirtualKey.Control))
+                resultView.SelectedIndex = resultView.Items.Count -1;
+            else
+                resultView.SelectedIndex = Math.Clamp(resultView.SelectedIndex + 1, 0, resultView.Items.Count - 1);
         }
         else if (e.Key == Windows.System.VirtualKey.Up)
         {
-            resultView.SelectedIndex = Math.Clamp(resultView.SelectedIndex - 1, 0, resultView.Items.Count - 1);
+            if (KeyHelper.IsKeyPressed(Windows.System.VirtualKey.Control))
+                resultView.SelectedIndex = 0;
+            else
+                resultView.SelectedIndex = Math.Clamp(resultView.SelectedIndex - 1, 0, resultView.Items.Count - 1);
         }
 
         ReloadDropList = true;

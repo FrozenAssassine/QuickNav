@@ -52,9 +52,19 @@ public sealed partial class SearchedAppsView : Page
             LaunchApp(listView.SelectedItem as SearchedAppItem);
         }
         else if (e.Key == Windows.System.VirtualKey.Down)
-            listView.SelectedIndex = Math.Clamp(listView.SelectedIndex + 1, 0, listView.Items.Count - 1);
+        {
+            if (KeyHelper.IsKeyPressed(Windows.System.VirtualKey.Control))
+                listView.SelectedIndex = listView.Items.Count - 1;
+            else
+                listView.SelectedIndex = Math.Clamp(listView.SelectedIndex + 1, 0, listView.Items.Count - 1);
+        }
         else if (e.Key == Windows.System.VirtualKey.Up)
-            listView.SelectedIndex = Math.Clamp(listView.SelectedIndex - 1, 0, listView.Items.Count - 1);
+        {
+            if (KeyHelper.IsKeyPressed(Windows.System.VirtualKey.Control))
+                listView.SelectedIndex = 0;
+            else
+                listView.SelectedIndex = Math.Clamp(listView.SelectedIndex - 1, 0, listView.Items.Count - 1);
+        }
     }
 }
 
