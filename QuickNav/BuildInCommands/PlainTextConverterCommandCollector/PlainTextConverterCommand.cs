@@ -10,7 +10,7 @@ internal class PlainTextConverterCommand : ICommand
 {
     public string Description => "Convert text in your clipboard to plain text";
 
-    public ImageSource Icon(string query) => new BitmapImage(new Uri("ms-appx://App/Assets/commands/clipboardtext.png"));
+    public Uri Icon(string query) => new Uri("ms-appx://App/Assets/commands/clipboardtext.png");
 
     public Priority Priority(string query)
     {

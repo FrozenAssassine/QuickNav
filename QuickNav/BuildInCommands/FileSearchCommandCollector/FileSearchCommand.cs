@@ -1,19 +1,11 @@
-﻿using QuickNavPlugin.UI;
-using QuickNavPlugin;
+﻿using QuickNavPlugin;
 using System;
 using System.Diagnostics;
 using System.Data.OleDb;
-using QuickNav.Helper;
-using System.Windows;
-using System.Threading;
 using QuickNav.Models;
 using Microsoft.UI.Xaml.Controls;
 using QuickNav.Views;
 using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using System.Runtime.InteropServices;
-using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 
@@ -23,7 +15,7 @@ internal class FileSearchCommand : ICommand, IBuildInCommand
 {
     public string Description => "Run this command to search files on windows";
 
-    public ImageSource Icon(string query) => new BitmapImage(new Uri("ms-appx://App/Assets/commands/filesearch.png"));
+    public Uri Icon(string query) => new Uri("ms-appx://App/Assets/commands/filesearch.png");
 
     public Priority Priority(string query)
     {

@@ -15,7 +15,7 @@ internal class LockScreenCommand : ICommand
 
     public string Description => "Run this to lock your screen";
 
-    public ImageSource Icon(string query) => new BitmapImage(new Uri("ms-appx://App/Assets/commands/lockscreen.png"));
+    public Uri Icon(string query) => new Uri("ms-appx://App/Assets/commands/lockscreen.png");
 
     public Priority Priority(string query)
     {
