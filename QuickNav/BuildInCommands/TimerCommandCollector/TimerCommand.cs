@@ -11,7 +11,7 @@ namespace QuickNav.BuildInCommands.TimerCommandCollector
     {
         public string Description => "Create timer (timer:5h 2min 10sec), (timer: 123sec), (timer:5hours 40minutes 10s)";
 
-        public Uri Icon(string query) => null; //Hi Finn
+        public Uri Icon(string query) => new Uri("ms-appx://App/Assets/commands/timer.png");
 
         public Priority Priority(string query)
         {
