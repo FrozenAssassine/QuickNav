@@ -5,17 +5,14 @@ using System.IO;
 using QuickNav.Extensions;
 using System.Linq;
 using System.Text;
-using System.Collections.Generic;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace QuickNav.BuildInCommands.FileInfoCommandCollector;
 
-internal class CountWordsCommand : ICommand, IFileCommand
+internal class CountWordsCommand : ICommand, IFileCommand, ITextCommand
 {
     public string Description => "Count the words in a file or clipboard";
 
-    public ImageSource Icon(string query) => new BitmapImage(new Uri("ms-appx://App/Assets/commands/wordcounter.png"));
+    public Uri Icon(string query) => new Uri("ms-appx://App/Assets/commands/wordcounter.png");
 
     public Priority Priority(string query)
     {
@@ -39,11 +36,7 @@ internal class CountWordsCommand : ICommand, IFileCommand
 
     public bool RunCommand(string param, out ContentElement content)
     {
-        content = null;
-
         param = param.Trim().Trim('\"');
-        if (!File.Exists(param))
-            return false;
 
         string text;
         //no file, count the clipboard

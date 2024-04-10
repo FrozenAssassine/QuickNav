@@ -6,6 +6,7 @@ using QuickNav.BuildInCommands.LaunchAppCommandCollector;
 using QuickNav.BuildInCommands.LockScreenCommandCollector;
 using QuickNav.BuildInCommands.PlainTextConverterCommandCollector;
 using QuickNav.BuildInCommands.SystemMonitorCommandCollector;
+using QuickNav.BuildInCommands.TimerCommandCollector;
 using QuickNav.BuildInCommands.WebSearchCommandCollector;
 using QuickNav.BuildInCommands.WindowsFileSearch;
 using QuickNav.Helper;
@@ -30,6 +31,7 @@ namespace QuickNav.BuildInCommands
             buildInCommands.Commands.Add(new LockScreenCommand());
             buildInCommands.Commands.Add(new SysInfoCommand());
             buildInCommands.Commands.Add(new LaunchAppCommand());
+            buildInCommands.Commands.Add(new TimerCommand());
 
             PluginHelper.Plugins.Add(buildInCommands);
         }

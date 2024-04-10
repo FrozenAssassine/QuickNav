@@ -1,12 +1,10 @@
-﻿using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.WindowsAPICodePack.Shell;
 using QuickNav.Models;
 using QuickNav.Views;
 using QuickNavPlugin;
 using System;
 using System.Linq;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace QuickNav.BuildInCommands.LaunchAppCommandCollector;
 
@@ -20,7 +18,8 @@ internal class LaunchAppCommand : ICommand, IBuildInCommand
 
     private string oldQuery = "";
     private string OldName = "";
-    private BitmapImage OldIcon = null;
+    private Uri OldUri = null;
+
     public string Name(string query)
     {
         FoundApp = false;
@@ -32,7 +31,9 @@ internal class LaunchAppCommand : ICommand, IBuildInCommand
         
         var apps = Apps.Where(x => x.Name.Contains(query, StringComparison.OrdinalIgnoreCase)).ToArray();
         if (FoundApp = apps.Length == 1)
+        {
             return OldName = "Launch \"" + apps[0].Name + "\"";
+        }
 
         return OldName = "Search \"" + query + "\" in your Apps";
     }
@@ -66,6 +67,9 @@ internal class LaunchAppCommand : ICommand, IBuildInCommand
         addWidth = 0;
         addHeight = 0;
 
+        if (searchTerm.Length == 0)
+            return false;
+
         var appView = new SearchedAppsView();
 
         var apps = Apps.Where(x => x.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
@@ -87,35 +91,17 @@ internal class LaunchAppCommand : ICommand, IBuildInCommand
         return false;
     }
 
-    public ImageSource Icon(string query)
+    public Uri Icon(string query)
     {
         FoundApp = false;
         if (query.Length == 0 || oldQuery.Equals(query, StringComparison.Ordinal))
-            return OldIcon = new BitmapImage(new Uri("ms-appx://App/Assets/commands/launch.png"));
+            return OldUri = new Uri("ms-appx://App/Assets/commands/launch.png");
 
         var apps = Apps.Where(x => x.Name.Contains(query, StringComparison.OrdinalIgnoreCase)).ToArray();
         if (FoundApp = apps.Length == 1)
         {
-            //TODO returnn icon for the current app
-            //return ConvertHelper.GetWinUI3BitmapSourceFromIcon(apps[0].Thumbnail.LargeIcon);
+            return OldUri = new LoadedImageHolder(apps[0].Thumbnail.LargeIcon);
         }
-
-        return OldIcon = new BitmapImage(new Uri("ms-appx://App/Assets/commands/launch.png"));
-    }
-
-    public ImageSource IconAsync(string query)
-    {
-        FoundApp = false;
-        if (query.Length == 0 || oldQuery.Equals(query, StringComparison.Ordinal))
-            return OldIcon = new BitmapImage(new Uri("ms-appx://App/Assets/commands/launch.png"));
-
-        var apps = Apps.Where(x => x.Name.Contains(query, StringComparison.OrdinalIgnoreCase)).ToArray();
-        if (FoundApp = apps.Length == 1)
-        {
-            //return apps[0].Thumbnail.LargeIcon;
-        }
-
-
-        return new BitmapImage(new Uri("ms-appx://App/Assets/commands/launch.png"));
+        return new Uri("ms-appx://App/Assets/commands/launch.png");
     }
 }

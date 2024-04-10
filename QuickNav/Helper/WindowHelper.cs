@@ -15,7 +15,7 @@ namespace QuickNav.Helper
                 {
 
                     var width = Math.Clamp(displayArea.WorkArea.Width / 4, 700, 1000) + addWidth;
-                    var height = Math.Clamp(displayArea.WorkArea.Height / 4, 500, 700) + addHeight;
+                    var height = Math.Clamp(displayArea.WorkArea.Height / 4, 400, 400) + addHeight;
                     int x = ((displayArea.WorkArea.Width - width) / 2);
                     int y = ((displayArea.WorkArea.Height - height) / 2);
 

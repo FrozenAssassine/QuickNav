@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 
@@ -36,7 +37,21 @@ public sealed partial class SearchPage : Page
         CommandAutostartHelper.RunCommands();
     }
 
-    private void searchInputBox_TextChanged(object sender, TextChangedEventArgs e)
+    private async Task AddCommands(List<ICommand> commands)
+    {
+        await AddCommands(commands);
+    }
+    private async Task AddCommands(IEnumerable<ICommand> commands)
+    {
+        foreach (var command in commands)
+        {
+            string fixedQuery = QueryHelper.FixQuery(command, searchBox.Text);
+            var uri = await ConvertHelper.ConvertUriToImageSource(command.Icon(fixedQuery));
+            resultView.Items.Add(new ResultListViewItem() { Command = command, Text = command.Name(fixedQuery), Uri = uri });
+        }
+    }
+
+    private async void searchInputBox_TextChanged(object sender, TextChangedEventArgs e)
     {
         if (PreventSearchboxChangedEvent)
         {
@@ -55,46 +70,23 @@ public sealed partial class SearchPage : Page
 
         WindowHelper.CenterWindow(MainWindow.hWnd);
 
-        //home screen with nothing entered
-        if (searchBox.Text.Length == 0)
-        {
-            var commands = PluginHelper.Plugins.Select(x => x.Commands);
+        resultView.Items.Clear();
 
-            foreach (var commandList in commands)
-            {
-                foreach (var command in commandList)
-                {
-                    string q = QueryHelper.FixQuery(command, searchBox.Text);
-                    resultView.Items.Add(new ResultListViewItem() { Command = command, Text = command.Name(q), ImageSource = command.Icon(q) });
-                }
-            }
-        }
-        else
-        {
-            List<ICommand> commands = PluginHelper.SearchFor(searchBox.Text);
-            List<ResultListViewItem> items = commands.Select(command =>
-            {
-                var fixedQuery = QueryHelper.FixQuery(command, searchBox.Text);
-                return new ResultListViewItem()
-                {
-                    Command = command,
-                    Text = command.Name(fixedQuery),
-                    ImageSource = command.Icon(fixedQuery)
-                };
-            }).ToList();
-            for (int i = 0; i < items.Count; i++)
-                resultView.Items.Add(items[i]);
-        }
+        IEnumerable<ICommand> commands;
+        if (searchBox.Text.Length == 0) //home screen with nothing entered
+            commands = PluginHelper.Plugins.SelectMany(x => x.Commands);
+        else //search page
+            commands = PluginHelper.SearchFor(searchBox.Text);
+
+        await AddCommands(commands);
 
         ReloadDropList = true;
     }
 
     private void RunCommand(string query, ICommand command)
     {
-        /*if (resultView.Items.Count == 0)
-            return;*/
-
-        MainWindow.mWindow.ShowAndFocus();
+        if (command == null)
+            return;
 
         if (query == null)
             query = "";
@@ -102,14 +94,13 @@ public sealed partial class SearchPage : Page
         if (lastCommand != null && lastCommand is IAbort)
             ((IAbort)lastCommand).Abort();
 
-        if (command == null)
-            return;
-
+        
         lastCommand = command;
-
         query = QueryHelper.FixQuery(command, query);
-
         UIElement element = null;
+        
+        MainWindow.mWindow.ShowAndFocus();
+
         if (command is IBuildInCommand buildInCommand)
         {
             if (buildInCommand.RunCommand(query, out Page page, out double width, out double height))
@@ -117,7 +108,7 @@ public sealed partial class SearchPage : Page
                 element = page;
                 WindowHelper.CenterWindow(MainWindow.hWnd, (int)width, (int)height);
             }
-            else if (buildInCommand.CommandTrigger != "")
+            else if (buildInCommand.CommandTrigger.Length != 0)
             {
                 searchBox.Text = buildInCommand.CommandTrigger;
                 searchBox.SelectionStart = searchBox.Text.Length;
@@ -127,12 +118,13 @@ public sealed partial class SearchPage : Page
         {
             if (command.RunCommand(query, out ContentElement content))
                 element = ContentElementRenderHelper.RenderContentElement(content);
-            else if (command.CommandTrigger != "")
+            else if (command.CommandTrigger.Length != 0)
             {
                 searchBox.Text = command.CommandTrigger;
                 searchBox.SelectionStart = searchBox.Text.Length;
             }
         }
+
         if (element != null)
         {
             contentView.Children.Clear();
@@ -141,9 +133,7 @@ public sealed partial class SearchPage : Page
             contentView.Visibility = Visibility.Visible;
         }
         else
-        {
             searchBox.Focus(FocusState.Keyboard);
-        }
 
         ReloadDropList = true;
     }
@@ -171,11 +161,17 @@ public sealed partial class SearchPage : Page
                 return;
             }
 
-            resultView.SelectedIndex = Math.Clamp(resultView.SelectedIndex + 1, 0, resultView.Items.Count - 1);
+            if (KeyHelper.IsKeyPressed(Windows.System.VirtualKey.Control))
+                resultView.SelectedIndex = resultView.Items.Count -1;
+            else
+                resultView.SelectedIndex = Math.Clamp(resultView.SelectedIndex + 1, 0, resultView.Items.Count - 1);
         }
         else if (e.Key == Windows.System.VirtualKey.Up)
         {
-            resultView.SelectedIndex = Math.Clamp(resultView.SelectedIndex - 1, 0, resultView.Items.Count - 1);
+            if (KeyHelper.IsKeyPressed(Windows.System.VirtualKey.Control))
+                resultView.SelectedIndex = 0;
+            else
+                resultView.SelectedIndex = Math.Clamp(resultView.SelectedIndex - 1, 0, resultView.Items.Count - 1);
         }
 
         ReloadDropList = true;
@@ -196,20 +192,21 @@ public sealed partial class SearchPage : Page
 
             List<IFileCommand> commands = PluginHelper.GetFilePlugins();
             resultView.Items.Clear();
-            List<ResultListViewItem> items = commands
-                .Where((IFileCommand cmd) => { return cmd.ExtensionFilter.Length == 0 || cmd.ExtensionFilter.Contains(extension); })
-                .Select((command) =>
-                {
-                    var fixedQuery = QueryHelper.FixQuery(command, searchBox.Text);
-                    return new ResultListViewItem() 
-                    {
-                        Command = command, 
-                        Text = command.Name(fixedQuery), 
-                        ImageSource = command.Icon(fixedQuery) };
-                }).ToList();
+            List<IFileCommand> fitems = commands
+                .Where((IFileCommand cmd) => { return cmd.ExtensionFilter.Length == 0 || cmd.ExtensionFilter.Contains(extension); }).ToList();
 
-            for (int i = 0; i < items.Count; i++)
-                resultView.Items.Add(items[i]);
+            await AddCommands(fitems);
+
+            ReloadDropList = false;
+        }
+        else if (e.DataView.Contains(StandardDataFormats.Text)) 
+        {
+            if (!ReloadDropList)
+                return;
+
+            List<ITextCommand> commands = PluginHelper.GetTextPlugins();
+            resultView.Items.Clear();
+            await AddCommands(commands);
 
             ReloadDropList = false;
         }
@@ -255,11 +252,11 @@ public sealed partial class SearchPage : Page
         //handle text:
         else if (e.DataView.Contains(StandardDataFormats.Text))
         {
-            searchBox.Text += await e.DataView.GetTextAsync();
+            string text = await e.DataView.GetTextAsync();
             var resultlistViewitem = resultView.Items[droppedItemIndex] as ResultListViewItem;
             PreventSearchboxChangedEvent = true;
-            searchBox.Text = resultlistViewitem.Command.CommandTrigger + searchBox.Text;
-            //RunCommand(resultlistViewitem.Command.CommandTrigger + searchBox.Text, resultlistViewitem);
+            searchBox.Text = resultlistViewitem.Command.CommandTrigger;
+            RunCommand(resultlistViewitem.Command.CommandTrigger + text, resultlistViewitem.Command);
         }
 
         ReloadDropList = true;
