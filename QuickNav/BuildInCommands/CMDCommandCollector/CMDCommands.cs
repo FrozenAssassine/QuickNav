@@ -3,6 +3,8 @@ using QuickNavPlugin;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace QuickNav.BuildInCommands.CMDCommandCollector;
 
@@ -10,7 +12,7 @@ internal class CMDCommand : ICommand, IAbort, IFileCommand
 {
     public string Description => "Run this command to execute in commandline";
 
-    public Uri Icon(string query) => new Uri("ms-appx://App/Assets/commands/cmd.png");
+    public ImageSource Icon(string query) => new BitmapImage(new Uri("ms-appx://App/Assets/commands/cmd.png"));
 
     public Priority Priority(string query)
     {

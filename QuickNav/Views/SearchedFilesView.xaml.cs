@@ -22,7 +22,7 @@ public sealed partial class SearchedFilesView : Page
             ImageSource source = null;
             var icon = Win32Apis.GetIconForFile(file.filePath);
             if (icon != null)
-                source = await ConvertHelper.GetWinUI3BitmapSourceFromIcon(icon);
+                source = await ConvertHelper.GetWinUI3BitmapSourceFromIconAsync(icon);
 
             listView.Items.Add(new FilesViewItem { ImageSource = source, Name = file.fileName, Path = file.filePath });
         }

@@ -1,8 +1,9 @@
 ﻿using QuickNavPlugin;
 using System;
 using QuickNav.Helper;
-using static Microsoft.WindowsAPICodePack.Shell.PropertySystem.SystemProperties;
 using System.Threading;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace QuickNav.BuildInCommands.LockScreenCommandCollector;
 
@@ -14,7 +15,7 @@ internal class LockScreenCommand : ICommand
 
     public string Description => "Run this to lock your screen";
 
-    public Uri Icon(string query) => new Uri("ms-appx://App/Assets/commands/lockscreen.png");
+    public ImageSource Icon(string query) => new BitmapImage(new Uri("ms-appx://App/Assets/commands/lockscreen.png"));
 
     public Priority Priority(string query)
     {

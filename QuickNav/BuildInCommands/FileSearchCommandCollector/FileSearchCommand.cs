@@ -14,6 +14,8 @@ using System.Text;
 using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.WindowsAPICodePack.Shell;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace QuickNav.BuildInCommands.WindowsFileSearch;
 
@@ -21,7 +23,7 @@ internal class FileSearchCommand : ICommand, IBuildInCommand
 {
     public string Description => "Run this command to search files on windows";
 
-    public Uri Icon(string query) => new Uri("ms-appx://App/Assets/commands/filesearch.png");
+    public ImageSource Icon(string query) => new BitmapImage(new Uri("ms-appx://App/Assets/commands/filesearch.png"));
 
     public Priority Priority(string query)
     {

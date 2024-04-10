@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.UI.Xaml.Media;
 using QuickNavPlugin.UI;
 
 namespace QuickNavPlugin
@@ -18,7 +19,7 @@ namespace QuickNavPlugin
         /// </summary>
         /// <param name="query">Maybe your icon should depend on the given query?</param>
         /// <returns></returns>
-        Uri Icon(string query);
+        ImageSource Icon(string query);
         /// <summary>
         /// Priority of the command, should it be shown on top or at bottom?
         /// </summary>

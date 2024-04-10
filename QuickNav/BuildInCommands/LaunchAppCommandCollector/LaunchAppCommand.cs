@@ -4,8 +4,9 @@ using QuickNav.Models;
 using QuickNav.Views;
 using QuickNavPlugin;
 using System;
-using System.IO;
 using System.Linq;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace QuickNav.BuildInCommands.LaunchAppCommandCollector;
 
@@ -19,7 +20,7 @@ internal class LaunchAppCommand : ICommand, IBuildInCommand
 
     private string oldQuery = "";
     private string OldName = "";
-    private Uri OldUri = null;
+    private BitmapImage OldIcon = null;
     public string Name(string query)
     {
         FoundApp = false;
@@ -86,25 +87,35 @@ internal class LaunchAppCommand : ICommand, IBuildInCommand
         return false;
     }
 
-    public Uri Icon(string query)
+    public ImageSource Icon(string query)
     {
         FoundApp = false;
-        if (query.Length == 0)
-            return OldUri = new Uri("ms-appx://App/Assets/commands/launch.png");
-
-        if (oldQuery.Equals(query, StringComparison.Ordinal))
-            return OldUri;
+        if (query.Length == 0 || oldQuery.Equals(query, StringComparison.Ordinal))
+            return OldIcon = new BitmapImage(new Uri("ms-appx://App/Assets/commands/launch.png"));
 
         var apps = Apps.Where(x => x.Name.Contains(query, StringComparison.OrdinalIgnoreCase)).ToArray();
         if (FoundApp = apps.Length == 1)
         {
-            MemoryStream ms = new MemoryStream();
-            apps[0].Thumbnail.LargeIcon.Save(ms);
-            string p = Path.GetTempFileName();
-            File.WriteAllBytes(p, ms.ToArray());
-            return OldUri = new Uri(p);
+            //TODO returnn icon for the current app
+            //return ConvertHelper.GetWinUI3BitmapSourceFromIcon(apps[0].Thumbnail.LargeIcon);
         }
 
-        return OldUri = new Uri("ms-appx://App/Assets/commands/launch.png");
+        return OldIcon = new BitmapImage(new Uri("ms-appx://App/Assets/commands/launch.png"));
+    }
+
+    public ImageSource IconAsync(string query)
+    {
+        FoundApp = false;
+        if (query.Length == 0 || oldQuery.Equals(query, StringComparison.Ordinal))
+            return OldIcon = new BitmapImage(new Uri("ms-appx://App/Assets/commands/launch.png"));
+
+        var apps = Apps.Where(x => x.Name.Contains(query, StringComparison.OrdinalIgnoreCase)).ToArray();
+        if (FoundApp = apps.Length == 1)
+        {
+            //return apps[0].Thumbnail.LargeIcon;
+        }
+
+
+        return new BitmapImage(new Uri("ms-appx://App/Assets/commands/launch.png"));
     }
 }

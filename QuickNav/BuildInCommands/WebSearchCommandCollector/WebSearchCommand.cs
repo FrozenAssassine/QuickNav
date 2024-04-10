@@ -4,6 +4,8 @@ using QuickNavPlugin.UI;
 using System;
 using System.Text.Encodings.Web;
 using Windows.Services.Store;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace QuickNav.BuildInCommands.WebSearchCommandCollector
 {
@@ -11,7 +13,7 @@ namespace QuickNav.BuildInCommands.WebSearchCommandCollector
     {
         public string Description => "Run this command to search for your query in web.";
 
-        public Uri Icon(string query) => BrowserInfo.BrowserIcon;
+        public ImageSource Icon(string query) => new BitmapImage(BrowserInfo.BrowserIcon);
 
         public Priority Priority(string query)
         {
