@@ -4,6 +4,11 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System;
+using System.Drawing;
+using System.IO;
+using Microsoft.UI.Xaml.Media;
+using QuickNav.Models;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace QuickNav.Helper;
 
@@ -62,5 +67,25 @@ internal class ConvertHelper
         var source = new Microsoft.UI.Xaml.Media.Imaging.SoftwareBitmapSource();
         await source.SetBitmapAsync(softwareBitmap);
         return source;
+    }
+
+    public static async Task<ImageSource> ConvertUriToImageSource(Uri uri)
+    {
+        if (uri is LoadedImageHolder lih)
+        {
+            switch (lih.Type)
+            {
+                case LoadedImageHolder.ImageType.None:
+                    return null;
+                case LoadedImageHolder.ImageType.Icon:
+                    return await GetWinUI3BitmapSourceFromIcon((Icon)lih.Image);
+                case LoadedImageHolder.ImageType.Bitmap:
+                    return await GetWinUI3BitmapSourceFromGdiBitmap((Bitmap)lih.Image);
+                case LoadedImageHolder.ImageType.ImageSource:
+                    return (ImageSource)lih.Image;
+            }
+            return null;
+        }
+        else return new BitmapImage(uri);
     }
 }

@@ -36,7 +36,7 @@ public sealed partial class SearchPage : Page
         CommandAutostartHelper.RunCommands();
     }
 
-    private void searchInputBox_TextChanged(object sender, TextChangedEventArgs e)
+    private async void searchInputBox_TextChanged(object sender, TextChangedEventArgs e)
     {
         if (PreventSearchboxChangedEvent)
         {
@@ -65,14 +65,18 @@ public sealed partial class SearchPage : Page
                 foreach (var command in commandList)
                 {
                     string q = QueryHelper.FixQuery(command, searchBox.Text);
-                    resultView.Items.Add(new ResultListViewItem() { Command = command, Text = command.Name(q), Uri = command.Icon(q) });
+                    resultView.Items.Add(new ResultListViewItem() { Command = command, Text = command.Name(q), Uri = await ConvertHelper.ConvertUriToImageSource(command.Icon(q)) });
                 }
             }
         }
         else
         {
             List<ICommand> commands = PluginHelper.SearchFor(searchBox.Text);
-            List<ResultListViewItem> items = commands.Select((command) => new ResultListViewItem() { Command = command, Text = command.Name(QueryHelper.FixQuery(command, searchBox.Text)), Uri = command.Icon(QueryHelper.FixQuery(command, searchBox.Text)) }).ToList();
+            List<ResultListViewItem> items = new List<ResultListViewItem>();
+            for(int i = 0; i < commands.Count; i++)
+            {
+                items.Add(new ResultListViewItem() { Command = commands[i], Text = commands[i].Name(QueryHelper.FixQuery(commands[i], searchBox.Text)), Uri = await ConvertHelper.ConvertUriToImageSource(commands[i].Icon(QueryHelper.FixQuery(commands[i], searchBox.Text))) });
+            }
             for (int i = 0; i < items.Count; i++)
                 resultView.Items.Add(items[i]);
         }
@@ -187,9 +191,13 @@ public sealed partial class SearchPage : Page
 
             List<IFileCommand> commands = PluginHelper.GetFilePlugins();
             resultView.Items.Clear();
-            List<ResultListViewItem> items = commands
-                .Where((IFileCommand cmd) => { return cmd.ExtensionFilter.Length == 0 || cmd.ExtensionFilter.Contains(extension); })
-                .Select((command) => new ResultListViewItem() { Command = command, Text = command.Name(QueryHelper.FixQuery(command, searchBox.Text)), Uri = command.Icon(QueryHelper.FixQuery(command, searchBox.Text)) }).ToList();
+            List<IFileCommand> fitems = commands
+                .Where((IFileCommand cmd) => { return cmd.ExtensionFilter.Length == 0 || cmd.ExtensionFilter.Contains(extension); }).ToList();
+            List<ResultListViewItem> items = new List<ResultListViewItem>();
+            for(int i = 0; i < fitems.Count; i++)
+            {
+                items.Add(new ResultListViewItem() { Command = fitems[i], Text = fitems[i].Name(QueryHelper.FixQuery(fitems[i], searchBox.Text)), Uri = await ConvertHelper.ConvertUriToImageSource(fitems[i].Icon(QueryHelper.FixQuery(fitems[i], searchBox.Text))) });
+            }
             for (int i = 0; i < items.Count; i++)
                 resultView.Items.Add(items[i]);
 

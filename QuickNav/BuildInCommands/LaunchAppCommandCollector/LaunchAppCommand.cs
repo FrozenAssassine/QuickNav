@@ -20,6 +20,7 @@ internal class LaunchAppCommand : ICommand, IBuildInCommand
     private string oldQuery = "";
     private string OldName = "";
     private Uri OldUri = null;
+
     public string Name(string query)
     {
         FoundApp = false;
@@ -98,11 +99,7 @@ internal class LaunchAppCommand : ICommand, IBuildInCommand
         var apps = Apps.Where(x => x.Name.Contains(query, StringComparison.OrdinalIgnoreCase)).ToArray();
         if (FoundApp = apps.Length == 1)
         {
-            MemoryStream ms = new MemoryStream();
-            apps[0].Thumbnail.LargeIcon.Save(ms);
-            string p = Path.GetTempFileName();
-            File.WriteAllBytes(p, ms.ToArray());
-            return OldUri = new Uri(p);
+            return OldUri = new LoadedImageHolder(apps[0].Thumbnail.LargeIcon);
         }
 
         return OldUri = new Uri("ms-appx://App/Assets/commands/launch.png");
