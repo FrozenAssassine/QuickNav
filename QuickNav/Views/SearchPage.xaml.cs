@@ -199,6 +199,17 @@ public sealed partial class SearchPage : Page
 
             ReloadDropList = false;
         }
+        else if (e.DataView.Contains(StandardDataFormats.Text)) 
+        {
+            if (!ReloadDropList)
+                return;
+
+            List<ITextCommand> commands = PluginHelper.GetTextPlugins();
+            resultView.Items.Clear();
+            await AddCommands(commands);
+
+            ReloadDropList = false;
+        }
     }
 
     private async void Grid_Drop(object sender, DragEventArgs e)
@@ -241,10 +252,11 @@ public sealed partial class SearchPage : Page
         //handle text:
         else if (e.DataView.Contains(StandardDataFormats.Text))
         {
-            searchBox.Text += await e.DataView.GetTextAsync();
+            string text = await e.DataView.GetTextAsync();
             var resultlistViewitem = resultView.Items[droppedItemIndex] as ResultListViewItem;
             PreventSearchboxChangedEvent = true;
-            searchBox.Text = resultlistViewitem.Command.CommandTrigger + searchBox.Text;
+            searchBox.Text = resultlistViewitem.Command.CommandTrigger;
+            RunCommand(resultlistViewitem.Command.CommandTrigger + text, resultlistViewitem.Command);
         }
 
         ReloadDropList = true;

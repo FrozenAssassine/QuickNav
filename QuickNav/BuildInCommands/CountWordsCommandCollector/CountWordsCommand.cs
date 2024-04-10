@@ -8,7 +8,7 @@ using System.Text;
 
 namespace QuickNav.BuildInCommands.FileInfoCommandCollector;
 
-internal class CountWordsCommand : ICommand, IFileCommand
+internal class CountWordsCommand : ICommand, IFileCommand, ITextCommand
 {
     public string Description => "Count the words in a file or clipboard";
 
@@ -36,11 +36,7 @@ internal class CountWordsCommand : ICommand, IFileCommand
 
     public bool RunCommand(string param, out ContentElement content)
     {
-        content = null;
-
         param = param.Trim().Trim('\"');
-        if (!File.Exists(param))
-            return false;
 
         string text;
         //no file, count the clipboard

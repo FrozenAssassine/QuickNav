@@ -152,5 +152,17 @@ namespace QuickNav.Helper
             }
             return commands;
         }
+
+        public static List<ITextCommand> GetTextPlugins()
+        {
+            List<ITextCommand> commands = new List<ITextCommand>();
+            for (int i = 0; i < Plugins.Count; i++)
+            {
+                for (int j = 0; j < Plugins[i].Commands.Count; j++)
+                    if (Plugins[i].Commands[j] is ITextCommand)
+                        commands.Add((ITextCommand)Plugins[i].Commands[j]);
+            }
+            return commands;
+        }
     }
 }
