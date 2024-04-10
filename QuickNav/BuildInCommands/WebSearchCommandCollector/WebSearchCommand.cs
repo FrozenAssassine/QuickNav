@@ -20,7 +20,7 @@ namespace QuickNav.BuildInCommands.WebSearchCommandCollector
             return QuickNavPlugin.Priority.Low;
         }
 
-        public string CommandTrigger => "net";
+        public string CommandTrigger => "web:";
 
         public string[] Keywords => new string[] { "web", "search", "inter", "net" };
         

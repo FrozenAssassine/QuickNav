@@ -117,11 +117,21 @@ public sealed partial class SearchPage : Page
                 element = page;
                 WindowHelper.CenterWindow(MainWindow.hWnd, (int)width, (int)height);
             }
+            else if (buildInCommand.CommandTrigger != "")
+            {
+                searchBox.Text = buildInCommand.CommandTrigger;
+                searchBox.SelectionStart = searchBox.Text.Length;
+            }
         }
         else
         {
             if (command.RunCommand(query, out ContentElement content))
                 element = ContentElementRenderHelper.RenderContentElement(content);
+            else if (command.CommandTrigger != "")
+            {
+                searchBox.Text = command.CommandTrigger;
+                searchBox.SelectionStart = searchBox.Text.Length;
+            }
         }
         if (element != null)
         {

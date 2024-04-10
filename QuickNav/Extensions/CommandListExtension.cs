@@ -16,7 +16,7 @@ namespace QuickNav.Extensions
             List<int> priorities = new List<int>();
             for(int i = 0; i < commands.Count; i++)
             {
-                Priority p = commands[i].Priority(query);
+                Priority p = commands[i].Priority(QueryHelper.FixQuery(commands[i], query));
                 if (p == Priority.Invisible)
                 {
                     commands.RemoveAt(i);
