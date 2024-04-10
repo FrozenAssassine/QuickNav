@@ -112,7 +112,7 @@ internal static class PluginHelper
     public static void InitFromDir(string path)
     {
         string[] files = Directory.GetFiles(path);
-        for(int i = 0; i < files.Length; i++)
+        for (int i = 0; i < files.Length; i++)
         {
             if (Path.GetExtension(files[i]).ToLower() == ".dll")
             {
@@ -127,7 +127,7 @@ internal static class PluginHelper
     {
         IPlugin[] interfaces = ReflectionHelper.GetAllExternalInstances(file);
         Plugin plugin = new Plugin();
-        for(int i = 0; i < interfaces.Length; i++)
+        for (int i = 0; i < interfaces.Length; i++)
         {
             if (interfaces[i] is IAboutInfo)
                 plugin.Info = (IAboutInfo)interfaces[i];
@@ -139,28 +139,27 @@ internal static class PluginHelper
         return null;
     }
 
-        public static List<IFileCommand> GetFilePlugins()
+    public static List<IFileCommand> GetFilePlugins()
+    {
+        List<IFileCommand> commands = new List<IFileCommand>();
+        for (int i = 0; i < Plugins.Count; i++)
         {
-            List<IFileCommand> commands = new List<IFileCommand>();
-            for(int i = 0; i < Plugins.Count; i++)
-            {
-                for (int j = 0; j < Plugins[i].Commands.Count; j++)
-                    if (Plugins[i].Commands[j] is IFileCommand)
-                        commands.Add((IFileCommand)Plugins[i].Commands[j]);
-            }
-            return commands;
+            for (int j = 0; j < Plugins[i].Commands.Count; j++)
+                if (Plugins[i].Commands[j] is IFileCommand)
+                    commands.Add((IFileCommand)Plugins[i].Commands[j]);
         }
+        return commands;
+    }
 
-        public static List<ITextCommand> GetTextPlugins()
+    public static List<ITextCommand> GetTextPlugins()
+    {
+        List<ITextCommand> commands = new List<ITextCommand>();
+        for (int i = 0; i < Plugins.Count; i++)
         {
-            List<ITextCommand> commands = new List<ITextCommand>();
-            for (int i = 0; i < Plugins.Count; i++)
-            {
-                for (int j = 0; j < Plugins[i].Commands.Count; j++)
-                    if (Plugins[i].Commands[j] is ITextCommand)
-                        commands.Add((ITextCommand)Plugins[i].Commands[j]);
-            }
-            return commands;
+            for (int j = 0; j < Plugins[i].Commands.Count; j++)
+                if (Plugins[i].Commands[j] is ITextCommand)
+                    commands.Add((ITextCommand)Plugins[i].Commands[j]);
         }
+        return commands;
     }
 }
