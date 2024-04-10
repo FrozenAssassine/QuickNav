@@ -77,9 +77,9 @@ internal class ConvertHelper
                 case LoadedImageHolder.ImageType.None:
                     return null;
                 case LoadedImageHolder.ImageType.Icon:
-                    return await GetWinUI3BitmapSourceFromIcon((Icon)lih.Image);
+                    return await GetWinUI3BitmapSourceFromIconAsync((Icon)lih.Image);
                 case LoadedImageHolder.ImageType.Bitmap:
-                    return await GetWinUI3BitmapSourceFromGdiBitmap((Bitmap)lih.Image);
+                    return await GetWinUI3BitmapSourceFromGdiBitmapAsync((Bitmap)lih.Image);
                 case LoadedImageHolder.ImageType.ImageSource:
                     return (ImageSource)lih.Image;
             }
