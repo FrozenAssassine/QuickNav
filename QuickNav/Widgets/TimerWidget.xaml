@@ -1,0 +1,29 @@
+<local:QuickNavWidget
+    x:Class="QuickNav.Widgets.TimerWidget"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:QuickNav.Widgets"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Width="200" Height="150">
+    <Grid Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Rectangle x:Name="titlebar" Margin="0,0,42,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="0"/>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button ToolTipService.ToolTip="Always on top" Background="Transparent" BorderThickness="0" Grid.Column="1" Click="ToggleTopMost_Click">
+                <FontIcon Glyph="&#xE718;"/>
+            </Button>
+        </Grid>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" x:Name="timeDisplay" FontSize="42"/>
+    </Grid>
+</local:QuickNavWidget>

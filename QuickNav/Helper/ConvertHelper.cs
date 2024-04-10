@@ -70,6 +70,8 @@ internal class ConvertHelper
 
     public static async Task<ImageSource> ConvertUriToImageSource(Uri uri)
     {
+        if (uri == null)
+            return null;
         if (uri is LoadedImageHolder lih)
         {
             switch (lih.Type)
