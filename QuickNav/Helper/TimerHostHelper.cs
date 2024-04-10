@@ -10,5 +10,10 @@ namespace QuickNav.Helper
         {
             ActiveTimers.Add(new TimerWidget((time.hours * 3600) + (time.minutes * 60) + time.seconds));
         }
+
+        public static void EndTimer(TimerWidget timer)
+        {
+            ActiveTimers.Remove(timer);
+        }
     }
 }

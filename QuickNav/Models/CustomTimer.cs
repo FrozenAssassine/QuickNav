@@ -27,6 +27,13 @@ internal class CustomTimer
         startTime = DateTime.Now;
     }
 
+    public void EndTimer()
+    {
+        t.Elapsed -= T_Elapsed;
+        t.Stop();
+        t.Dispose();
+    }
+
     private void T_Elapsed(object sender, ElapsedEventArgs e)
     {
         TimeSpan elapsedTime = DateTime.Now - startTime;

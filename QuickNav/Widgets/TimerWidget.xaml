@@ -6,24 +6,31 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Width="200" Height="150">
-    <Grid Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}">
+    Width="200" Height="120">
+    <local:QuickNavWidget.SystemBackdrop>
+        <DesktopAcrylicBackdrop/>
+    </local:QuickNavWidget.SystemBackdrop>
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="2*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height=".5*"/>
         </Grid.RowDefinitions>
-        <Rectangle x:Name="titlebar" Margin="0,0,42,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="0"/>
-        <Grid Grid.Row="0">
+
+        <Grid Grid.Row="0" Height="50">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-
-            <Button ToolTipService.ToolTip="Always on top" Background="Transparent" BorderThickness="0" Grid.Column="1" Click="ToggleTopMost_Click">
+            <Rectangle Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="titlebar"/>
+            <Button VerticalAlignment="Top" Margin="2" Grid.Column="1" ToolTipService.ToolTip="Always on top" Background="Transparent" BorderThickness="0" Click="ToggleTopMost_Click">
                 <FontIcon Glyph="&#xE718;"/>
             </Button>
+            <Button VerticalAlignment="Top" Margin="2,2,4,2" Grid.Column="2" ToolTipService.ToolTip="Exit the timer" Background="Transparent" BorderThickness="0" Click="CloseTimer_Click">
+                <FontIcon Glyph="&#xE8BB;" />
+            </Button>
         </Grid>
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" x:Name="timeDisplay" FontSize="42"/>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" x:Name="timeDisplay" FontSize="48"/>
     </Grid>
 </local:QuickNavWidget>
