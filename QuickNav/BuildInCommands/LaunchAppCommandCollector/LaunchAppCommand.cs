@@ -1,4 +1,4 @@
-﻿using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.WindowsAPICodePack.Shell;
 using QuickNav.Models;
 using QuickNav.Views;
@@ -20,7 +20,8 @@ internal class LaunchAppCommand : ICommand, IBuildInCommand
 
     private string oldQuery = "";
     private string OldName = "";
-    private BitmapImage OldIcon = null;
+    private Uri OldUri = null;
+
     public string Name(string query)
     {
         FoundApp = false;
@@ -111,10 +112,7 @@ internal class LaunchAppCommand : ICommand, IBuildInCommand
 
         var apps = Apps.Where(x => x.Name.Contains(query, StringComparison.OrdinalIgnoreCase)).ToArray();
         if (FoundApp = apps.Length == 1)
-        {
-            //return apps[0].Thumbnail.LargeIcon;
-        }
-
+            return OldUri = new LoadedImageHolder(apps[0].Thumbnail.LargeIcon);
 
         return new BitmapImage(new Uri("ms-appx://App/Assets/commands/launch.png"));
     }
