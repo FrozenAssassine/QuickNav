@@ -14,9 +14,7 @@ internal class PlainTextConverterCommand : ICommand
 
     public Priority Priority(string query)
     {
-        if (System.Windows.Clipboard.GetText() != "")
-            return QuickNavPlugin.Priority.Medium;
-        return QuickNavPlugin.Priority.Invisible;
+        return QuickNavPlugin.Priority.Low;
     }
 
     public string CommandTrigger => "pt"; //plain text
