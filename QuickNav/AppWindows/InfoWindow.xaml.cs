@@ -4,42 +4,41 @@ using QuickNav.Views;
 using System.IO;
 using Windows.ApplicationModel;
 
-namespace QuickNav.AppWindows
+namespace QuickNav.AppWindows;
+
+public sealed partial class InfoWindow : Window
 {
-    public sealed partial class InfoWindow : Window
+    public InfoWindow()
     {
-        public InfoWindow()
-        {
-            this.InitializeComponent();
-            this.AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets\\AppIcon\\appicon.ico"));
-        }
+        this.InitializeComponent();
+        this.AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets\\AppIcon\\appicon.ico"));
+    }
 
-        public void Select(Pages page)
+    public void Select(Pages page)
+    {
+        if (page == Pages.Settings)
         {
-            if (page == Pages.Settings)
-            {
-                contentFrame.Navigate(typeof(SettingsPage));
-                this.Title = "QuickNav Settings";
-            }
-            else if (page == Pages.About)
-            {
-                contentFrame.Navigate(typeof(AboutPage));
-                this.Title = "About QuickNav";
-            }
+            contentFrame.Navigate(typeof(SettingsPage));
+            this.Title = "QuickNav Settings";
         }
-
-        public enum Pages
+        else if (page == Pages.About)
         {
-            Settings,
-            About
+            contentFrame.Navigate(typeof(AboutPage));
+            this.Title = "About QuickNav";
         }
+    }
 
-        private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+    public enum Pages
+    {
+        Settings,
+        About
+    }
+
+    private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+    {
+        if (args.InvokedItem is NavigationViewItem item)
         {
-            if (args.InvokedItem is NavigationViewItem item)
-            {
-                Select((Pages)(item.Tag ?? 0));
-            }
+            Select((Pages)(item.Tag ?? 0));
         }
     }
 }
