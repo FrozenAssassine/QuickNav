@@ -5,16 +5,17 @@
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
   xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
-  IgnorableNamespaces="uap rescap">
+  xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
+  IgnorableNamespaces="uap rescap mp">
 
   <Identity
-    Name="d8a9421d-9e99-4634-814e-966f2f24dfae"
-    Publisher="CN=juliu"
+    Name="52804JuliusKirsch.QuickNav"
+    Publisher="CN=131520D9-7303-41D1-808C-53CCB4ADFB34"
     Version="1.0.0.0" />
 
   <Properties>
     <DisplayName>QuickNav</DisplayName>
-    <PublisherDisplayName>Julius Kirsch, Finn Freitag</PublisherDisplayName>
+    <PublisherDisplayName>Julius Kirsch</PublisherDisplayName>
     <Logo>Assets\AppIcon\Generated\StoreLogo.png</Logo>
   </Properties>
 
@@ -52,4 +53,6 @@
   <Capabilities>
     <rescap:Capability Name="runFullTrust" />
   </Capabilities>
+
+  <mp:PhoneIdentity PhoneProductId="4526f88a-26f6-4d61-a9fa-51003d1348e6" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 </Package>
