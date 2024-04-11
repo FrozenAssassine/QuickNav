@@ -19,8 +19,7 @@ internal static class CommandShortcutHelper
         var pluginCommands = AppSettings.GetSettings(AppSettingsValues.PluginShortcuts);
         Shortcuts = JsonConvert.DeserializeObject< List<ShortcutConfigurationItem>>(pluginCommands);
 
-        if (Shortcuts == null)
-            Shortcuts = new();
+        Shortcuts ??= new();
     }
     public static void SaveShortcuts()
     {

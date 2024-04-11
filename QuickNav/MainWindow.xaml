@@ -27,6 +27,6 @@
                 </MenuFlyout>
             </tb:TaskbarIcon.ContextFlyout>
         </tb:TaskbarIcon>
-        <views:SearchPage x:Name="searchPage" KeyDown="searchPage_KeyDown"/>
+        <views:SearchPage x:Name="searchPage" KeyDown="SearchPage_KeyDown"/>
     </Grid>
 </Window>
