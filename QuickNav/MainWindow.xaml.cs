@@ -16,9 +16,6 @@ using WinUIEx;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System.Drawing;
 using QuickNav.AppWindows;
-using System.Windows.Documents;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace QuickNav;
 
@@ -45,6 +42,7 @@ public sealed partial class MainWindow : Window
             dispatcherQueue = this.DispatcherQueue;
         _presenter = m_AppWindow.Presenter as OverlappedPresenter;
 
+        Title = Package.Current.DisplayName;
         this.AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets\\AppIcon\\appicon.ico"));
         systrayHandle.Icon = new System.Drawing.Icon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets\\AppIcon\\appicon.ico"));
 
@@ -69,7 +67,7 @@ public sealed partial class MainWindow : Window
         _presenter.SetBorderAndTitleBar(hasBorder: false, hasTitleBar: false);
         _presenter.IsAlwaysOnTop = true;
         _presenter.IsResizable = false;
-        this.AppWindow.IsShownInSwitchers = false;
+        //this.AppWindow.IsShownInSwitchers = false;
 
         if (CommandAutostartHelper.AutostartCommands.Count > 0)
             ShowAndFocus();

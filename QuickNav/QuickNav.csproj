@@ -11,6 +11,15 @@
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
     <ApplicationIcon>Assets\AppIcon\appicon.ico</ApplicationIcon>
+    <RepositoryUrl>https://github.com/FrozenAssassine/QuickNav.git</RepositoryUrl>
+    <UseWindowsForms>False</UseWindowsForms>
+    <PackageProjectUrl>http://easepass.frozenassassine.de/</PackageProjectUrl>
+	<RepositoryType>git</RepositoryType>
+    <ApplicationIcon>Assets\AppIcon\appicon.ico</ApplicationIcon>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <Version>1.0.0</Version>
+    <Authors>Julius Kirsch, Finn Freitag</Authors>
+    <Copyright>Copyright © 2024</Copyright>
   </PropertyGroup>
   <ItemGroup>
     <Content Remove="Assets\AppIcon\Generated\LargeTile.scale-100.png" />
@@ -97,7 +106,7 @@
 	  <PackageReference Include="H.NotifyIcon.WinUI" Version="2.0.124" />
 	  <PackageReference Include="MetadataExtractor" Version="2.8.1" />
 	  <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.5" />
-	  <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240311000" />
+	  <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240404000" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.3233" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.Data.OleDb" Version="8.0.0" />

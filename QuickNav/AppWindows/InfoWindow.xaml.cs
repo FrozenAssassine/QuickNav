@@ -1,6 +1,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using QuickNav.Views;
+using System;
 using System.IO;
 using Windows.ApplicationModel;
 
@@ -36,10 +37,7 @@ namespace QuickNav.AppWindows
 
         private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
-            if (args.InvokedItem is NavigationViewItem item)
-            {
-                Select((Pages)(item.Tag ?? 0));
-            }
+            Select(Enum.Parse<Pages>(args.InvokedItem.ToString()));
         }
     }
 }

@@ -14,7 +14,7 @@
 
   <Properties>
     <DisplayName>QuickNav</DisplayName>
-    <PublisherDisplayName>juliu</PublisherDisplayName>
+    <PublisherDisplayName>Julius Kirsch, Finn Freitag</PublisherDisplayName>
     <Logo>Assets\AppIcon\Generated\StoreLogo.png</Logo>
   </Properties>
 
@@ -33,7 +33,7 @@
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
         DisplayName="QuickNav"
-        Description="QuickNav"
+        Description="Instantly search, find files, execute commands, and boost productivity with a keystroke shortcut."
         BackgroundColor="transparent"
         Square150x150Logo="Assets\AppIcon\Generated\Square150x150Logo.png"
         Square44x44Logo="Assets\AppIcon\Generated\Square44x44Logo.png">
