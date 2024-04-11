@@ -17,12 +17,16 @@ QuickNav is under active development. Expect frequent updates and improvements a
 ## 🛠️ Features (Work in Progress)
 - Live advanced calculator with functions such as sin, cos, tan, e, pi, and support for repeated calculations like 10 + 10 * 50 - 20 *(5 + 10)
 - File search
-- Word counter
-- Color chooser (more like a color selector than a picker)
-- In app commandline executor (run and display commands)
+- Commandline executor
 - File info
+- Start Apps
+- System information
 - Lock screen
 - Web search
+- Clipboard to Plain text
+- Timer
+- Word Counter
+- Color chooser (more like a color selector than a picker)
 
 ## 👨‍💻 Contribute to QuickNav
 - **Code Contributions:** Fork the repository, make enhancements, and submit pull requests on GitHub.
