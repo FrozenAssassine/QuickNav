@@ -39,7 +39,7 @@
                 </Grid>
 
                 <controls:SettingsItemSeparator Header="More"/>
-                <controls:SettingsControl Tag="http://quicknav.frozenassassine.de" Clickable="True" Clicked="NavigateToLink_Click" Glyph="&#xEA8A;" Header="Website" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                <controls:SettingsControl Tag="https://quicknav.frozenassassine.de" Clickable="True" Clicked="NavigateToLink_Click" Glyph="&#xEA8A;" Header="Website" HorizontalAlignment="Stretch" VerticalAlignment="Top">
                     <controls:SettingsControl.Content>
                         <TextBlock Text="&#xe8a7;" FontFamily="{StaticResource SymbolThemeFontFamily}"/>
                     </controls:SettingsControl.Content>
