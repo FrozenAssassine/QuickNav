@@ -1,3 +1,4 @@
+using QuickNav.Helper;
 using QuickNav.Models;
 using System;
 using System.Diagnostics;
@@ -12,8 +13,12 @@ public sealed partial class TimerWidget : QuickNavWidget
     {
         this.InitializeComponent();
         this.Activate();
+        Title = "QuickNav Timer";
+        
         timer.SetTimer(timeInSeconds, TimerElapsed,(seconds) => UpdateUI(seconds));
         this.SetTitleBar(titlebar);
+        this.IsShownInSwitchers = true;
+        this.IsAlwaysOnTop = true;
     }
 
     public void UpdateUI(int seconds)
@@ -27,6 +32,7 @@ public sealed partial class TimerWidget : QuickNavWidget
 
     public void TimerElapsed()
     {
+
         //TODO play sound or so
         Debug.WriteLine("YOUR TIMER IS OVER YOU DUMBASS");
     }
@@ -35,5 +41,12 @@ public sealed partial class TimerWidget : QuickNavWidget
     private void ToggleTopMost_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
         this.IsAlwaysOnTop = !this.IsAlwaysOnTop;
+    }
+
+    private void CloseTimer_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        timer.EndTimer();
+        TimerHostHelper.EndTimer(this);
+        this.Close();
     }
 }
