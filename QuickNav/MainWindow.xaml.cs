@@ -23,7 +23,7 @@ public sealed partial class MainWindow : Window
 {
     public static AppWindow m_AppWindow;
     public static IntPtr hWnd;
-    private OverlappedPresenter? _presenter;
+    private readonly OverlappedPresenter? _presenter;
     public static DispatcherQueue dispatcherQueue;
     public static MainWindow mWindow;
 
@@ -67,7 +67,7 @@ public sealed partial class MainWindow : Window
         _presenter.SetBorderAndTitleBar(hasBorder: false, hasTitleBar: false);
         _presenter.IsAlwaysOnTop = true;
         _presenter.IsResizable = false;
-        //this.AppWindow.IsShownInSwitchers = false;
+        this.AppWindow.IsShownInSwitchers = false;
 
         if (CommandAutostartHelper.AutostartCommands.Count > 0)
             ShowAndFocus();
@@ -97,7 +97,7 @@ public sealed partial class MainWindow : Window
         GlobalHotkeyHelper.UnregisterAllHotkeys();
     }
 
-    private void searchPage_KeyDown(object sender, KeyRoutedEventArgs e)
+    private void SearchPage_KeyDown(object sender, KeyRoutedEventArgs e)
     {
         if(e.Key == Windows.System.VirtualKey.Escape)
         {

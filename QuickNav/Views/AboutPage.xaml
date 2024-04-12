@@ -39,7 +39,7 @@
                 </Grid>
 
                 <controls:SettingsItemSeparator Header="More"/>
-                <controls:SettingsControl Tag="http://quicknav.frozenassassine.de" Clickable="True" Clicked="NavigateToLink_Click" Glyph="&#xEA8A;" Header="Website" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                <controls:SettingsControl Tag="https://quicknav.frozenassassine.de" Clickable="True" Clicked="NavigateToLink_Click" Glyph="&#xEA8A;" Header="Website" HorizontalAlignment="Stretch" VerticalAlignment="Top">
                     <controls:SettingsControl.Content>
                         <TextBlock Text="&#xe8a7;" FontFamily="{StaticResource SymbolThemeFontFamily}"/>
                     </controls:SettingsControl.Content>
@@ -148,7 +148,7 @@
                     <RichTextBlock FontSize="18" IsTextSelectionEnabled="False">
                         <Paragraph Margin="0,30,0,0">
                             <Run>
-                                We are doing our best to prepare the content of this app. However, Quick Nav cannot warranty the expressions and suggestions of the contents, as well as its accuracy. In addition, to the extent permitted by the law, QuickNav shall not be responsible for any losses and/or damages due to the usage of the information on our app.
+                                We are doing our best to prepare the content of this app. However, QuickNav cannot warranty the expressions and suggestions of the contents, as well as its accuracy. In addition, to the extent permitted by the law, QuickNav shall not be responsible for any losses and/or damages due to the usage of the information on our app.
                             </Run>
                         </Paragraph>
                         <Paragraph Margin="0,30,0,0">
