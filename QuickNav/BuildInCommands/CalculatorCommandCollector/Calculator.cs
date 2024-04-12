@@ -1378,7 +1378,7 @@ namespace Calculator // DO NOT CHANGE ANYTHING!!!
             {
                 string abc = "abcdefghijklmnopqrstuvwxyz";
                 string nums = "1234567890";
-                string unallowedChars = "!\"§$&={}\\´`'~#_:;|<>^°"; // Just to prevent some errors
+                string unallowedChars = "!\"§$&={}´`'~#_:;|<>°"; // Just to prevent some errors
 
                 formula = formula.ToLower();
                 formula = formula.Replace(" ", "");
