@@ -35,9 +35,8 @@ public sealed partial class InfoWindow : Window
         About
     }
 
-        private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
-        {
-            Select(Enum.Parse<Pages>(args.InvokedItem.ToString()));
-        }
+    private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+    {
+        Select(Enum.Parse<Pages>(args.InvokedItem.ToString()));
     }
 }
