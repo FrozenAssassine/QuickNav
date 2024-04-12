@@ -20,6 +20,8 @@
         >
             <tb:TaskbarIcon.ContextFlyout>
                 <MenuFlyout>
+                    <MenuFlyoutItem Text="Start (Windows + Y)" Click="ShowWindow_Click"/>
+                    <MenuFlyoutSeparator/>
                     <MenuFlyoutItem Text="Settings" Click="ShowSettings_Click"/>
                     <MenuFlyoutItem Text="About" Click="ShowAbout_Click"/>
                     <MenuFlyoutSeparator/>
