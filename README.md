@@ -1,6 +1,6 @@
 <p align="center">
     <img src="QuickNav/Assets/AppIcon/appicon.svg" height="150px" width="auto" alt="QuickNav Logo">
- </p>
+ </p> 
  <h1  align="center">QuickNav</h1>
 <div align="center">
     <img src="https://img.shields.io/github/stars/FrozenAssassine/QuickNav?style=flat"/>
@@ -9,6 +9,8 @@
 </div>
 
 >### Shortcut: **Windows + Y**
+
+# ‼️ Waiting for certification in the Store
 
 ## 🤔 What is QuickNav?
 QuickNav is a powerful Windows tool that simplifies multitasking with just a keystroke. By pressing a Windows + Y, a search window pops up, allowing users to perform various tasks such as searching the web, finding files, running commands, and more. Currently in progress, QuickNav aims to enhance productivity and streamline user interaction with their system.

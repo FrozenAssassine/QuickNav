@@ -54,10 +54,7 @@ public sealed partial class MainWindow : Window
 
         GlobalHotkeyHelper.RegisterHotkey(Windows.System.VirtualKeyModifiers.Windows, Windows.System.VirtualKey.Y, (object sender, EventArgs e) =>
         {
-            for (int i = 0; i < PluginHelper.Plugins.Count; i++)
-                for (int j = 0; j < PluginHelper.Plugins[i].Commands.Count; j++)
-                    PluginHelper.Plugins[i].Commands[j].OnWindowOpened();
-            ShowAndFocus();
+            ShowWindow();
         }, out int x);
 
         if (_presenter is null)
@@ -73,6 +70,13 @@ public sealed partial class MainWindow : Window
             ShowAndFocus();
     }
 
+    private void ShowWindow()
+    {
+        for (int i = 0; i < PluginHelper.Plugins.Count; i++)
+            for (int j = 0; j < PluginHelper.Plugins[i].Commands.Count; j++)
+                PluginHelper.Plugins[i].Commands[j].OnWindowOpened();
+        ShowAndFocus();
+    }
     public void ShowAndFocus()
     {
         this.Show();
@@ -120,5 +124,10 @@ public sealed partial class MainWindow : Window
         ShowWindowHelper.CloseAll();
         this.Close();
         systrayHandle.Dispose();
+    }
+
+    private void ShowWindow_Click(object sender, RoutedEventArgs e)
+    {
+        ShowWindow();
     }
 }
