@@ -92,6 +92,8 @@
                             <HyperlinkButton FontSize="16" NavigateUri="https://www.nuget.org/packages/System.Data.OleDb/8.0.0" Content="System.Data.OleDb"/>
                             <HyperlinkButton FontSize="16" NavigateUri="https://www.nuget.org/packages/WinUIEx/2.3.4?_src=template" Content="WinUIEx"/>
                             <HyperlinkButton FontSize="16" NavigateUri="https://www.nuget.org/packages/Microsoft-WindowsAPICodePack-Shell/1.1.5" Content="Microsoft-WindowsAPICodePack-Shell"/>
+                            <HyperlinkButton FontSize="16" NavigateUri="https://www.nuget.org/packages/Magick.NET.Core/13.6.0" Content="Magick.NET.Core"/>
+                            <HyperlinkButton FontSize="16" NavigateUri="https://www.nuget.org/packages/Magick.NET-Q16-AnyCPU/13.6.0" Content="Magick.NET-Q16-AnyCPU"/>
                         </StackPanel>
                     </Expander.Content>
                 </Expander>

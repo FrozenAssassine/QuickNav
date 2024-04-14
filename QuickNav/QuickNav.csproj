@@ -119,6 +119,8 @@
   <ItemGroup>
 	  <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
 	  <PackageReference Include="H.NotifyIcon.WinUI" Version="2.0.124" />
+	  <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="13.6.0" />
+	  <PackageReference Include="Magick.NET.Core" Version="13.6.0" />
 	  <PackageReference Include="MetadataExtractor" Version="2.8.1" />
 	  <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.5" />
 	  <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240404000" />
