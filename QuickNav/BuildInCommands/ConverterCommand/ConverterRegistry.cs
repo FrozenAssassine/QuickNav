@@ -11,6 +11,7 @@ namespace QuickNav.BuildInCommands.ConverterCommand
         public static List<IConverter> Converters = new List<IConverter>()
         {
             new ImageConverter(),
+            new ZipConverter(),
         };
 
         public static IConverter[] GetConverterFor(string[] extensions)
@@ -22,7 +23,7 @@ namespace QuickNav.BuildInCommands.ConverterCommand
                 for(int j = 0; j < extensions.Length; j++)
                     if (!Converters[i].InputTypes.Contains(extensions[j]))
                         found = false;
-                if(found)
+                if(found || Converters[i].InputTypes.Length == 0)
                     converters.Add(Converters[i]);
             }
             return converters.ToArray();
@@ -32,7 +33,7 @@ namespace QuickNav.BuildInCommands.ConverterCommand
         {
             extension = extension.ToLower().Replace(".", "");
             for (int i = 0; i < Converters.Count; i++)
-                if (Converters[i].InputTypes.Contains(extension))
+                if (Converters[i].InputTypes.Length == 0 || Converters[i].InputTypes.Contains(extension))
                     return true;
             return false;
         }
