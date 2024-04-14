@@ -8,6 +8,7 @@ using System.IO;
 using Microsoft.UI.Xaml.Media;
 using QuickNav.Models;
 using Microsoft.UI.Xaml.Media.Imaging;
+using System.Windows.Media.Media3D;
 
 namespace QuickNav.Helper;
 
@@ -88,5 +89,65 @@ internal class ConvertHelper
             return null;
         }
         else return new BitmapImage(uri);
+    }
+
+    public static byte[] BitmapToIcon(Bitmap bmp) // https://gist.github.com/darkfall/1656050
+    {
+        if (bmp.Width > 256 || bmp.Height > 256)
+        {
+            int width = (int)((double)bmp.Width / Math.Max(bmp.Width, bmp.Height) * 256);
+            int height = (int)((double)bmp.Height / Math.Max(bmp.Width, bmp.Height) * 256);
+            bmp = new Bitmap(bmp, width, height);
+        }
+
+        MemoryStream mem_data = new MemoryStream();
+        bmp.Save(mem_data, System.Drawing.Imaging.ImageFormat.Png);
+
+        MemoryStream ms = new MemoryStream();
+        BinaryWriter icon_writer = new BinaryWriter(ms);
+
+        // 0-1 reserved, 0
+        icon_writer.Write((byte)0);
+        icon_writer.Write((byte)0);
+
+        // 2-3 image type, 1 = icon, 2 = cursor
+        icon_writer.Write((short)1);
+
+        // 4-5 number of images
+        icon_writer.Write((short)1);
+
+        // image entry 1
+        // 0 image width
+        icon_writer.Write((byte)bmp.Width);
+        // 1 image height
+        icon_writer.Write((byte)bmp.Height);
+
+        // 2 number of colors
+        icon_writer.Write((byte)0);
+
+        // 3 reserved
+        icon_writer.Write((byte)0);
+
+        // 4-5 color planes
+        icon_writer.Write((short)0);
+
+        // 6-7 bits per pixel
+        icon_writer.Write((short)32);
+
+        // 8-11 size of image data
+        icon_writer.Write((int)mem_data.Length);
+
+        // 12-15 offset of image data
+        icon_writer.Write((int)(6 + 16));
+
+        // write image data
+        // png data must contain the whole png data file
+        icon_writer.Write(mem_data.ToArray());
+
+        icon_writer.Flush();
+        icon_writer.Close();
+        icon_writer.Dispose();
+
+        return ms.ToArray();
     }
 }

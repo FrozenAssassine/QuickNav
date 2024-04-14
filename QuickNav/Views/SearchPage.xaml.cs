@@ -186,14 +186,15 @@ public sealed partial class SearchPage : Page
             if (!ReloadDropList)
                 return;
 
-            string extension = Path.GetExtension((await e.DataView.GetStorageItemsAsync())[0].Path).ToLower();
-            if (extension.Length > 0)
-                extension = extension.Substring(1);
+            List<string> extensions = new List<string>();
+            var files = await e.DataView.GetStorageItemsAsync();
+            for (int i = 0; i < files.Count; i++)
+                extensions.Add(Path.GetExtension(files[i].Path).ToLower().Replace(".", ""));
 
             List<IFileCommand> commands = PluginHelper.GetFilePlugins();
             resultView.Items.Clear();
-            List<IFileCommand> fitems = commands
-                .Where((IFileCommand cmd) => { return cmd.ExtensionFilter.Length == 0 || cmd.ExtensionFilter.Contains(extension); }).ToList();
+            List<IFileCommand> fitems = commands // Please don't change this condition if not necessary:
+                .Where((IFileCommand cmd) => { return (files.Count == 1 && (cmd.ExtensionFilter.Length == 0 || cmd.ExtensionFilter.Contains(extensions[0]))) || (files.Count > 1 && cmd.AcceptMultipleFiles && (cmd.ExtensionFilter.Length == 0 || extensions.Where((ext) => { return cmd.ExtensionFilter.Contains(ext); }).Count() == extensions.Count)); }).ToList();
 
             await AddCommands(fitems);
 
@@ -239,15 +240,20 @@ public sealed partial class SearchPage : Page
             if (files.Count == 0)
                 return;
 
+            string allPaths = files[0].Path;
+            for (int i = 1; i < files.Count; i++)
+                allPaths += "|" + files[i].Path;
+
             if (droppedItemIndex == -1)
             {
-                searchBox.Text = files[0].Path;
+                searchBox.Text = allPaths;
+                return;
             }
 
             var resultlistViewitem = resultView.Items[droppedItemIndex] as ResultListViewItem;
             PreventSearchboxChangedEvent = true;
-            searchBox.Text = resultlistViewitem.Command.CommandTrigger + files[0].Path;
-            RunCommand(resultlistViewitem.Command.CommandTrigger + files[0].Path, resultlistViewitem.Command);
+            searchBox.Text = resultlistViewitem.Command.CommandTrigger + allPaths;
+            RunCommand(allPaths, resultlistViewitem.Command);
         }
         //handle text:
         else if (e.DataView.Contains(StandardDataFormats.Text))
@@ -256,7 +262,7 @@ public sealed partial class SearchPage : Page
             var resultlistViewitem = resultView.Items[droppedItemIndex] as ResultListViewItem;
             PreventSearchboxChangedEvent = true;
             searchBox.Text = resultlistViewitem.Command.CommandTrigger;
-            RunCommand(resultlistViewitem.Command.CommandTrigger + text, resultlistViewitem.Command);
+            RunCommand(text, resultlistViewitem.Command);
         }
 
         ReloadDropList = true;
@@ -278,7 +284,11 @@ public sealed partial class SearchPage : Page
             if (files.Count == 0)
                 return;
 
-            searchBox.Text += files[0].Path;
+            string allPaths = files[0].Path;
+            for (int i = 1; i < files.Count; i++)
+                allPaths += "|" + files[i].Path;
+
+            searchBox.Text += allPaths;
         }
         else if (e.DataView.Contains(StandardDataFormats.Text))
         {

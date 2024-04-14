@@ -32,6 +32,7 @@ namespace QuickNav.BuildInCommands
             buildInCommands.Commands.Add(new SysInfoCommand());
             buildInCommands.Commands.Add(new LaunchAppCommand());
             buildInCommands.Commands.Add(new TimerCommand());
+            buildInCommands.Commands.Add(new ConverterCommand.ConverterCommand());
 
             PluginHelper.Plugins.Add(buildInCommands);
         }

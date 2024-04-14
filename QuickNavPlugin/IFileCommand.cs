@@ -15,5 +15,9 @@ namespace QuickNavPlugin
         /// Filter for file extension (e.g. "txt" for *.txt files), leave empty to accept any file type; Write all the extensions in lower case!
         /// </summary>
         string[] ExtensionFilter { get; }
+        /// <summary>
+        /// True, if your plugin accepts multiple files. The paths will be separated using a "|"-separator.
+        /// </summary>
+        bool AcceptMultipleFiles { get; }
     }
 }

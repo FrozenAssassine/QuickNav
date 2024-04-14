@@ -36,6 +36,8 @@ internal class FileInfoCommand : ICommand, IFileCommand
 
     public string[] ExtensionFilter => new string[0];
 
+    public bool AcceptMultipleFiles => false;
+
     public string Name(string query)
     {
         if (query.Length == 0)

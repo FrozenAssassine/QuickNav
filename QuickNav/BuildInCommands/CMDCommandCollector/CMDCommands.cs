@@ -22,6 +22,8 @@ internal class CMDCommand : ICommand, IAbort, IFileCommand
     public string[] Keywords => new string[] { "cmd", "command", "run" };
     public string[] ExtensionFilter => new string[] { "bat", "ps1"};
 
+    public bool AcceptMultipleFiles => false;
+
     Process process = null;
 
     public string Name(string query)
