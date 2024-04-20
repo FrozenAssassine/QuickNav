@@ -6,8 +6,7 @@
     xmlns:local="using:QuickNav.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:models="using:QuickNav.Models"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    mc:Ignorable="d">
 
     <StackPanel>
         <ListView x:Name="listView" IsItemClickEnabled="True" ItemClick="listView_ItemClick">
@@ -20,8 +19,8 @@
             </ListView.ItemTemplate>
         </ListView>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Visibility="Collapsed" x:Name="resultPanel">
-            <Button HorizontalAlignment="Center" Content="Copy to Clipboard" Click="CopyToClipboard_Click"/>
-            <TextBlock Text="Select individual items (drag drop outside)" Margin="0,15,0,0"/>
+            <Button Margin="0,8,0,0" HorizontalAlignment="Center" Content="Copy to Clipboard" Click="CopyToClipboard_Click"/>
+            <TextBlock Text="Select individual items (drag drop outside)" Margin="0,15,0,5"/>
             <GridView DragItemsStarting="outputFilesView_DragItemsStarting" CanDragItems="True" SelectionMode="Extended" x:Name="outputFilesView">
                 <GridView.ItemTemplate>
                     <DataTemplate x:DataType="models:ConvertedFileDataTemplate">
