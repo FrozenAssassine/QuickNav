@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:QuickNav.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:models="using:QuickNav.Models"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -19,11 +19,18 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <StackPanel Orientation="Horizontal" Visibility="Collapsed" x:Name="resultPanel">
-            <Grid>
-                <TextBlock Text="Drag files here" />
-            </Grid>
-            <Button Content="Copy" Click="Button_Click" />
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Visibility="Collapsed" x:Name="resultPanel">
+            <Button HorizontalAlignment="Center" Content="Copy to Clipboard" Click="CopyToClipboard_Click"/>
+            <TextBlock Text="Select individual items (drag drop outside)" Margin="0,15,0,0"/>
+            <GridView DragItemsStarting="outputFilesView_DragItemsStarting" CanDragItems="True" SelectionMode="Extended" x:Name="outputFilesView">
+                <GridView.ItemTemplate>
+                    <DataTemplate x:DataType="models:ConvertedFileDataTemplate">
+                        <Grid Width="100" Height="80">
+                            <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{x:Bind FileName}"/>
+                        </Grid>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
         </StackPanel>
     </StackPanel>
 </Page>

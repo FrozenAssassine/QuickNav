@@ -6,11 +6,14 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using QuickNav.BuildInCommands.ConverterCommand;
+using QuickNav.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
+using System.Windows.Markup;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -59,21 +62,48 @@ namespace QuickNav.Views
                 if (conv.OutputTypes.Contains(ext))
                 {
                     convertedFiles = conv.ConvertTo(files, ext);
+
                     listView.Visibility = Visibility.Collapsed;
                     resultPanel.Visibility = Visibility.Visible;
+
+                    foreach (var file in convertedFiles.Select(x => new ConvertedFileDataTemplate { FileName = Path.GetFileName(x), FilePath = x }))
+                        outputFilesView.Items.Add(file);
                 }
             }
+
+            outputFilesView.SelectAll();
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private async Task<List<StorageFile>> CreateSelectedFiles()
+        {
+            List<StorageFile> files = new List<StorageFile>();
+            for (int i = 0; i < convertedFiles.Length; i++)
+                if (outputFilesView.SelectedItems.Contains(outputFilesView.Items[i]))
+                    files.Add(await StorageFile.GetFileFromPathAsync(convertedFiles[i]));
+
+            return files;
+        }
+        private async Task<List<StorageFile>> CreateAllFiles()
+        {
+            List<StorageFile> files = new List<StorageFile>();
+            for (int i = 0; i < convertedFiles.Length; i++)
+                files.Add(await StorageFile.GetFileFromPathAsync(convertedFiles[i]));
+
+            return files;
+        }
+        private async void CopyToClipboard_Click(object sender, RoutedEventArgs e)
         {
             DataPackage dataPackage = new();
             dataPackage.RequestedOperation = DataPackageOperation.Move;
-            List<StorageFile> files = new List<StorageFile>();
-            for(int i = 0; i < convertedFiles.Length; i++)
-                files.Add(await StorageFile.GetFileFromPathAsync(convertedFiles[i]));
-            dataPackage.SetStorageItems(files);
-            Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(dataPackage);
+            dataPackage.SetStorageItems(await CreateAllFiles());
+
+            Clipboard.SetContent(dataPackage);
+        }
+
+        private async void outputFilesView_DragItemsStarting(object sender, DragItemsStartingEventArgs e)
+        {
+            var selectedFiles = await CreateSelectedFiles();
+            e.Data.SetStorageItems(selectedFiles);
         }
     }
 
