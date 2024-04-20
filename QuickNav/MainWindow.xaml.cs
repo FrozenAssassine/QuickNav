@@ -46,11 +46,16 @@ public sealed partial class MainWindow : Window
         this.AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets\\AppIcon\\appicon.ico"));
         systrayHandle.Icon = new System.Drawing.Icon(Path.Combine(Package.Current.InstalledLocation.Path, "Assets\\AppIcon\\appicon.ico"));
 
+        BuildInCommandRegistry.Register();
+
+        string extDir = Path.Combine(Package.Current.InstalledLocation.Path, "Extensions");
+        if (Directory.Exists(extDir))
+            PluginHelper.InitFromDir(extDir);
+
         CommandSettings.LoadAll();
         CommandShortcutHelper.GetShortcuts();
         CommandShortcutHelper.RegisterAll();
         CommandAutostartHelper.LoadAll();
-        BuildInCommandRegistry.Register();
 
         GlobalHotkeyHelper.RegisterHotkey(Windows.System.VirtualKeyModifiers.Windows, Windows.System.VirtualKey.Y, (object sender, EventArgs e) =>
         {
