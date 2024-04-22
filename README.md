@@ -46,3 +46,4 @@ QuickNav is under active development. Expect frequent updates and improvements a
 
 ## 📸 Screenshots
 <img src="images/screen2.png"/>
+<img src="images/screen6.png"/>
