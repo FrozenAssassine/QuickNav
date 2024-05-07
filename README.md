@@ -14,7 +14,7 @@
 QuickNav is a powerful Windows tool that simplifies multitasking with just a keystroke. By pressing a Windows + Y, a search window pops up, allowing users to perform various tasks such as searching the web, finding files, running commands, and more. Currently in progress, QuickNav aims to enhance productivity and streamline user interaction with their system.
 
 ## 📥Download
-<a href="https://apps.microsoft.com/detail/QuickNav9N8KBW01WD62?launch=true
+<a href="https://apps.microsoft.com/detail/QuickNav/9N8KBW01WD62?launch=true
 	&mode=mini">
 	<img src="https://get.microsoft.com/images/en-us%20dark.svg" width="200"/>
 </a>
