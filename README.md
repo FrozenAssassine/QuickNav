@@ -10,15 +10,16 @@
 
 >### Shortcut: **Windows + Y**
 
-# ‼️ Waiting for certification in the Store
-
 ## 🤔 What is QuickNav?
 QuickNav is a powerful Windows tool that simplifies multitasking with just a keystroke. By pressing a Windows + Y, a search window pops up, allowing users to perform various tasks such as searching the web, finding files, running commands, and more. Currently in progress, QuickNav aims to enhance productivity and streamline user interaction with their system.
 
-## 🚧 In Progress
-QuickNav is under active development. Expect frequent updates and improvements as we strive to make working on Windows more efficient and intuitive.
+## 📥Download
+<a href="https://apps.microsoft.com/detail/QuickNav9N8KBW01WD62?launch=true
+	&mode=mini">
+	<img src="https://get.microsoft.com/images/en-us%20dark.svg" width="200"/>
+</a>
 
-## 🛠️ Features (Work in Progress)
+## 🛠️ Features
 - Live advanced calculator with functions such as sin, cos, tan, e, pi, and support for repeated calculations like 10 + 10 * 50 - 20 *(5 + 10)
 - File search
 - Commandline executor
