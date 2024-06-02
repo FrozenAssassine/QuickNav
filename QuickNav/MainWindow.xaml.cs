@@ -16,6 +16,7 @@ using WinUIEx;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System.Drawing;
 using QuickNav.AppWindows;
+using System.Linq;
 
 namespace QuickNav;
 
@@ -56,6 +57,7 @@ public sealed partial class MainWindow : Window
         CommandShortcutHelper.GetShortcuts();
         CommandShortcutHelper.RegisterAll();
         CommandAutostartHelper.LoadAll();
+        BackgroundServiceHelper.Start(PluginHelper.GetAllServices());
 
         GlobalHotkeyHelper.RegisterHotkey(Windows.System.VirtualKeyModifiers.Windows, Windows.System.VirtualKey.Y, (object sender, EventArgs e) =>
         {

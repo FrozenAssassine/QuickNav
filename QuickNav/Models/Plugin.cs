@@ -10,6 +10,7 @@ namespace QuickNav.Models
     internal class Plugin
     {
         public List<ICommand> Commands = new List<ICommand>();
+        public List<IBackgroundService> Services = new List<IBackgroundService>();
         public IAboutInfo Info = null;
     }
 }

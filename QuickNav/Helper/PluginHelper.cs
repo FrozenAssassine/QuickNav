@@ -133,6 +133,8 @@ internal static class PluginHelper
                 plugin.Info = (IAboutInfo)interfaces[i];
             if (interfaces[i] is ICommand)
                 plugin.Commands.Add((ICommand)interfaces[i]);
+            if (interfaces[i] is IBackgroundService)
+                plugin.Services.Add((IBackgroundService)interfaces[i]);
         }
         if (plugin.Info != null || plugin.Commands.Count > 0)
             return plugin;
@@ -161,5 +163,15 @@ internal static class PluginHelper
                     commands.Add((ITextCommand)Plugins[i].Commands[j]);
         }
         return commands;
+    }
+
+    public static List<IBackgroundService> GetAllServices()
+    {
+        List<IBackgroundService> services = new List<IBackgroundService>();
+        for (int i = 0; i < Plugins.Count; i++)
+        {
+            services.AddRange(Plugins[i].Services);
+        }
+        return services;
     }
 }
