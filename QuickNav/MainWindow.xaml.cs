@@ -22,6 +22,8 @@ namespace QuickNav;
 
 public sealed partial class MainWindow : Window
 {
+    public static readonly string ExtensionPath = Path.Combine(Package.Current.InstalledLocation.Path, "Extensions");
+
     public static AppWindow m_AppWindow;
     public static IntPtr hWnd;
     private readonly OverlappedPresenter? _presenter;
@@ -49,9 +51,8 @@ public sealed partial class MainWindow : Window
 
         BuildInCommandRegistry.Register();
 
-        string extDir = Path.Combine(Package.Current.InstalledLocation.Path, "Extensions");
-        if (Directory.Exists(extDir))
-            PluginHelper.InitFromDir(extDir);
+        if (Directory.Exists(ExtensionPath))
+            PluginHelper.InitFromDir(ExtensionPath);
 
         CommandSettings.LoadAll();
         CommandShortcutHelper.GetShortcuts();
